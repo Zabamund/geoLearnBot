@@ -1,0 +1,58 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+apply plugin: 'maven'
+
+jar {
+	baseName = 'geoLearnBot'
+	version = '1.0.0-SNAPSHOT'
+}
+
+mainClassName = "daily.news.Main"
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'geoLearnBot',
+                   'Implementation-Version': version,
+                   'Main-Class': 'geoLearnBot.Main'
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext.assertJVersion  = '3.5.2'
+ext.junitVersion    = '4.12'
+ext.mockitoJVersion = '2.7.0'
+ext.lombokVersion   = '1.16.12'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile group: 'org.telegram', name: 'telegrambots', version: '2.4.4.4'
+	compile 'com.google.code.gson:gson:2.8.0'
+	compile 'com.jayway.jsonpath:json-path:2.2.0'
+	compileOnly("org.projectlombok:lombok:${lombokVersion}")
+	testCompile("junit:junit:${junitVersion}")
+	testCompile("org.assertj:assertj-core:${assertJVersion}")
+	testCompile("org.mockito:mockito-core:${mockitoJVersion}")
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.3'
+}
+
+task showMeCache {
+  doLast {
+    println('compileOnly dependencies:')
+    configurations.compileOnly.each { println it }
+    println('testCompile dependencies:')
+    configurations.testCompile.each { println it }
+  }
+}
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
+
