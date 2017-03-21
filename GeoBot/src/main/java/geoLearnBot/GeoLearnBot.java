@@ -24,12 +24,12 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /start command
 			if (update.getMessage().getText().equals("/start")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						.setText(
-								// @formatter:off
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
+						// @formatter:off
 								"*Would you like to learn or play?*"
 								+ "\n\n*1*. Learn !"
-								+ "\n*2*. Play ! (sorry, I'm not implemented yet...)")
+								+ "\n*2*. Play ! (sorry, I'm not implemented yet...)"
+								+ "\n*3*. Acknowledgments")
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -56,7 +56,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /acknowledgments command
-			if (update.getMessage().getText().equals("/acknowledgements")) {
+			if (update.getMessage().getText().equals("/acknowledgements")
+					|| update.getMessage().getText().equals("3")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
 						// @formatter:off
 								"*geoLearnBot Acknowledges and Credits*"
@@ -73,6 +74,39 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
+			}
+
+			// /learn || 1
+			if (update.getMessage().getText().equals("/learn") || update.getMessage().getText().equals("1")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						.setText(
+						// @formatter:off
+						"*boo !*")						
+						// @formatter:on
+						.enableMarkdown(true);
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			// /quiz || 2
+			if (update.getMessage().getText().equals("/quiz") || update.getMessage().getText().equals("2")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// .setReplyMarkup(ReplyKeyboardMarkup)
+						.setText(
+						// @formatter:off
+							"*waat ?*")						
+						// @formatter:on
+						.enableMarkdown(true);
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+
 			}
 
 		}
