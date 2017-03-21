@@ -81,7 +81,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 						// @formatter:off
-						"*boo !*")						
+						"*learn placeholder*")						
 						// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -98,7 +98,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						// .setReplyMarkup(ReplyKeyboardMarkup)
 						.setText(
 						// @formatter:off
-							"*waat ?*")						
+							"*quiz placeholder*")						
 						// @formatter:on
 						.enableMarkdown(true);
 				try {
