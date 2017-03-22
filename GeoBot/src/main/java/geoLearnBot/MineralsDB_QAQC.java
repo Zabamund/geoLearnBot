@@ -3,7 +3,7 @@ package geoLearnBot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MineralsDB {
+public class MineralsDB_QAQC {
 
 	// this main is only created to QC the object and print to the console for
 	// verification, not used otherwise
