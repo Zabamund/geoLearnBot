@@ -143,8 +143,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"So you need to learn about some of the terms I use when showing you minerals ?"
-								+ "\nThat's totally cool, I'm all about teaching so here we go!")						
+								"*So you need to learn about some of the terms I use when showing you minerals ?*"
+								+ "\nThat's totally cool, I'm all about teaching so just click on the button you want to learn about !")						
 						.enableMarkdown(true)
 						.setReplyMarkup(replyMarkup);
 						// @formatter:on
@@ -156,7 +156,102 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			}
 
+			// /Mineral Classification
+			if (update.getMessage().getText().equals("Mineral Classification")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"booyah MinClass !!")
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Streak
+			if (update.getMessage().getText().equals("Streak")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"booyah Streak !!")
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Mohs Hardness
+			if (update.getMessage().getText().equals("Mohs Hardness")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"booyah Mohs Hardness !!")
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Crystal System
+			if (update.getMessage().getText().equals("Crystal System")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"booyah Crystals !!")
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Luster
+			if (update.getMessage().getText().equals("Luster")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"booyah Luster !!")
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Fracture
+			if (update.getMessage().getText().equals("Fracture")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"booyah Fracture !!")
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// closing ifUpdateHasText
+
 		}
 
+		// closing onUpdate
 	}
+
+	// closing class
 }
