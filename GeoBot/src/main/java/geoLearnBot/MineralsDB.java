@@ -5,6 +5,8 @@ import java.util.List;
 
 public class MineralsDB {
 
+	// this main is only created to QC the object and print to the console for
+	// verification, not used otherwise
 	public static void main(String[] args) {
 		// create an empty list to which we'll add the mineral attributes
 		List<Minerals> mineralsList = new ArrayList<>();

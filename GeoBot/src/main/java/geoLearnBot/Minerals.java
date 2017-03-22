@@ -115,6 +115,7 @@ public class Minerals {
 		return this.image;
 	}
 
+	// toString customised for better display
 	@Override
 	public String toString() {
 		return "\n\nMineral\n[\nTitle = " + this.title + " \nDescription = " + this.description + " \nType = "
