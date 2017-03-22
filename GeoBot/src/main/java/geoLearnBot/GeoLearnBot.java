@@ -1,5 +1,7 @@
 package geoLearnBot;
 
+import java.util.List;
+
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -16,6 +18,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	public String getBotToken() {
 		return "342030854:AAHbYQhXVEMNUQ7Pr2RlAT3D0ujWV8D9ztg";
 	}
+
+	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -81,7 +85,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 						// @formatter:off
-						"*learn placeholder*")						
+						mineralsList.get(0).toString())						
 						// @formatter:on
 						.enableMarkdown(true);
 				try {
