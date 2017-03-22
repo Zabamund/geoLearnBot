@@ -1,6 +1,7 @@
 // code modified from Manel Pavon and https://github.com/IonicaBizau/scrape-it
 
 const scrapeIt = require("scrape-it");
+let JsonDATABASE = [];
 
 const mineralsArray = [ // N=29
     'amphibole',
@@ -96,6 +97,7 @@ function minerals(mineral) {
         }
     }).then(page => {
         DATABASE.push(page);
+        JsonDATABASE = JSON.stringify(DATABASE);
     });
 }
 
@@ -103,7 +105,8 @@ mineralsArray.forEach((el) => minerals(el));
 
 setTimeout(function(){
     console.log("Our database length: ", DATABASE.length);
-    for (var i = 0; i < DATABASE.length; i++) {
-        console.log(DATABASE[i]);
-    }
+    console.log(JsonDATABASE);
+    // for (var i = 0; i < DATABASE.length; i++) {
+    //     console.log(DATABASE[i]);
+    // }
 }, 5000);
