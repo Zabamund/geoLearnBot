@@ -2,6 +2,7 @@ package geoLearnBot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -51,11 +52,14 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /help || 2
 			if (update.getMessage().getText().equals("/help") || update.getMessage().getText().equals("2")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
+				String winky = "\\U+1F609";
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						.setText(
 						// @formatter:off
 								"*Here is what this bot can do:*"
 								+ "\n\nType \"/\" for main options (start, help, learn, quiz, acknowledgments or glossary)"
-								+ "\nOnce inside the main options use 1, 2, 3, 4, 5 and 6 to navigate the bot, have fun !")
+								+ "\nOnce inside the main options use 1, 2, 3, 4, 5 and 6 to navigate the bot, have fun !"
+								+ "\n\nErrors: if you keep asking for more minerals and they're not coming, well...why don't you read the text and wait a little " + winky + " ?")
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -67,11 +71,14 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /learn || 3
 			if (update.getMessage().getText().equals("/learn") || update.getMessage().getText().equals("3")) {
-				// String mineralContent = mineralsList.get(0).toString();
+
+				// pick random element in the array
+				int random = new Random().nextInt(mineralsList.size());
+
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
-								mineralsList.get(0).toString())						
+								mineralsList.get(random).toString())						
 								// @formatter:on
 						.enableHtml(true);
 				try {
