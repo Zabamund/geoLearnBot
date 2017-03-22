@@ -115,4 +115,13 @@ public class Minerals {
 		return this.image;
 	}
 
+	@Override
+	public String toString() {
+		return "\n\nMineral\n[\nTitle = " + this.title + " \nDescription = " + this.description + " \nType = "
+				+ this.type + " \nMineral Classification = " + this.mineralClassification + " \nChemical Formula = "
+				+ this.chemicalFormula + " \nStreak = " + this.streak + " \nMohs Hardness = " + this.mohsHardness
+				+ " \nCrystal System = " + this.crystalSystem + " \nColor = " + this.color + " \nLuster = "
+				+ this.luster + " \nFracture = " + this.fracture + " \nImage url = " + this.image + "\n]";
+	}
+
 }

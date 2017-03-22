@@ -3,9 +3,10 @@ package geoLearnBot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MineralsDB {
+public class FetchMinerals {
 
-	public static void main(String[] args) {
+	public static List<Minerals> fetchMinerals() {
+
 		// create an empty list to which we'll add the mineral attributes
 		List<Minerals> mineralsList = new ArrayList<>();
 
@@ -148,12 +149,8 @@ public class MineralsDB {
 			// add each mineral to the list
 			mineralsList.add(mineral);
 		}
-		// sysout only to check aok and use the main
-		System.out.println(mineralsList);
 
 		// return the list for usage in the Package
-		// return mineralsList;
-
+		return mineralsList;
 	}
-
 }
