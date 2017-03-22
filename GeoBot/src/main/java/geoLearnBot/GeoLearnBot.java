@@ -1,9 +1,12 @@
 package geoLearnBot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
@@ -85,8 +88,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						// .setReplyMarkup(ReplyKeyboardMarkup)
 						.setText(
 								// @formatter:off
-										"*Booo ! nothing here yet :-(*")						
-									// @formatter:on
+								"*Booo ! nothing here yet :-(*")						
+								// @formatter:on
 						.enableMarkdown(true);
 				try {
 					sendMessage(message);
@@ -119,14 +122,32 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Glossary || 6
 			if (update.getMessage().getText().equals("/glossary") || update.getMessage().getText().equals("6")) {
+
+				KeyboardRow keyboardRowUpper = new KeyboardRow();
+				keyboardRowUpper.add(0, "Mineral Classification");
+				keyboardRowUpper.add(1, "Streak");
+				keyboardRowUpper.add(2, "Mohs Hardness");
+
+				KeyboardRow keyboardRowLower = new KeyboardRow();
+				keyboardRowLower.add(0, "Crystal System");
+				keyboardRowLower.add(1, "Luster");
+				keyboardRowLower.add(2, "Fracture");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRowUpper);
+				keyboard.add(keyboardRowLower);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true);
+
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// .setReplyMarkup(ReplyKeyboardMarkup)
+						// @formatter:off
 						.setText(
-								// @formatter:off
 								"So you need to learn about some of the terms I use when showing you minerals ?"
 								+ "\nThat's totally cool, I'm all about teaching so here we go!")						
-								// @formatter:on
-						.enableMarkdown(true);
+						.enableMarkdown(true)
+						.setReplyMarkup(replyMarkup);
+						// @formatter:on
 				try {
 					sendMessage(message);
 				} catch (TelegramApiException e) {
