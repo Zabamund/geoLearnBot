@@ -5,9 +5,11 @@ import java.util.List;
 
 public class MineralsDB {
 
-	public static void main(String[] args) {
+	public static List<Minerals> main(String[] args) {
+		// create an empty list to which we'll add the mineral attributes
 		List<Minerals> mineralsList = new ArrayList<>();
 
+		// all properties of the minerals arranged as individual arrays
 		String[] titleArray = { "Biotite", "Zeolites", "Fluorite", "Colemanite", "Augite", "Barium", "Gold", "Diamond",
 				"Graphite", "Silver", "Beryllium", "Corundum", "Gypsum", "Chlorite", "Aragonite", "Pyrite", "Calcite",
 				"Autunite", "Aurichalcite", "Feldspar", "Asbestos", "Garnet", "Salt/Halite", "Quartz", "Kaolinite",
@@ -124,6 +126,29 @@ public class MineralsDB {
 				"https://mineralseducationcoalition.org/wp-content/uploads/Zeolite_136257968-150x150.jpg",
 				"https://mineralseducationcoalition.org/wp-content/uploads/Asbestos1_Chrysotile1_297924608-150x150.jpg",
 				"https://mineralseducationcoalition.org/wp-content/uploads/Flourite_364713614-150x150.jpg" };
+
+		// create and return a List of all minerals
+		for (int i = 0; i < 25; i++) {
+			String title = titleArray[i];
+			String description = descriptionArray[i];
+			String type = typeArray[i];
+			String mineralClassification = mineralClassificationArray[i];
+			String chemicalFormula = chemicalFormulaArray[i];
+			String streak = streakArray[i];
+			String mohsHardness = mohsHardnessArray[i];
+			String crystalSystem = crystalSystemArray[i];
+			String color = colorArray[i];
+			String luster = lusterArray[i];
+			String fracture = fractureArray[i];
+			String image = imageArray[i];
+
+			Minerals mineral = new Minerals(title, description, type, mineralClassification, chemicalFormula, streak,
+					mohsHardness, crystalSystem, color, luster, fracture, image);
+
+			mineralsList.add(mineral);
+		}
+
+		return mineralsList;
 
 	}
 
