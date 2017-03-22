@@ -51,8 +51,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
 						// @formatter:off
 								"*Here is what this bot can do:*"
-								+ "\n\nType \"/\" for main options (start, help, learn, quiz or acknowledgments)"
-								+ "\nOnce inside the main options, use \"1\", \"2\", \"3\" and \"4\" to navigate the bot, have fun !")
+								+ "\n\nType \"/\" for main options (start, help, learn, quiz, acknowledgments or glossary)"
+								+ "\nOnce inside the main options use 1, 2, 3, 4, 5 and 6 to navigate the bot, have fun !")
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -68,8 +68,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
-									mineralsList.get(0).toString())						
-									// @formatter:on
+								mineralsList.get(0).toString())						
+								// @formatter:on
 						.enableHtml(true);
 				try {
 					sendMessage(message);
