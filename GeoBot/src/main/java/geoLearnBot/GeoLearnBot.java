@@ -1,7 +1,9 @@
 package geoLearnBot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -23,12 +25,24 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 		return "342030854:AAHbYQhXVEMNUQ7Pr2RlAT3D0ujWV8D9ztg";
 	}
 
-	// List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
+	Map<Long, Chat> chatMap = new HashMap<>();
 
 	@Override
 	public void onUpdateReceived(Update update) {
 		// check if the update has a message and the message has text
 		if (update.hasMessage() && update.getMessage().hasText()) {
+
+			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
+				List<Integer> seenMineral = new ArrayList<>();
+				List<Integer> favoriteMineral = new ArrayList<>();
+				Chat newChat = new Chat(update.getMessage().getChatId(), seenMineral, favoriteMineral);
+				chatMap.put(newChat.getId(), newChat);
+			}
+
+			System.out.println(chatMap);
+
+			// Fetch list of minerals
+			List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
 
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
@@ -73,21 +87,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /learn || 3
 			if (update.getMessage().getText().equals("/learn") || update.getMessage().getText().equals("3")) {
 
-				// fetch list of minerals
-				List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
-				Long chatId = update.getMessage().getChatId();
-				List<Minerals> seenArray = new ArrayList<>();
-				List<Minerals> favoriteArray = new ArrayList<>();
-
-				// pick random element in the array
+				// pick random element in mineralsList
 				int random = new Random().nextInt(mineralsList.size());
 				// check if element is in seenArray
 				// if not, add to seen array AND pass to mineralToDisplay
 				// yes, pick new random
-				if (seenArray.contains(random) == false) {
-					seenArray.add(random);
-					System.out.println("seenArray: " + seenArray);
-				}
 
 				int mineralToDisplay = random;
 

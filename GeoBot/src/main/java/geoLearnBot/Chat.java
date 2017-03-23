@@ -6,11 +6,11 @@ public class Chat {
 
 	private Long id;
 
-	private List<Minerals> seenMineral;
+	private List<Integer> seenMineral;
 
-	private List<Minerals> favoriteMineral;
+	private List<Integer> favoriteMineral;
 
-	public Chat(Long id, List<Minerals> seenMineral, List<Minerals> favoriteMineral) {
+	public Chat(Long id, List<Integer> seenMineral, List<Integer> favoriteMineral) {
 		super();
 		this.id = id;
 		this.seenMineral = seenMineral;
@@ -25,19 +25,19 @@ public class Chat {
 		this.id = id;
 	}
 
-	public List<Minerals> getSeenMineral() {
+	public List<Integer> getSeenMineral() {
 		return this.seenMineral;
 	}
 
-	public void setSeenMineral(List<Minerals> seenMineral) {
+	public void setSeenMineral(List<Integer> seenMineral) {
 		this.seenMineral = seenMineral;
 	}
 
-	public List<Minerals> getFavoriteMineral() {
+	public List<Integer> getFavoriteMineral() {
 		return this.favoriteMineral;
 	}
 
-	public void setFavoriteMineral(List<Minerals> favoriteMineral) {
+	public void setFavoriteMineral(List<Integer> favoriteMineral) {
 		this.favoriteMineral = favoriteMineral;
 	}
 
