@@ -23,7 +23,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 		return "342030854:AAHbYQhXVEMNUQ7Pr2RlAT3D0ujWV8D9ztg";
 	}
 
-	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
+	// List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -59,7 +59,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								"*Here is what this bot can do:*"
 								+ "\n\nType \"/\" for main options (start, help, learn, quiz, acknowledgments or glossary)"
 								+ "\nOnce inside the main options use 1, 2, 3, 4, 5 and 6 to navigate the bot, have fun !"
-								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well...why don't you read the text and wait a little " + winky + " ?")
+								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well...why "
+								+ "don't you read the text and wait a little " + winky + " ?")
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -72,13 +73,28 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /learn || 3
 			if (update.getMessage().getText().equals("/learn") || update.getMessage().getText().equals("3")) {
 
+				// fetch list of minerals
+				List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
+				Long chatId = update.getMessage().getChatId();
+				List<Minerals> seenArray = new ArrayList<>();
+				List<Minerals> favoriteArray = new ArrayList<>();
+
 				// pick random element in the array
 				int random = new Random().nextInt(mineralsList.size());
+				// check if element is in seenArray
+				// if not, add to seen array AND pass to mineralToDisplay
+				// yes, pick new random
+				if (seenArray.contains(random) == false) {
+					seenArray.add(random);
+					System.out.println("seenArray: " + seenArray);
+				}
+
+				int mineralToDisplay = random;
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
-								mineralsList.get(random).toString())						
+								mineralsList.get(mineralToDisplay).toString())						
 								// @formatter:on
 						.enableHtml(true);
 				try {
@@ -115,7 +131,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "\n*The Minerals Education Coalition*"
 								+ "\n*for all the geological data displayed inside this bot*"
 								+ "\n\nThe original material is available at [https://mineralseducationcoalition.org]"
-								+ "\nThe Reprint Policy of the Minerals Education Coalition is available at [https://mineralseducationcoalition.org/reprint-policy/]"
+								+ "\nThe Reprint Policy of the Minerals Education Coalition is available at"
+								+ " [https://mineralseducationcoalition.org/reprint-policy/]"
 								+ "\n\nAdditionally geoLearnBot states that:"
 								+ "\nThis bot is in no way affiliated or partnered with nor sponsored by the Minerals Education Coalition")
 								// @formatter:on
@@ -238,8 +255,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Native element minerals are those elements that occur in nature in uncombined form with a distinct mineral structure."
-								+ " The elemental class includes metals and intermetallic elements, naturally occurring alloys, semi-metals and non-metals."
+								"Native element minerals are those elements that occur in nature in uncombined form with a "
+								+ "distinct mineral structure."
+								+ " The elemental class includes metals and intermetallic elements, naturally occurring alloys,"
+								+ " semi-metals and non-metals."
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
 						// @formatter:on
@@ -256,7 +275,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Phyllosilicates are sheet Silicate minerals, formed by parallel sheets of silicate tetrahedra with Si2O5 or a 2:5 ratio."
+								"Phyllosilicates are sheet Silicate minerals, formed by parallel sheets of silicate tetrahedra with "
+								+ "Si2O5 or a 2:5 ratio."
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
 						// @formatter:on
@@ -510,12 +530,13 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Hexagonal
 			if (update.getMessage().getText().equals("Hexagonal")) {
+				String smallGamma = "\u03b3";
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
 								"In crystallography, the hexagonal crystal family is one of the 6 crystal families. "
 								+ "In the hexagonal family, the crystal is conventionally described by a right rhombic"
-								+ " prism unit cell with two equal axes (a by a), an included angle of 120° (gamma) and a "
+								+ " prism unit cell with two equal axes (a by a), an included angle of 120° (" + smallGamma + ") and a "
 								+ "height (c, which can be different from a) perpendicular to the two base axes."
 								+ "\nhttps://goo.gl/txDjSc"
 								+ "\n_Source: Wikipedia_")
@@ -603,7 +624,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// closing ifUpdateHasText
-
 		}
 
 		// closing onUpdate
