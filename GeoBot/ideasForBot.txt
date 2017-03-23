@@ -1,0 +1,7 @@
+ideas for bot
+
+reset seen array or maybe reset every time user logs back in
+
+favorite button
+
+show a choice of 4 minerals at once ? keyboard markdown..

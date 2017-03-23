@@ -2,7 +2,6 @@ package geoLearnBot;
 
 public class Minerals {
 
-	// ============ class attributes ========//
 	private String title;
 
 	private String description;
@@ -27,10 +26,13 @@ public class Minerals {
 
 	private String image;
 
-	// ============ constructor =====//
+	private Boolean seen;
+
+	private Boolean favorite;
+
 	public Minerals(String title, String description, String type, String mineralClassification, String chemicalFormula,
 			String streak, String mohsHardness, String crystalSystem, String color, String luster, String fracture,
-			String image) {
+			String image, Boolean seen, Boolean favorite) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -44,9 +46,10 @@ public class Minerals {
 		this.luster = luster;
 		this.fracture = fracture;
 		this.image = image;
+		this.seen = seen;
+		this.favorite = favorite;
 	}
 
-	// =============== Getters ========//
 	public String getTitle() {
 		return this.title;
 	}
@@ -95,7 +98,22 @@ public class Minerals {
 		return this.image;
 	}
 
-	// toString customised for better display
+	public Boolean getSeen() {
+		return this.seen;
+	}
+
+	public void setSeen(Boolean seen) {
+		this.seen = seen;
+	}
+
+	public Boolean getFavorite() {
+		return this.favorite;
+	}
+
+	public void setFavorite(Boolean favorite) {
+		this.favorite = favorite;
+	}
+
 	@Override
 	public String toString() {
 		return "\n\n<strong>" + this.title.toUpperCase() + "\n</strong>" + "\n" + "<strong>" + "Description :</strong> "

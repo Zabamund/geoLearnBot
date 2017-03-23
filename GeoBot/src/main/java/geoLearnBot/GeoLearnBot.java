@@ -1,7 +1,9 @@
 package geoLearnBot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -23,12 +25,28 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 		return "342030854:AAHbYQhXVEMNUQ7Pr2RlAT3D0ujWV8D9ztg";
 	}
 
+	// Create a chat pseudo-db
+	Map<Long, Chat> chatMap = new HashMap<>();
+	// Fetch list of minerals
 	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
+
+	public static int randomNumberPicker(List<Minerals> mineralsList) {
+		int random = new Random().nextInt(mineralsList.size());
+		return random;
+	}
 
 	@Override
 	public void onUpdateReceived(Update update) {
 		// check if the update has a message and the message has text
 		if (update.hasMessage() && update.getMessage().hasText()) {
+
+			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
+				List<Integer> seenMineral = new ArrayList<>();
+				List<Integer> favoriteMineral = new ArrayList<>();
+				Chat newChat = new Chat(update.getMessage().getChatId(), seenMineral, favoriteMineral);
+				chatMap.put(newChat.getId(), newChat);
+			}
+			System.out.println(chatMap);
 
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
@@ -59,7 +77,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								"*Here is what this bot can do:*"
 								+ "\n\nType \"/\" for main options (start, help, learn, quiz, acknowledgments or glossary)"
 								+ "\nOnce inside the main options use 1, 2, 3, 4, 5 and 6 to navigate the bot, have fun !"
-								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well...why don't you read the text and wait a little " + winky + " ?")
+								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well...why "
+								+ "don't you read the text and wait a little " + winky + " ?")
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -72,13 +91,23 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /learn || 3
 			if (update.getMessage().getText().equals("/learn") || update.getMessage().getText().equals("3")) {
 
-				// pick random element in the array
-				int random = new Random().nextInt(mineralsList.size());
+				int random = randomNumberPicker(mineralsList);
+				int mineralToDisplay = -1;
+
+				while (chatMap.get(update.getMessage().getChatId()).getSeenMineral().contains(random) == true) {
+					random = randomNumberPicker(mineralsList);
+				}
+				System.out.println("random: " + random);
+
+				chatMap.get(update.getMessage().getChatId()).getSeenMineral().add(random);
+				mineralToDisplay = random;
+
+				System.out.println(chatMap.get(update.getMessage().getChatId()).getSeenMineral());
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
-								mineralsList.get(random).toString())						
+								mineralsList.get(mineralToDisplay).toString())						
 								// @formatter:on
 						.enableHtml(true);
 				try {
@@ -115,7 +144,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "\n*The Minerals Education Coalition*"
 								+ "\n*for all the geological data displayed inside this bot*"
 								+ "\n\nThe original material is available at [https://mineralseducationcoalition.org]"
-								+ "\nThe Reprint Policy of the Minerals Education Coalition is available at [https://mineralseducationcoalition.org/reprint-policy/]"
+								+ "\nThe Reprint Policy of the Minerals Education Coalition is available at"
+								+ " [https://mineralseducationcoalition.org/reprint-policy/]"
 								+ "\n\nAdditionally geoLearnBot states that:"
 								+ "\nThis bot is in no way affiliated or partnered with nor sponsored by the Minerals Education Coalition")
 								// @formatter:on
@@ -238,8 +268,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Native element minerals are those elements that occur in nature in uncombined form with a distinct mineral structure."
-								+ " The elemental class includes metals and intermetallic elements, naturally occurring alloys, semi-metals and non-metals."
+								"Native element minerals are those elements that occur in nature in uncombined form with a "
+								+ "distinct mineral structure."
+								+ " The elemental class includes metals and intermetallic elements, naturally occurring alloys,"
+								+ " semi-metals and non-metals."
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
 						// @formatter:on
@@ -256,7 +288,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Phyllosilicates are sheet Silicate minerals, formed by parallel sheets of silicate tetrahedra with Si2O5 or a 2:5 ratio."
+								"Phyllosilicates are sheet Silicate minerals, formed by parallel sheets of silicate tetrahedra with "
+								+ "Si2O5 or a 2:5 ratio."
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
 						// @formatter:on
@@ -510,12 +543,13 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Hexagonal
 			if (update.getMessage().getText().equals("Hexagonal")) {
+				String smallGamma = "\u03b3";
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
 								"In crystallography, the hexagonal crystal family is one of the 6 crystal families. "
 								+ "In the hexagonal family, the crystal is conventionally described by a right rhombic"
-								+ " prism unit cell with two equal axes (a by a), an included angle of 120° (gamma) and a "
+								+ " prism unit cell with two equal axes (a by a), an included angle of 120° (" + smallGamma + ") and a "
 								+ "height (c, which can be different from a) perpendicular to the two base axes."
 								+ "\nhttps://goo.gl/txDjSc"
 								+ "\n_Source: Wikipedia_")
@@ -603,7 +637,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// closing ifUpdateHasText
-
 		}
 
 		// closing onUpdate
