@@ -25,7 +25,15 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 		return "342030854:AAHbYQhXVEMNUQ7Pr2RlAT3D0ujWV8D9ztg";
 	}
 
+	// Create a chat pseudo-db
 	Map<Long, Chat> chatMap = new HashMap<>();
+	// Fetch list of minerals
+	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
+
+	public static int randomNumberPicker(List<Minerals> mineralsList) {
+		int random = new Random().nextInt(mineralsList.size());
+		return random;
+	}
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -38,11 +46,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				Chat newChat = new Chat(update.getMessage().getChatId(), seenMineral, favoriteMineral);
 				chatMap.put(newChat.getId(), newChat);
 			}
-
 			System.out.println(chatMap);
-
-			// Fetch list of minerals
-			List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
 
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
@@ -87,13 +91,18 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /learn || 3
 			if (update.getMessage().getText().equals("/learn") || update.getMessage().getText().equals("3")) {
 
-				// pick random element in mineralsList
-				int random = new Random().nextInt(mineralsList.size());
-				// check if element is in seenArray
-				// if not, add to seen array AND pass to mineralToDisplay
-				// yes, pick new random
+				int random = randomNumberPicker(mineralsList);
+				int mineralToDisplay = -1;
 
-				int mineralToDisplay = random;
+				while (chatMap.get(update.getMessage().getChatId()).getSeenMineral().contains(random) == true) {
+					random = randomNumberPicker(mineralsList);
+				}
+				System.out.println("random: " + random);
+
+				chatMap.get(update.getMessage().getChatId()).getSeenMineral().add(random);
+				mineralToDisplay = random;
+
+				System.out.println(chatMap.get(update.getMessage().getChatId()).getSeenMineral());
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
