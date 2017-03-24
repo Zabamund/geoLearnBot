@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -27,6 +28,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 	// Create a chat pseudo-db
 	Map<Long, Chat> chatMap = new HashMap<>();
+	// Create a chat pseudo-favorite-db
+
 	// Fetch list of minerals
 	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
 
@@ -46,19 +49,19 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				Chat newChat = new Chat(update.getMessage().getChatId(), seenMineral, favoriteMineral);
 				chatMap.put(newChat.getId(), newChat);
 			}
-			System.out.println(chatMap);
 
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						.setText(
 						// @formatter:off
 								"*You can discover this Bot by picking a number or with the /menu to the right of your text input*"
-								+ "\n\n*1*. Show start menu"
-								+ "\n*2*. Need help ?"
-								+ "\n*3*. Learn about some minerals"
-								+ "\n*4*. Play ! (sorry, nothing here yet...)"
-								+ "\n*5*. Acknowledgments"
-								+ "\n*6*. Glossary")
+								+ "\n\n*1*. /start Show start menu"
+								+ "\n*2*. /help Need help ?"
+								+ "\n*3*. /learn Learn about some minerals"
+								+ "\n*4*. /quiz Play ! (sorry, nothing here yet...)"
+								+ "\n*5*. /acknowledgements Acknowledgements"
+								+ "\n*6*. /glossary Glossary")
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -75,8 +78,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						.setText(
 						// @formatter:off
 								"*Here is what this bot can do:*"
-								+ "\n\nType \"/\" for main options (start, help, learn, quiz, acknowledgments or glossary)"
-								+ "\nOnce inside the main options use 1, 2, 3, 4, 5 and 6 to navigate the bot, have fun !"
+								+ "\n\nType \"/\" for main options:"
+								+ "\n/start, /help, /learn, /quiz, /acknowledgements or /glossary"
+								+ "\n\nOnce inside the main options use 1, 2, 3, 4, 5 and 6 to navigate the bot, have fun !"
 								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well...why "
 								+ "don't you read the text and wait a little " + winky + " ?")
 								// @formatter:on
@@ -91,25 +95,30 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /learn || 3
 			if (update.getMessage().getText().equals("/learn") || update.getMessage().getText().equals("3")) {
 
+				KeyboardRow keyboardSingleButton = new KeyboardRow();
+				keyboardSingleButton.add(0, "Add to my collection!");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardSingleButton);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
 				int random = randomNumberPicker(mineralsList);
 				int mineralToDisplay = -1;
-
 				while (chatMap.get(update.getMessage().getChatId()).getSeenMineral().contains(random) == true) {
 					random = randomNumberPicker(mineralsList);
 				}
-				System.out.println("random: " + random);
-
 				chatMap.get(update.getMessage().getChatId()).getSeenMineral().add(random);
 				mineralToDisplay = random;
-
-				System.out.println(chatMap.get(update.getMessage().getChatId()).getSeenMineral());
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
 								mineralsList.get(mineralToDisplay).toString())						
+						.enableHtml(true)
+						.setReplyMarkup(replyMarkup);
 								// @formatter:on
-						.enableHtml(true);
 				try {
 					sendMessage(message);
 				} catch (TelegramApiException e) {
@@ -118,26 +127,28 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			}
 
+			// /Add to my collection!
+			if (update.getMessage().getText().equals("Add to my collection!")) {
+				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
+				chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().add(lastIntInSeenArray);
+
+				System.out.println(chatMap.get(update.getMessage().getChatId()).getFavoriteMineral());
+			}
+
 			// /Play || 4
 			if (update.getMessage().getText().equals("/quiz") || update.getMessage().getText().equals("4")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// .setReplyMarkup(ReplyKeyboardMarkup)
 						.setText(
 								// @formatter:off
-								"*Booo ! nothing here yet :-(*")						
+								"*Still working on it !*")						
 								// @formatter:on
 						.enableMarkdown(true);
+				SendDocument document = new SendDocument().setChatId(update.getMessage().getChatId())
+						.setDocument("http://www.animated-gifs.eu/category_sciences/geology/0012.gif")
+						.setCaption("https://goo.gl/EFhKpG");
 				try {
 					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
-				}
-				try {
-
-					// need to fix this
-					// GeoLearnBot.sendDocument(update.getMessage().getChatId(),
-					// "https://media.giphy.com/media/n4hyR4aGMLcBi/giphy.gif");
-
+					sendDocument(document);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
@@ -636,6 +647,32 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "surface formed when a mineral is fractured. Minerals often have a highly"
 								+ " distinctive fracture, making it a principal feature used in their"
 								+ " identification.")
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /profanity filter
+			String swear0 = "fuck";
+			String swear1 = "mierd";
+			String swear2 = "shit";
+			String swear3 = "screw";
+			String winky = "\ud83d\ude09";
+			if (update.getMessage().getText().toLowerCase().contains(swear0) || //
+					update.getMessage().getText().toLowerCase().contains(swear1) || //
+					update.getMessage().getText().toLowerCase().contains(swear2) || //
+					update.getMessage().getText().toLowerCase().contains(swear3)) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"Hey there "
+								+ update.getMessage().getChat().getFirstName()
+								+ ", I'll be taking you less seriously from now on "
+								+ winky)
 						.enableMarkdown(true);
 						// @formatter:on
 				try {
