@@ -132,6 +132,15 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
+				try {
+
+					// need to fix this
+					// GeoLearnBot.sendDocument(update.getMessage().getChatId(),
+					// "https://media.giphy.com/media/n4hyR4aGMLcBi/giphy.gif");
+
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
 
 			}
 
@@ -140,7 +149,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					|| update.getMessage().getText().equals("5")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
 						// @formatter:off
-								"*geoLearnBot Acknowledges and Credits*"
+								"*geoLearnBot Acknowledges, Credits and Thanks*"
 								+ "\n*The Minerals Education Coalition*"
 								+ "\n*for all the geological data displayed inside this bot*"
 								+ "\n\nThe original material is available at [https://mineralseducationcoalition.org]"
