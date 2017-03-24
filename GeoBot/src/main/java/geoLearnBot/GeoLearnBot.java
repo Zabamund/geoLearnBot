@@ -44,9 +44,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 		if (update.hasMessage() && update.getMessage().hasText()) {
 
 			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
-				List<Integer> seenMineral = new ArrayList<>();
-				List<Integer> favoriteMineral = new ArrayList<>();
-				Chat newChat = new Chat(update.getMessage().getChatId(), seenMineral, favoriteMineral);
+//				List<Integer> seenMineral = new ArrayList<>();
+//				List<Integer> favoriteMineral = new ArrayList<>();
+				Map<String, Minerals> seenMinerals = new HashMap<>();
+				Map<String, Minerals> favoriteMinerals = new HashMap<>();
+				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals);
 				chatMap.put(newChat.getId(), newChat);
 			}
 
@@ -114,17 +116,21 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
 
 				int random = randomNumberPicker(mineralsList);
-				int mineralToDisplay = -1;
-				while (chatMap.get(update.getMessage().getChatId()).getSeenMineral().contains(random) == true) {
-					random = randomNumberPicker(mineralsList);
-				}
+				// int mineralToDisplay = -1;
+				// while
+				// (chatMap.get(update.getMessage().getChatId()).getSeenMineral().contains(random)
+				// == true) {
+				// random = randomNumberPicker(mineralsList);
+				// }
 				chatMap.get(update.getMessage().getChatId()).getSeenMineral().add(random);
-				mineralToDisplay = random;
+				chatMap.get(update.getMessage().getChatId()).
+
+				// mineralToDisplay = random;
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
-								mineralsList.get(mineralToDisplay).toString())						
+								mineralsList.get(random).toString())						
 						.enableHtml(true)
 						.setReplyMarkup(replyMarkup);
 								// @formatter:on

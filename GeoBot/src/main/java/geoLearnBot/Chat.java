@@ -1,20 +1,20 @@
 package geoLearnBot;
 
-import java.util.List;
+import java.util.Map;
 
 public class Chat {
 
 	private Long id;
 
-	private List<Integer> seenMineral;
+	private Map<String, Minerals> seenMinerals;
 
-	private List<Integer> favoriteMineral;
+	private Map<String, Minerals> favoriteMinerals;
 
-	public Chat(Long id, List<Integer> seenMineral, List<Integer> favoriteMineral) {
+	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals) {
 		super();
 		this.id = id;
-		this.seenMineral = seenMineral;
-		this.favoriteMineral = favoriteMineral;
+		this.seenMinerals = seenMinerals;
+		this.favoriteMinerals = favoriteMinerals;
 	}
 
 	public Long getId() {
@@ -25,26 +25,26 @@ public class Chat {
 		this.id = id;
 	}
 
-	public List<Integer> getSeenMineral() {
-		return this.seenMineral;
+	public Map<String, Minerals> getSeenMinerals() {
+		return this.seenMinerals;
 	}
 
-	public void setSeenMineral(List<Integer> seenMineral) {
-		this.seenMineral = seenMineral;
+	public void setSeenMinerals(Map<String, Minerals> seenMinerals) {
+		this.seenMinerals = seenMinerals;
 	}
 
-	public List<Integer> getFavoriteMineral() {
-		return this.favoriteMineral;
+	public Map<String, Minerals> getFavoriteMinerals() {
+		return this.favoriteMinerals;
 	}
 
-	public void setFavoriteMineral(List<Integer> favoriteMineral) {
-		this.favoriteMineral = favoriteMineral;
+	public void setFavoriteMinerals(Map<String, Minerals> favoriteMinerals) {
+		this.favoriteMinerals = favoriteMinerals;
 	}
 
 	@Override
 	public String toString() {
-		return "Chat \n*id:* " + this.id + "\n*Seen Minerals:* " + this.seenMineral + "\n*Favorite Minerals:* "
-				+ this.favoriteMineral + "\n";
+		return "Chat \n*id:* " + this.id + "\n*Seen Minerals:* " + this.seenMinerals + "\n*Favorite Minerals:* "
+				+ this.favoriteMinerals + "\n";
 	}
 
 }

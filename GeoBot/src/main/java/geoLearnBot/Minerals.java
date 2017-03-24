@@ -26,13 +26,13 @@ public class Minerals {
 
 	private String image;
 
-	private Boolean seen;
+	private String seenMineral;
 
-	private Boolean favorite;
+	private String favoriteMineral;
 
 	public Minerals(String title, String description, String type, String mineralClassification, String chemicalFormula,
 			String streak, String mohsHardness, String crystalSystem, String color, String luster, String fracture,
-			String image, Boolean seen, Boolean favorite) {
+			String image, String seenMineral, String favoriteMineral) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -46,8 +46,8 @@ public class Minerals {
 		this.luster = luster;
 		this.fracture = fracture;
 		this.image = image;
-		this.seen = seen;
-		this.favorite = favorite;
+		this.seenMineral = seenMineral;
+		this.favoriteMineral = favoriteMineral;
 	}
 
 	public String getTitle() {
@@ -98,20 +98,20 @@ public class Minerals {
 		return this.image;
 	}
 
-	public Boolean getSeen() {
-		return this.seen;
+	public String getSeenMineral() {
+		return this.seenMineral;
 	}
 
-	public void setSeen(Boolean seen) {
-		this.seen = seen;
+	public void setSeenMineral(String seenMineral) {
+		this.seenMineral = seenMineral;
 	}
 
-	public Boolean getFavorite() {
-		return this.favorite;
+	public String getFavoriteMineral() {
+		return this.favoriteMineral;
 	}
 
-	public void setFavorite(Boolean favorite) {
-		this.favorite = favorite;
+	public void setFavoriteMineral(String favoriteMineral) {
+		this.favoriteMineral = favoriteMineral;
 	}
 
 	@Override
