@@ -125,4 +125,8 @@ public class Minerals {
 				+ this.fracture + "\n" + this.image;
 	}
 
+	public String toStringSimple() {
+		return "\n\n<strong>" + this.title.toUpperCase() + "\n</strong>" + "\n" + this.image;
+	}
+
 }

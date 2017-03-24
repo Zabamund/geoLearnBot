@@ -50,18 +50,26 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				chatMap.put(newChat.getId(), newChat);
 			}
 
+			// =============================== Main Options
+			// ============================================================
+
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 						// @formatter:off
 								"*You can discover this Bot by picking a number or with the /menu to the right of your text input*"
-								+ "\n\n*1*. /start Show start menu"
+								+ "\n\n*1*. /start Show this start menu"
 								+ "\n*2*. /help Need help ?"
 								+ "\n*3*. /random See a random mineral"
-								+ "\n*4*. /quiz Play ! (sorry, nothing here yet...)"
-								+ "\n*5*. /acknowledgements Acknowledgements"
-								+ "\n*6*. /glossary Glossary")
+								+ "\n*4*. /collection See your mineral collection"
+//								+ "\n*X*. /filter Filter minerals (sorry, nothing here yet...)"
+//								+ "\n*X*. /search Search for a specific mineral (sorry, nothing here yet...)"
+//								+ "\n*X*. /compare Compare two minerals (sorry, nothing here yet...)"
+								+ "\n*5*. /list Choose from a selection of minerals"
+								+ "\n*6*. /play Test your knowledge (sorry, nothing here yet...)"
+								+ "\n*7*. /glossary Glossary"								
+								+ "\n*8*. /acknowledgements Acknowledgements")
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -79,7 +87,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						// @formatter:off
 								"*Here is what this bot can do:*"
 								+ "\n\nType \"/\" for main options:"
-								+ "\n/start, /help, /random, /quiz, /acknowledgements or /glossary"
+								+ "\n/start, /help, /random, /collection, /list, /play, /glossary or /acknowledgements "
 								+ "\n\nYou can also use 1, 2, 3, 4, 5 and 6 to navigate the main options, have fun !"
 								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well... why "
 								+ "don't you read the text and wait a little " + winky + " ?")
@@ -130,13 +138,50 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /Add to my collection!
 			if (update.getMessage().getText().equals("Add to my collection!")) {
 				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
-				chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().add(lastIntInSeenArray);
+				if (chatMap.get(update.getMessage().getChatId()).getSeenMineral()
+						.contains(lastIntInSeenArray) == false) {
+					chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().add(lastIntInSeenArray);
 
-				System.out.println(chatMap.get(update.getMessage().getChatId()).getFavoriteMineral());
+					System.out.println(chatMap.get(update.getMessage().getChatId()).getSeenMineral());
+				} else {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"Sorry, "
+									+ update.getMessage().getChat().getFirstName()
+									+ " that mineral is already in your collection."
+									)
+							.enableMarkdown(true);
+							// @formatter:on
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 
-			// /Play || 4
-			if (update.getMessage().getText().equals("/quiz") || update.getMessage().getText().equals("4")) {
+			// /Show my collection || 4
+			if (update.getMessage().getText().equals("collection")) {
+				// System.out.println(chatMap.get(update.getMessage().getChatId()).getFavoriteMineral());
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								mineralsList.get(0).toStringSimple()
+								);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			// /List Mineral selection || 5
+
+			// /Play || 6
+			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("6")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
@@ -155,30 +200,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			}
 
-			// /acknowledgments || 5
-			if (update.getMessage().getText().equals("/acknowledgements")
-					|| update.getMessage().getText().equals("5")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
-						// @formatter:off
-								"*geoLearnBot Acknowledges, Credits and Thanks*"
-								+ "\n*The Minerals Education Coalition*"
-								+ "\n*for all the geological data displayed inside this bot*"
-								+ "\n\nThe original material is available at [https://mineralseducationcoalition.org]"
-								+ "\nThe Reprint Policy of the Minerals Education Coalition is available at"
-								+ " [https://mineralseducationcoalition.org/reprint-policy/]"
-								+ "\n\nAdditionally geoLearnBot states that:"
-								+ "\nThis bot is in no way affiliated or partnered with nor sponsored by the Minerals Education Coalition")
-								// @formatter:on
-						.enableMarkdown(true);
-				try {
-					sendMessage(message); // Call method to send message
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
-				}
-			}
-
-			// /Glossary || 6
-			if (update.getMessage().getText().equals("/glossary") || update.getMessage().getText().equals("6")) {
+			// /Glossary || 7
+			if (update.getMessage().getText().equals("/glossary") || update.getMessage().getText().equals("7")) {
 
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
 				keyboardRowUpper.add(0, "Mineral Classification");
@@ -212,6 +235,31 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 
 			}
+
+			// /acknowledgements || 8
+			if (update.getMessage().getText().equals("/acknowledgements")
+					|| update.getMessage().getText().equals("8")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
+						// @formatter:off
+											"*geoLearnBot Acknowledges, Credits and Thanks*"
+											+ "\n*The Minerals Education Coalition*"
+											+ "\n*for all the geological data displayed inside this bot*"
+											+ "\n\nThe original material is available at [https://mineralseducationcoalition.org]"
+											+ "\nThe Reprint Policy of the Minerals Education Coalition is available at"
+											+ " [https://mineralseducationcoalition.org/reprint-policy/]"
+											+ "\n\nAdditionally geoLearnBot states that:"
+											+ "\nThis bot is in no way affiliated or partnered with nor sponsored by the Minerals Education Coalition")
+											// @formatter:on
+						.enableMarkdown(true);
+				try {
+					sendMessage(message); // Call method to send message
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// =============================== Glossary Options
+			// ============================================================
 
 			// /Mineral Classification
 			if (update.getMessage().getText().equals("Mineral Classification")) {
