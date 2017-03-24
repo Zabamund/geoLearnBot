@@ -137,28 +137,35 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Add to my collection!
 			if (update.getMessage().getText().equals("Add to my collection!")) {
-				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
-				if (chatMap.get(update.getMessage().getChatId()).getSeenMineral()
-						.contains(lastIntInSeenArray) == false) {
-					chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().add(lastIntInSeenArray);
 
-					System.out.println(chatMap.get(update.getMessage().getChatId()).getSeenMineral());
-				} else {
-					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-							// @formatter:off
-							.setText(
-									"Sorry, "
-									+ update.getMessage().getChat().getFirstName()
-									+ " that mineral is already in your collection."
-									)
-							.enableMarkdown(true);
-							// @formatter:on
-					try {
-						sendMessage(message);
-					} catch (TelegramApiException e) {
-						e.printStackTrace();
-					}
-				}
+				int seenArraySize = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
+
+				Integer lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral()
+						.get(seenArraySize - 1);
+				System.out.println(chatMap);
+				System.out.println("lastIntInSeenArray: " + lastIntInSeenArray);
+
+				// if
+				// (chatMap.get(update.getMessage().getChatId()).getSeenMineral()
+				// .contains(lastIntInSeenArray) == false) {
+				// chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().add(lastIntInSeenArray);
+				// } else {
+				// SendMessage message = new
+				// SendMessage().setChatId(update.getMessage().getChatId())
+//							// @formatter:off
+//							.setText(
+//									"Sorry, "
+//									+ update.getMessage().getChat().getFirstName()
+//									+ " that mineral is already in your collection."
+//									)
+//							.enableMarkdown(true);
+//							// @formatter:on
+				// try {
+				// sendMessage(message);
+				// } catch (TelegramApiException e) {
+				// e.printStackTrace();
+				// }
+				// }
 			}
 
 			// /Show my collection || 4
