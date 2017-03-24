@@ -103,11 +103,12 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /random || 3
 			if (update.getMessage().getText().equals("/random") || update.getMessage().getText().equals("3")) {
 
-				KeyboardRow keyboardSingleButton = new KeyboardRow();
-				keyboardSingleButton.add(0, "Add to my collection!");
+				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
+				keyboardFavoriteActions.add(0, "Add to my collection!");
+				keyboardFavoriteActions.add(1, "Remove from my collection!");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
-				keyboard.add(keyboardSingleButton);
+				keyboard.add(keyboardFavoriteActions);
 
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
@@ -137,22 +138,39 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Add to my collection!
 			if (update.getMessage().getText().equals("Add to my collection!")) {
-
 				int seenArraySize = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
 				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral()
 						.get(seenArraySize - 1);
-
 				if (chatMap.get(update.getMessage().getChatId()).getFavoriteMineral()
 						.contains(lastIntInSeenArray) == false) {
 					chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().add(lastIntInSeenArray);
 					System.out.println("chatMap after adding mineral: " + chatMap);
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"There you go "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", "
+									+ mineralsList.get(lastIntInSeenArray).getTitle()
+									+ " has been added to your collection."
+									)
+							.enableMarkdown(true);
+							// @formatter:on
+					System.out.println("chatMap after NOT adding mineral: " + chatMap);
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
 				} else {
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 							// @formatter:off
 							.setText(
 									"Sorry "
 									+ update.getMessage().getChat().getFirstName()
-									+ ", that mineral is already in your collection."
+									+ ", "
+									+ mineralsList.get(lastIntInSeenArray).getTitle()
+									+ " is already in your collection."
 									)
 							.enableMarkdown(true);
 							// @formatter:on
@@ -166,6 +184,52 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Remove from my collection !
+			if (update.getMessage().getText().equals("Remove from my collection!")) {
+				// get int of mineral last seen
+				int seenArraySize = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
+				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral()
+						.get(seenArraySize - 1);
+				// check if in favorites
+				if (chatMap.get(update.getMessage().getChatId()).getFavoriteMineral()
+						.contains(lastIntInSeenArray) == true) {
+					chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().remove(lastIntInSeenArray);
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"There you go  "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", "
+									+ "THAT MINERAL"
+									+ " has been removed from your collection."
+									)
+							.enableMarkdown(true);
+							// @formatter:on
+					System.out.println("chatMap after removing mineral: " + chatMap);
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				} else {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"Sorry "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", I can't remove "
+									+ "THAT MINERAL"
+									+ " because it isn't yet in your collection."
+									)
+							.enableMarkdown(true);
+							// @formatter:on
+					System.out.println("chatMap after NOT removing mineral: " + chatMap);
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 
 			// /Show my collection || 4
 			if (update.getMessage().getText().equals("collection")) {
