@@ -2,6 +2,19 @@ ideas for bot
 
 reset seen array or maybe reset every time user logs back in
 
-favorite button
+favorite button for each display mineral
 
 show a choice of 4 minerals at once ? keyboard markdown..
+
+maybe give users a list of minerals to choose from rather than a random one ?
+
+filter(sorted) search and compare
+
+user location ? do something with it 
+
+compare minerals ???
+
+search mineral?
+
+profanity...send back LOUD video?
+
