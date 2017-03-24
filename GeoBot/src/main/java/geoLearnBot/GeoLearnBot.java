@@ -104,8 +104,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (update.getMessage().getText().equals("/random") || update.getMessage().getText().equals("3")) {
 
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
-				keyboardFavoriteActions.add(0, "Add to my collection!");
-				keyboardFavoriteActions.add(1, "Remove from my collection!");
+				keyboardFavoriteActions.add(0, "Add to my collection! \ud83d\udcb0");
+				keyboardFavoriteActions.add(1, "Remove from my collection! \ud83d\udc4e");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
@@ -137,7 +137,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Add to my collection!
-			if (update.getMessage().getText().equals("Add to my collection!")) {
+			if (update.getMessage().getText().equals("Add to my collection! \ud83d\udcb0")) {
 				int seenArraySize = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
 				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral()
 						.get(seenArraySize - 1);
@@ -184,22 +184,26 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Remove from my collection !
-			if (update.getMessage().getText().equals("Remove from my collection!")) {
+			if (update.getMessage().getText().equals("Remove from my collection! \ud83d\udc4e")) {
 				// get int of mineral last seen
 				int seenArraySize = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
+				System.out.println("seenArraySize: " + seenArraySize);
 				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral()
 						.get(seenArraySize - 1);
+				System.out.println("lastIntInArray: " + lastIntInSeenArray);
 				// check if in favorites
 				if (chatMap.get(update.getMessage().getChatId()).getFavoriteMineral()
 						.contains(lastIntInSeenArray) == true) {
-					chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().remove(lastIntInSeenArray);
+
+					chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().remove(seenArraySize - 1);
+
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 							// @formatter:off
 							.setText(
-									"There you go  "
+									"There you go "
 									+ update.getMessage().getChat().getFirstName()
 									+ ", "
-									+ "THAT MINERAL"
+									+ mineralsList.get(lastIntInSeenArray).getTitle()
 									+ " has been removed from your collection."
 									)
 							.enableMarkdown(true);
@@ -217,7 +221,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 									"Sorry "
 									+ update.getMessage().getChat().getFirstName()
 									+ ", I can't remove "
-									+ "THAT MINERAL"
+									+ mineralsList.get(lastIntInSeenArray).getTitle()
 									+ " because it isn't yet in your collection."
 									)
 							.enableMarkdown(true);
@@ -237,7 +241,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								mineralsList.get(0).toStringSimple()
+								mineralsList.get(0).toStringCollection()
 								);
 						// @formatter:on
 				try {
