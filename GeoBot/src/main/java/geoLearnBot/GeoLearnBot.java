@@ -28,7 +28,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 	// Create a chat pseudo-db
 	Map<Long, Chat> chatMap = new HashMap<>();
-	// Create a chat pseudo-favorite-db
 
 	// Fetch list of minerals
 	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
@@ -390,7 +389,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Carbonate minerals are those minerals containing the carbonate ion: CO3\n_Source: Wikipedia_")
+								"*Carbonate* minerals are those minerals containing the carbonate ion: CO3\n_Source: Wikipedia_")
 						.enableMarkdown(true);
 						// @formatter:on
 				try {
@@ -406,7 +405,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The halide mineral class include those minerals with a dominant halide anion (F−, Cl−, Br− and I−)."
+								"The *halide* mineral class include those minerals with a dominant halide anion (F−, Cl−, Br− and I−)."
 								+ "\nComplex halide minerals may also have polyatomic anions in addition to or that include halides."
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
@@ -424,7 +423,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Native element minerals are those elements that occur in nature in uncombined form with a "
+								"*Native* element minerals are those elements that occur in nature in uncombined form with a "
 								+ "distinct mineral structure."
 								+ " The elemental class includes metals and intermetallic elements, naturally occurring alloys,"
 								+ " semi-metals and non-metals."
@@ -444,7 +443,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Phyllosilicates are sheet Silicate minerals, formed by parallel sheets of silicate tetrahedra with "
+								"*Phyllosilicates* are sheet Silicate minerals, formed by parallel sheets of silicate tetrahedra with "
 								+ "Si2O5 or a 2:5 ratio."
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
@@ -462,7 +461,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The pyroxenes (commonly abbreviated to Px) are a group of important rock-forming inosilicate minerals"
+								"The *pyroxenes* (commonly abbreviated to Px) are a group of important rock-forming inosilicate minerals"
 								+ " found in many igneous and metamorphic rocks. Pyroxenes are silicon-aluminum oxides with Ca, Na, Fe,"
 								+ " Mg, Zn, Mn, Li substituting for Si and Al."
 								+ "\n_Source: Wikipedia_")
@@ -481,7 +480,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Silicate minerals are rock-forming minerals made up of silicate groups. They are the largest"
+								"*Silicate* minerals are rock-forming minerals made up of silicate groups. They are the largest"
 								+ " and most important class of rock-forming minerals and make up approximately 90 percent of"
 								+ " the Earth's crust. They are classified based on the structure of their silicate groups,"
 								+ " which contain different ratios of silicon and oxygen."
@@ -501,7 +500,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The sulfate minerals are a class of minerals which include the sulfate ion (SO42−) within"
+								"The *sulfate* minerals are a class of minerals which include the sulfate ion (SO42−) within"
 								+ " their structure. The sulfate minerals occur commonly in primary evaporite depositional"
 								+ " environments, as gangue minerals in hydrothermal veins and as secondary minerals in the"
 								+ " oxidizing zone of sulfide mineral deposits."
@@ -521,7 +520,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The sulfide minerals are a class of minerals containing sulfide (S2−) as the major anion."
+								"The *sulfide* minerals are a class of minerals containing sulfide (S2−) as the major anion."
 								+ " Some sulfide minerals are economically important as metal ores. "
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
@@ -539,7 +538,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The streak (also called \"powder color\") of a mineral is the color of the powder produced"
+								"The *streak* (also called \"powder color\") of a mineral is the color of the powder produced"
 								+ " when it is dragged across an un-weathered surface. Unlike the apparent color of a mineral,"
 								+ " which for most minerals can vary considerably, the trail of finely ground powder generally"
 								+ " has a more consistent characteristic color, and is thus an important diagnostic tool in"
@@ -562,7 +561,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The Mohs scale of mineral hardness is a qualitative ordinal scale characterizing scratch "
+								"The *Mohs scale* of mineral hardness is a qualitative ordinal scale characterizing scratch "
 								+ "resistance of various minerals through the ability of harder material to scratch softer"
 								+ " material."
 								+ "\n_Source: Wikipedia_")
@@ -599,7 +598,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the terms crystal system, crystal family and lattice system"
+								"In crystallography, the terms *crystal system*, crystal family and lattice system"
 								+ " each refer to one of several classes of space groups, lattices, point groups"
 								+ " or crystals."
 								+ "\n_Source: Wikipedia_")
@@ -618,7 +617,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the triclinic (or anorthic) crystal system is one of the 7 "
+								"In crystallography, the *triclinic* (or anorthic) crystal system is one of the 7 "
 								+ "crystal systems. A crystal system is described by three basis vectors. In the "
 								+ "triclinic system, the crystal is described by vectors of unequal length, as in "
 								+ "the orthorhombic system. In addition, no vector is at right angles (90°) "
@@ -639,7 +638,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the monoclinic crystal system is one of the 7 crystal systems."
+								"In crystallography, the *monoclinic* crystal system is one of the 7 crystal systems."
 								+ " A crystal system is described by three vectors. In the monoclinic system, the "
 								+ "crystal is described by vectors of unequal lengths, as in the orthorhombic system."
 								+ " They form a rectangular prism with a parallelogram as its base. Hence two vectors"
@@ -661,7 +660,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the orthorhombic crystal system is one of the 7 crystal systems. "
+								"In crystallography, the *orthorhombic* crystal system is one of the 7 crystal systems. "
 								+ "Orthorhombic lattices result from stretching a cubic lattice along two of its orthogonal "
 								+ "pairs by two different factors, resulting in a rectangular prism with a rectangular"
 								+ " base (a by b) and height (c), such that a, b, and c are distinct. All three bases"
@@ -682,7 +681,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the tetragonal crystal system is one of the 7 crystal systems."
+								"In crystallography, the *tetragonal* crystal system is one of the 7 crystal systems."
 								+ " Tetragonal crystal lattices result from stretching a cubic lattice along one of "
 								+ "its lattice vectors, so that the cube becomes a rectangular prism with a square"
 								+ " base (a by a) and height (c, which is different from a)."
@@ -703,7 +702,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the hexagonal crystal family is one of the 6 crystal families. "
+								"In crystallography, the *hexagonal* crystal family is one of the 6 crystal families. "
 								+ "In the hexagonal family, the crystal is conventionally described by a right rhombic"
 								+ " prism unit cell with two equal axes (a by a), an included angle of 120° (" + smallGamma + ") and a "
 								+ "height (c, which can be different from a) perpendicular to the two base axes."
@@ -723,7 +722,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The trigonal crystal system is the only crystal system whose point groups have"
+								"The *trigonal* crystal system is the only crystal system whose point groups have"
 								+ " more than one lattice system associated with their space groups: the hexagonal"
 								+ " and rhombohedral lattices both appear."
 								+ "\nhttps://goo.gl/txDjSc"
@@ -742,7 +741,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the cubic (or isometric) crystal system is a crystal system where"
+								"In crystallography, the *cubic* (or *isometric*) crystal system is a crystal system where"
 								+ " the unit cell is in the shape of a cube. This is one of the most common and simplest "
 								+ "shapes found in crystals and minerals."
 								+ "\nhttps://goo.gl/OnpkIM"
@@ -761,7 +760,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Lustre or luster is the way light interacts with the surface of a crystal,"
+								"Lustre or *luster* is the way light interacts with the surface of a crystal,"
 								+ " rock, or mineral. The word traces its origins back to the latin lux,"
 								+ " meaning \"light\", and generally implies radiance, gloss, or brilliance."
 								+ "A range of terms are used to describe lustre, such as earthy, metallic, greasy, and silky.")
@@ -779,7 +778,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In the field of mineralogy, fracture is the texture and shape of a rock's "
+								"In the field of mineralogy, *fracture* is the texture and shape of a rock's "
 								+ "surface formed when a mineral is fractured. Minerals often have a highly"
 								+ " distinctive fracture, making it a principal feature used in their"
 								+ " identification.")
@@ -812,6 +811,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						.enableMarkdown(true);
 						// @formatter:on
 				try {
+					// sendVideo(video);
 					sendMessage(message);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
