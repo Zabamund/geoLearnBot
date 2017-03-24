@@ -58,7 +58,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								"*You can discover this Bot by picking a number or with the /menu to the right of your text input*"
 								+ "\n\n*1*. /start Show start menu"
 								+ "\n*2*. /help Need help ?"
-								+ "\n*3*. /learn Learn about some minerals"
+								+ "\n*3*. /random See a random mineral"
 								+ "\n*4*. /quiz Play ! (sorry, nothing here yet...)"
 								+ "\n*5*. /acknowledgements Acknowledgements"
 								+ "\n*6*. /glossary Glossary")
@@ -79,9 +79,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						// @formatter:off
 								"*Here is what this bot can do:*"
 								+ "\n\nType \"/\" for main options:"
-								+ "\n/start, /help, /learn, /quiz, /acknowledgements or /glossary"
-								+ "\n\nOnce inside the main options use 1, 2, 3, 4, 5 and 6 to navigate the bot, have fun !"
-								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well...why "
+								+ "\n/start, /help, /random, /quiz, /acknowledgements or /glossary"
+								+ "\n\nYou can also use 1, 2, 3, 4, 5 and 6 to navigate the main options, have fun !"
+								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well... why "
 								+ "don't you read the text and wait a little " + winky + " ?")
 								// @formatter:on
 						.enableMarkdown(true);
@@ -92,8 +92,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
-			// /learn || 3
-			if (update.getMessage().getText().equals("/learn") || update.getMessage().getText().equals("3")) {
+			// /random || 3
+			if (update.getMessage().getText().equals("/random") || update.getMessage().getText().equals("3")) {
 
 				KeyboardRow keyboardSingleButton = new KeyboardRow();
 				keyboardSingleButton.add(0, "Add to my collection!");
