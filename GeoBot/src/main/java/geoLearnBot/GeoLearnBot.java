@@ -69,13 +69,14 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "\n*2*. /help Need help ?"
 								+ "\n*3*. /random See a random mineral"
 								+ "\n*4*. /collection See your mineral collection"
+								+ "\n*5*. /clear Clear your mineral collection"
 								//	+ "\n*X*. /filter Filter minerals (sorry, nothing here yet...)"
 								//	+ "\n*X*. /search Search for a specific mineral (sorry, nothing here yet...)"
 								//	+ "\n*X*. /compare Compare two minerals (sorry, nothing here yet...)"
-								+ "\n*5*. /list Choose from a selection of minerals"
-								+ "\n*6*. /play Test your knowledge (sorry, nothing here yet...)"
-								+ "\n*7*. /glossary Glossary"								
-								+ "\n*8*. /acknowledgements Acknowledgements")
+								+ "\n*6*. /list Choose from a selection of minerals"
+								+ "\n*7*. /play Test your knowledge (sorry, nothing here yet...)"
+								+ "\n*8*. /glossary Glossary"								
+								+ "\n*9*. /acknowledgements Acknowledgements")
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -93,8 +94,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						// @formatter:off
 								"*Here is what this bot can do:*"
 								+ "\n\nType \"/\" for main options:"
-								+ "\n/start, /help, /random, /collection, /list, /play, /glossary or /acknowledgements "
-								+ "\n\nYou can also use 1, 2, 3, 4, 5 and 6 to navigate the main options, have fun !"
+								+ "\n/start, /help, /random, /collection, /clear, /list, /play, /glossary or /acknowledgements "
+								+ "\n\nYou can also use numbers (1, 2, 3...) to navigate the main options, have fun !"
 								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well... why "
 								+ "don't you read the text and wait a little " + winky + " ?")
 								// @formatter:on
@@ -133,7 +134,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
-								mineralsList.get(random).toString())						
+								mineralsList.get(random).toString("singleMineral"))						
 								.enableHtml(true)
 								.setReplyMarkup(replyMarkup);
 								lastMineralSeen = mineralsList.get(random).getTitle();
@@ -193,10 +194,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (update.getMessage().getText().equals("Remove from my collection! \ud83d\udc4e")) {
 				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
 						.getFavoriteMinerals();
-				System.out.println("favMins before removal: " + favoriteMinerals);
 				if (favoriteMinerals.containsKey(lastMineralSeen)) {
 					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().remove(lastMineralSeen);
-					System.out.println("favMins after removal: " + favoriteMinerals);
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 							// @formatter:off
 							.setText(
@@ -231,31 +230,81 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						e.printStackTrace();
 					}
 				}
-				// actions
-
 			}
 
 			// /Show my collection || 4
-			if (update.getMessage().getText().equals("collection")) {
-				// System.out.println(chatMap.get(update.getMessage().getChatId()).getFavoriteMineral());
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								mineralsList.get(0).toStringCollection()
-								);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+			if (update.getMessage().getText().equals("/collection") || update.getMessage().getText().equals("4")) {
+				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
+						.getFavoriteMinerals();
+				if (favoriteMinerals.isEmpty()) {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"Sorry "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", you have no minerals in your collection yet."
+									);
+							// @formatter:on
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				} else {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"Here you go "
+											+ update.getMessage().getChat().getFirstName()
+											+ ": your mineral collection. \ud83d\udc8e"
+									);
+					// @formatter:on
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					favoriteMinerals.forEach((k, v) -> {
+						SendMessage messageCollectionMineral = new SendMessage()
+								.setChatId(update.getMessage().getChatId()).setText(v.toString("collectionMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(messageCollectionMineral);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					});
+				}
+			}
+
+			// /clear your collection || 5
+			if (update.getMessage().getText().equals("/clear") || update.getMessage().getText().equals("5")) {
+				if (chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().isEmpty()) {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("Sorry " + update.getMessage().getChat().getFirstName()
+									+ ", you have no minerals in your collection yet.");
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				} else {
+					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().clear();
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("Your collection has been cleared.");
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
 				}
 
 			}
 
-			// /List Mineral selection || 5
+			// /List Mineral selection || 6
 
-			// /Play || 6
-			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("6")) {
+			// /Play || 7
+			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("7")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
@@ -274,8 +323,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			}
 
-			// /Glossary || 7
-			if (update.getMessage().getText().equals("/glossary") || update.getMessage().getText().equals("7")) {
+			// /Glossary || 8
+			if (update.getMessage().getText().equals("/glossary") || update.getMessage().getText().equals("8")) {
 
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
 				keyboardRowUpper.add(0, "Mineral Classification");
@@ -286,6 +335,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboardRowLower.add(0, "Crystal System");
 				keyboardRowLower.add(1, "Luster");
 				keyboardRowLower.add(2, "Fracture");
+				keyboardRowLower.add(3, "/help");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardRowUpper);
@@ -310,9 +360,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			}
 
-			// /acknowledgements || 8
+			// /acknowledgements || 9
 			if (update.getMessage().getText().equals("/acknowledgements")
-					|| update.getMessage().getText().equals("8")) {
+					|| update.getMessage().getText().equals("9")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
 						// @formatter:off
 											"*geoLearnBot Acknowledges, Credits and Thanks*"
@@ -349,6 +399,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboardRowLower.add(1, "Silicate");
 				keyboardRowLower.add(2, "Sulfate");
 				keyboardRowLower.add(3, "Sulfide");
+				keyboardRowLower.add(4, "/help");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardRowUpper);
@@ -574,6 +625,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboardRowLower.add(0, "Hexagonal");
 				keyboardRowLower.add(1, "Trigonal");
 				keyboardRowLower.add(2, "Isometric");
+				keyboardRowLower.add(3, "/help");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardRowUpper);

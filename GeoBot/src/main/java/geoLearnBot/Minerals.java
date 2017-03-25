@@ -114,19 +114,23 @@ public class Minerals {
 		this.favoriteMineral = favoriteMineral;
 	}
 
-	@Override
-	public String toString() {
-		return "\n\n<strong>" + this.title.toUpperCase() + "\n</strong>" + "\n" + "<strong>" + "Description :</strong> "
-				+ this.description + " \n<strong>Mineral Classification :</strong> " + this.mineralClassification
-				+ " \n<strong>Chemical Formula :</strong> " + this.chemicalFormula + " \n<strong>Streak :</strong> "
-				+ this.streak + " \n<strong>Mohs Hardness :</strong> " + this.mohsHardness
-				+ " \n<strong>Crystal System :</strong> " + this.crystalSystem + " \n<strong>Color :</strong> "
-				+ this.color + " \n<strong>Luster :</strong> " + this.luster + " \n<strong>Fracture :</strong> "
-				+ this.fracture + "\n" + this.image;
-	}
+	public String toString(String format) {
 
-	public String toStringCollection() {
-		return "\n\n<strong>" + this.title.toUpperCase() + "\n</strong>" + "\n" + this.image;
+		switch (format) {
+		case "singleMineral":
+			return "\n\n<strong>" + this.title.toUpperCase() + "\n</strong>" + "\n" + "<strong>"
+					+ "Description :</strong> " + this.description + " \n<strong>Mineral Classification :</strong> "
+					+ this.mineralClassification + " \n<strong>Chemical Formula :</strong> " + this.chemicalFormula
+					+ " \n<strong>Streak :</strong> " + this.streak + " \n<strong>Mohs Hardness :</strong> "
+					+ this.mohsHardness + " \n<strong>Crystal System :</strong> " + this.crystalSystem
+					+ " \n<strong>Color :</strong> " + this.color + " \n<strong>Luster :</strong> " + this.luster
+					+ " \n<strong>Fracture :</strong> " + this.fracture + "\n" + this.image;
+
+		case "collectionMineral":
+			return "\n\n<strong>" + this.title.toUpperCase() + "\n</strong>" + "\n" + this.image;
+
+		}
+		return format;
 	}
 
 }
