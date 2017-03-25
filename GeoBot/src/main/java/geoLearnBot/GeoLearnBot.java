@@ -166,6 +166,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					// @formatter:on
 					try {
 						sendMessage(message);
+						System.out.println("collection after add: " + favoriteMinerals);
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
@@ -193,10 +194,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (update.getMessage().getText().equals("Remove from my collection! \ud83d\udc4e")) {
 				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
 						.getFavoriteMinerals();
-				System.out.println("favMins before removal: " + favoriteMinerals);
 				if (favoriteMinerals.containsKey(lastMineralSeen)) {
 					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().remove(lastMineralSeen);
-					System.out.println("favMins after removal: " + favoriteMinerals);
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 							// @formatter:off
 							.setText(
@@ -210,6 +209,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					// @formatter:on
 					try {
 						sendMessage(message);
+						System.out.println("fav list after remove: " + favoriteMinerals);
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
@@ -234,20 +234,19 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Show my collection || 4
-			if (update.getMessage().getText().equals("collection")) {
+			if (update.getMessage().getText().equals("/collection") || update.getMessage().getText().equals("4")) {
 
-				// get favMinList
-				// display each with short toString
-
-				// System.out.println(chatMap.get(update.getMessage().getChatId()).getFavoriteMineral());
+				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
+						.getFavoriteMinerals();
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								mineralsList.get(0).toStringCollection()
+								"you want to see your collection?"
 								);
 						// @formatter:on
 				try {
 					sendMessage(message);
+					System.out.println("favoriteMinerals collection: " + favoriteMinerals);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
