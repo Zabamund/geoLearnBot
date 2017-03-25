@@ -44,10 +44,21 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// index of last displayed mineral in mineral list (for collection addition)
 	int indexOfLastMineralSeen;
 
+	// text of last user input
+	String lastUserInput;
+
+	// search trigger
+	Boolean searchTrigger = false;
+
+	// userQuery
+	String userQuery;
+
 	@Override
 	public void onUpdateReceived(Update update) {
 		// check if the update has a message and the message has text
 		if (update.hasMessage() && update.getMessage().hasText()) {
+
+			lastUserInput = update.getMessage().getText();
 
 			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
 				Map<String, Minerals> seenMinerals = new HashMap<>();
@@ -56,8 +67,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				chatMap.put(newChat.getId(), newChat);
 			}
 
-			// =============================== Main Options
-			// ============================================================
+			// @formatter:off
+			// =============================== Main Options ============================================================
+			// @formatter:on
 
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
@@ -302,6 +314,114 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /List Mineral selection || 6
+			if (update.getMessage().getText().equals("/list") || update.getMessage().getText().equals("6")) {
+
+				KeyboardRow keyboardRow = new KeyboardRow();
+				keyboardRow.add(0, "Browse");
+				keyboardRow.add(1, "Search");
+				keyboardRow.add(2, "/help");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRow);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"Ok, what kind of list would you like to see ?")						
+						.setReplyMarkup(replyMarkup);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			// /Browse
+			if (update.getMessage().getText().equals("Browse")) {
+
+				KeyboardRow keyboardRow = new KeyboardRow();
+				keyboardRow.add(0, "by Mineral Classification");
+				keyboardRow.add(1, "by Crystal System");
+				keyboardRow.add(2, "/list");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRow);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"And how would you like me to filter the results?")						
+						.setReplyMarkup(replyMarkup);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			// /by Mineral Classification
+
+			// /by Crystal System
+
+			// /Search
+			if (update.getMessage().getText().equals("Search")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"Please type the *name* of the mineral you'd like me to search for.")						
+						.enableMarkdown(true);
+						searchTrigger = true;
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// Retrieve mineral from list
+			// @formatter:off
+			// can't warn user if no matches found =================================================================================================================
+			// @formatter:on
+			if (searchTrigger.equals(true)) {
+				userQuery = update.getMessage().getText().toLowerCase();
+				int i = 0;
+				Boolean matchFound = false;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								// @formatter:off
+								.setText(
+									"Here you go "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", this is the information I have about "
+									+ userQuery
+									+ ":"
+									+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+								searchTrigger = false;
+								matchFound = true;
+								// @formatter:on
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
 
 			// /Play || 7
 			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("7")) {
@@ -342,7 +462,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboard.add(keyboardRowLower);
 
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
-				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true);
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
@@ -372,7 +492,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 											+ "\nThe Reprint Policy of the Minerals Education Coalition is available at"
 											+ " [https://mineralseducationcoalition.org/reprint-policy/]"
 											+ "\n\nAdditionally geoLearnBot states that:"
-											+ "\nThis bot is in no way affiliated or partnered with nor sponsored by the Minerals Education Coalition")
+											+ "\nThis bot is in no way affiliated nor partnered with nor sponsored by the Minerals Education Coalition")
 											// @formatter:on
 						.enableMarkdown(true);
 				try {
@@ -382,8 +502,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
-			// =============================== Glossary Options
-			// ============================================================
+			// @formatter:off
+			// =============================== Glossary Options ============================================================
+			// @formatter:on
 
 			// /Mineral Classification
 			if (update.getMessage().getText().equals("Mineral Classification")) {
@@ -406,7 +527,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboard.add(keyboardRowLower);
 
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
-				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true);
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
@@ -632,7 +753,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboard.add(keyboardRowLower);
 
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
-				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true);
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
@@ -829,6 +950,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					e.printStackTrace();
 				}
 			}
+
+			// @formatter:off
+			// =============================== Profanity Filter ============================================================
+			// @formatter:on
 
 			// /profanity filter
 			String swear0 = "fuck";
