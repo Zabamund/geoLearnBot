@@ -302,6 +302,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /List Mineral selection || 6
+			if (update.getMessage().getText().equals("/list") || update.getMessage().getText().equals("6")) {
+
+			}
 
 			// /Play || 7
 			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("7")) {

@@ -1,9 +1,5 @@
-ideas for bot
+IDEAS FOR GEOLEARNBOT
 
-reset seen array or maybe reset every time user logs back in - no, not now that it's no longer going to be a random
-
-
-favorite button for each display mineral
 
 show a choice of 4 minerals at once ? keyboard markdown..
 
@@ -16,8 +12,6 @@ user location ? do something with it
 compare minerals ???
 
 search mineral?
-
-profanity...send back LOUD video? no-can-do for now..(youtube link didnt work, and don't want to download and edit video (copyright breach??)
 
 add /  button each time new keyboard?
 
