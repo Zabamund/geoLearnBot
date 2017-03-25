@@ -1,6 +1,7 @@
 ideas for bot
 
-reset seen array or maybe reset every time user logs back in
+reset seen array or maybe reset every time user logs back in - no, not now that it's no longer going to be a random
+
 
 favorite button for each display mineral
 
@@ -16,5 +17,8 @@ compare minerals ???
 
 search mineral?
 
-profanity...send back LOUD video?
+profanity...send back LOUD video? no-can-do for now..(youtube link didnt work, and don't want to download and edit video (copyright breach??)
 
+add /  button each time new keyboard?
+
+WRITE TESTS!

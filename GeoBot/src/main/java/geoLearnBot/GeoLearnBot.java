@@ -28,15 +28,21 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 	// Create a chat pseudo-db
 	Map<Long, Chat> chatMap = new HashMap<>();
-	// Create a chat pseudo-favorite-db
 
 	// Fetch list of minerals
 	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
 
+	// random number picker
 	public static int randomNumberPicker(List<Minerals> mineralsList) {
 		int random = new Random().nextInt(mineralsList.size());
 		return random;
 	}
+
+	// name of last displayed mineral (for collection addition or removal)
+	String lastMineralSeen;
+
+	// index of last displayed mineral in mineral list (for collection addition)
+	int indexOfLastMineralSeen;
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -44,9 +50,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 		if (update.hasMessage() && update.getMessage().hasText()) {
 
 			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
-				List<Integer> seenMineral = new ArrayList<>();
-				List<Integer> favoriteMineral = new ArrayList<>();
-				Chat newChat = new Chat(update.getMessage().getChatId(), seenMineral, favoriteMineral);
+				Map<String, Minerals> seenMinerals = new HashMap<>();
+				Map<String, Minerals> favoriteMinerals = new HashMap<>();
+				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals);
 				chatMap.put(newChat.getId(), newChat);
 			}
 
@@ -63,9 +69,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "\n*2*. /help Need help ?"
 								+ "\n*3*. /random See a random mineral"
 								+ "\n*4*. /collection See your mineral collection"
-//								+ "\n*X*. /filter Filter minerals (sorry, nothing here yet...)"
-//								+ "\n*X*. /search Search for a specific mineral (sorry, nothing here yet...)"
-//								+ "\n*X*. /compare Compare two minerals (sorry, nothing here yet...)"
+								//	+ "\n*X*. /filter Filter minerals (sorry, nothing here yet...)"
+								//	+ "\n*X*. /search Search for a specific mineral (sorry, nothing here yet...)"
+								//	+ "\n*X*. /compare Compare two minerals (sorry, nothing here yet...)"
 								+ "\n*5*. /list Choose from a selection of minerals"
 								+ "\n*6*. /play Test your knowledge (sorry, nothing here yet...)"
 								+ "\n*7*. /glossary Glossary"								
@@ -94,7 +100,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								// @formatter:on
 						.enableMarkdown(true);
 				try {
-					sendMessage(message); // Call method to send message
+					sendMessage(message);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
@@ -103,9 +109,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /random || 3
 			if (update.getMessage().getText().equals("/random") || update.getMessage().getText().equals("3")) {
 
+				// create custom keyboard
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
 				keyboardFavoriteActions.add(0, "Add to my collection! \ud83d\udcb0");
 				keyboardFavoriteActions.add(1, "Remove from my collection! \ud83d\udc4e");
+				keyboardFavoriteActions.add(2, "/help");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
@@ -113,50 +121,49 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
 
+				// pick a random mineral to display
 				int random = randomNumberPicker(mineralsList);
-				int mineralToDisplay = -1;
-				while (chatMap.get(update.getMessage().getChatId()).getSeenMineral().contains(random) == true) {
-					random = randomNumberPicker(mineralsList);
-				}
-				chatMap.get(update.getMessage().getChatId()).getSeenMineral().add(random);
-				mineralToDisplay = random;
 
+				// add random mineral to Chat instance
+				String keyMineralName = mineralsList.get(random).getTitle();
+				Minerals valueMineralObject = mineralsList.get(random);
+				chatMap.get(update.getMessage().getChatId()).getSeenMinerals().put(keyMineralName, valueMineralObject);
+
+				// send mineral to Chat
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
-								mineralsList.get(mineralToDisplay).toString())						
-						.enableHtml(true)
-						.setReplyMarkup(replyMarkup);
+								mineralsList.get(random).toString())						
+								.enableHtml(true)
+								.setReplyMarkup(replyMarkup);
+								lastMineralSeen = mineralsList.get(random).getTitle();
+								indexOfLastMineralSeen = random;
 								// @formatter:on
 				try {
 					sendMessage(message);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-
 			}
 
 			// /Add to my collection!
 			if (update.getMessage().getText().equals("Add to my collection! \ud83d\udcb0")) {
-				int seenArraySize = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
-				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral()
-						.get(seenArraySize - 1);
-				if (chatMap.get(update.getMessage().getChatId()).getFavoriteMineral()
-						.contains(lastIntInSeenArray) == false) {
-					chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().add(lastIntInSeenArray);
-					System.out.println("chatMap after adding mineral: " + chatMap);
+				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
+						.getFavoriteMinerals();
+				if (favoriteMinerals.containsKey(lastMineralSeen) == false) {
+					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().put(lastMineralSeen,
+							mineralsList.get(indexOfLastMineralSeen));
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 							// @formatter:off
 							.setText(
 									"There you go "
-									+ update.getMessage().getChat().getFirstName()
-									+ ", "
-									+ mineralsList.get(lastIntInSeenArray).getTitle()
-									+ " has been added to your collection."
+											+ update.getMessage().getChat().getFirstName()
+											+ ", *"
+											+ lastMineralSeen
+											+ "* has been added to your collection. \ud83d\udc4d"
 									)
 							.enableMarkdown(true);
-							// @formatter:on
-					System.out.println("chatMap after NOT adding mineral: " + chatMap);
+					// @formatter:on
 					try {
 						sendMessage(message);
 					} catch (TelegramApiException e) {
@@ -168,13 +175,12 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 							.setText(
 									"Sorry "
 									+ update.getMessage().getChat().getFirstName()
-									+ ", "
-									+ mineralsList.get(lastIntInSeenArray).getTitle()
-									+ " is already in your collection."
+									+ ", *"
+									+ lastMineralSeen
+									+ "* is already in your collection. \ud83d\ude1e"
 									)
 							.enableMarkdown(true);
-							// @formatter:on
-					System.out.println("chatMap after NOT adding mineral: " + chatMap);
+						// @formatter:on
 					try {
 						sendMessage(message);
 					} catch (TelegramApiException e) {
@@ -185,30 +191,23 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Remove from my collection !
 			if (update.getMessage().getText().equals("Remove from my collection! \ud83d\udc4e")) {
-				// get int of mineral last seen
-				int seenArraySize = chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
-				System.out.println("seenArraySize: " + seenArraySize);
-				int lastIntInSeenArray = chatMap.get(update.getMessage().getChatId()).getSeenMineral()
-						.get(seenArraySize - 1);
-				System.out.println("lastIntInArray: " + lastIntInSeenArray);
-				// check if in favorites
-				if (chatMap.get(update.getMessage().getChatId()).getFavoriteMineral()
-						.contains(lastIntInSeenArray) == true) {
-
-					chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().remove(seenArraySize - 1);
-
+				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
+						.getFavoriteMinerals();
+				System.out.println("favMins before removal: " + favoriteMinerals);
+				if (favoriteMinerals.containsKey(lastMineralSeen)) {
+					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().remove(lastMineralSeen);
+					System.out.println("favMins after removal: " + favoriteMinerals);
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 							// @formatter:off
 							.setText(
 									"There you go "
 									+ update.getMessage().getChat().getFirstName()
-									+ ", "
-									+ mineralsList.get(lastIntInSeenArray).getTitle()
-									+ " has been removed from your collection."
+									+ ", *"
+									+ lastMineralSeen
+									+ "* has been removed from your collection. \ud83d\udc4d"
 									)
 							.enableMarkdown(true);
-							// @formatter:on
-					System.out.println("chatMap after removing mineral: " + chatMap);
+					// @formatter:on
 					try {
 						sendMessage(message);
 					} catch (TelegramApiException e) {
@@ -220,19 +219,20 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 							.setText(
 									"Sorry "
 									+ update.getMessage().getChat().getFirstName()
-									+ ", I can't remove "
-									+ mineralsList.get(lastIntInSeenArray).getTitle()
-									+ " because it isn't yet in your collection."
+									+ ", *"
+									+ lastMineralSeen
+									+ "* is not in your collection yet. \ud83d\ude1e"
 									)
 							.enableMarkdown(true);
-							// @formatter:on
-					System.out.println("chatMap after NOT removing mineral: " + chatMap);
+						// @formatter:on
 					try {
 						sendMessage(message);
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
 				}
+				// actions
+
 			}
 
 			// /Show my collection || 4
@@ -376,7 +376,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Carbonate minerals are those minerals containing the carbonate ion: CO3\n_Source: Wikipedia_")
+								"*Carbonate* minerals are those minerals containing the carbonate ion: CO3\n_Source: Wikipedia_")
 						.enableMarkdown(true);
 						// @formatter:on
 				try {
@@ -392,7 +392,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The halide mineral class include those minerals with a dominant halide anion (F−, Cl−, Br− and I−)."
+								"The *halide* mineral class include those minerals with a dominant halide anion (F−, Cl−, Br− and I−)."
 								+ "\nComplex halide minerals may also have polyatomic anions in addition to or that include halides."
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
@@ -410,7 +410,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Native element minerals are those elements that occur in nature in uncombined form with a "
+								"*Native* element minerals are those elements that occur in nature in uncombined form with a "
 								+ "distinct mineral structure."
 								+ " The elemental class includes metals and intermetallic elements, naturally occurring alloys,"
 								+ " semi-metals and non-metals."
@@ -430,7 +430,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Phyllosilicates are sheet Silicate minerals, formed by parallel sheets of silicate tetrahedra with "
+								"*Phyllosilicates* are sheet Silicate minerals, formed by parallel sheets of silicate tetrahedra with "
 								+ "Si2O5 or a 2:5 ratio."
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
@@ -448,7 +448,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The pyroxenes (commonly abbreviated to Px) are a group of important rock-forming inosilicate minerals"
+								"The *pyroxenes* (commonly abbreviated to Px) are a group of important rock-forming inosilicate minerals"
 								+ " found in many igneous and metamorphic rocks. Pyroxenes are silicon-aluminum oxides with Ca, Na, Fe,"
 								+ " Mg, Zn, Mn, Li substituting for Si and Al."
 								+ "\n_Source: Wikipedia_")
@@ -467,7 +467,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Silicate minerals are rock-forming minerals made up of silicate groups. They are the largest"
+								"*Silicate* minerals are rock-forming minerals made up of silicate groups. They are the largest"
 								+ " and most important class of rock-forming minerals and make up approximately 90 percent of"
 								+ " the Earth's crust. They are classified based on the structure of their silicate groups,"
 								+ " which contain different ratios of silicon and oxygen."
@@ -487,7 +487,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The sulfate minerals are a class of minerals which include the sulfate ion (SO42−) within"
+								"The *sulfate* minerals are a class of minerals which include the sulfate ion (SO42−) within"
 								+ " their structure. The sulfate minerals occur commonly in primary evaporite depositional"
 								+ " environments, as gangue minerals in hydrothermal veins and as secondary minerals in the"
 								+ " oxidizing zone of sulfide mineral deposits."
@@ -507,7 +507,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The sulfide minerals are a class of minerals containing sulfide (S2−) as the major anion."
+								"The *sulfide* minerals are a class of minerals containing sulfide (S2−) as the major anion."
 								+ " Some sulfide minerals are economically important as metal ores. "
 								+ "\n_Source: Wikipedia_")
 						.enableMarkdown(true);
@@ -525,7 +525,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The streak (also called \"powder color\") of a mineral is the color of the powder produced"
+								"The *streak* (also called \"powder color\") of a mineral is the color of the powder produced"
 								+ " when it is dragged across an un-weathered surface. Unlike the apparent color of a mineral,"
 								+ " which for most minerals can vary considerably, the trail of finely ground powder generally"
 								+ " has a more consistent characteristic color, and is thus an important diagnostic tool in"
@@ -548,7 +548,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The Mohs scale of mineral hardness is a qualitative ordinal scale characterizing scratch "
+								"The *Mohs scale* of mineral hardness is a qualitative ordinal scale characterizing scratch "
 								+ "resistance of various minerals through the ability of harder material to scratch softer"
 								+ " material."
 								+ "\n_Source: Wikipedia_")
@@ -585,7 +585,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the terms crystal system, crystal family and lattice system"
+								"In crystallography, the terms *crystal system*, crystal family and lattice system"
 								+ " each refer to one of several classes of space groups, lattices, point groups"
 								+ " or crystals."
 								+ "\n_Source: Wikipedia_")
@@ -604,7 +604,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the triclinic (or anorthic) crystal system is one of the 7 "
+								"In crystallography, the *triclinic* (or anorthic) crystal system is one of the 7 "
 								+ "crystal systems. A crystal system is described by three basis vectors. In the "
 								+ "triclinic system, the crystal is described by vectors of unequal length, as in "
 								+ "the orthorhombic system. In addition, no vector is at right angles (90°) "
@@ -625,7 +625,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the monoclinic crystal system is one of the 7 crystal systems."
+								"In crystallography, the *monoclinic* crystal system is one of the 7 crystal systems."
 								+ " A crystal system is described by three vectors. In the monoclinic system, the "
 								+ "crystal is described by vectors of unequal lengths, as in the orthorhombic system."
 								+ " They form a rectangular prism with a parallelogram as its base. Hence two vectors"
@@ -647,7 +647,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the orthorhombic crystal system is one of the 7 crystal systems. "
+								"In crystallography, the *orthorhombic* crystal system is one of the 7 crystal systems. "
 								+ "Orthorhombic lattices result from stretching a cubic lattice along two of its orthogonal "
 								+ "pairs by two different factors, resulting in a rectangular prism with a rectangular"
 								+ " base (a by b) and height (c), such that a, b, and c are distinct. All three bases"
@@ -668,7 +668,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the tetragonal crystal system is one of the 7 crystal systems."
+								"In crystallography, the *tetragonal* crystal system is one of the 7 crystal systems."
 								+ " Tetragonal crystal lattices result from stretching a cubic lattice along one of "
 								+ "its lattice vectors, so that the cube becomes a rectangular prism with a square"
 								+ " base (a by a) and height (c, which is different from a)."
@@ -689,7 +689,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the hexagonal crystal family is one of the 6 crystal families. "
+								"In crystallography, the *hexagonal* crystal family is one of the 6 crystal families. "
 								+ "In the hexagonal family, the crystal is conventionally described by a right rhombic"
 								+ " prism unit cell with two equal axes (a by a), an included angle of 120° (" + smallGamma + ") and a "
 								+ "height (c, which can be different from a) perpendicular to the two base axes."
@@ -709,7 +709,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"The trigonal crystal system is the only crystal system whose point groups have"
+								"The *trigonal* crystal system is the only crystal system whose point groups have"
 								+ " more than one lattice system associated with their space groups: the hexagonal"
 								+ " and rhombohedral lattices both appear."
 								+ "\nhttps://goo.gl/txDjSc"
@@ -728,7 +728,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In crystallography, the cubic (or isometric) crystal system is a crystal system where"
+								"In crystallography, the *cubic* (or *isometric*) crystal system is a crystal system where"
 								+ " the unit cell is in the shape of a cube. This is one of the most common and simplest "
 								+ "shapes found in crystals and minerals."
 								+ "\nhttps://goo.gl/OnpkIM"
@@ -747,7 +747,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Lustre or luster is the way light interacts with the surface of a crystal,"
+								"Lustre or *luster* is the way light interacts with the surface of a crystal,"
 								+ " rock, or mineral. The word traces its origins back to the latin lux,"
 								+ " meaning \"light\", and generally implies radiance, gloss, or brilliance."
 								+ "A range of terms are used to describe lustre, such as earthy, metallic, greasy, and silky.")
@@ -765,7 +765,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"In the field of mineralogy, fracture is the texture and shape of a rock's "
+								"In the field of mineralogy, *fracture* is the texture and shape of a rock's "
 								+ "surface formed when a mineral is fractured. Minerals often have a highly"
 								+ " distinctive fracture, making it a principal feature used in their"
 								+ " identification.")
@@ -798,6 +798,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						.enableMarkdown(true);
 						// @formatter:on
 				try {
+					// sendVideo(video);
 					sendMessage(message);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();

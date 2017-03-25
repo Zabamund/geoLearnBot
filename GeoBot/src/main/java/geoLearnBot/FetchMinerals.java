@@ -152,11 +152,11 @@ public class FetchMinerals {
 			String luster = lusterArray[i];
 			String fracture = fractureArray[i];
 			String image = imageArray[i];
-			Boolean seen = false;
-			Boolean favorite = false;
+			String seenMinerals = null;
+			String favoriteMinerals = null;
 
 			Minerals mineral = new Minerals(title, description, type, mineralClassification, chemicalFormula, streak,
-					mohsHardness, crystalSystem, color, luster, fracture, image, seen, favorite);
+					mohsHardness, crystalSystem, color, luster, fracture, image, seenMinerals, favoriteMinerals);
 
 			// add each mineral to the list
 			mineralsList.add(mineral);
