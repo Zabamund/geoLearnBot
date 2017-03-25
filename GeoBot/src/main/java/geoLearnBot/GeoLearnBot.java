@@ -392,9 +392,12 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// Compare user query to list of minerals
 			if (searchTrigger.equals(true)) {
 				userQuery = update.getMessage().getText().toLowerCase();
+				int i = 0;
 				for (Minerals minerals : mineralsList) {
+					i++;
 					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
-						int matchPosition = 0;
+						int matchPosition = i - 1;
+						System.out.println("i: " + i);
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								// @formatter:off
 								.setText(
@@ -403,7 +406,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 									+ ", this is the information I have about "
 									+ userQuery
 									+ ":"
-									+ mineralsList.get(0).toString("singleMineral"))
+									+ mineralsList.get(matchPosition).toString("singleMineral"))
 								.enableHtml(true);
 								searchTrigger = false;
 								// @formatter:on
