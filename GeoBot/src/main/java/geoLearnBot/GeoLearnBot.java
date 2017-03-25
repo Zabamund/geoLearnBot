@@ -242,7 +242,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 							.setText(
 									"Sorry "
 									+ update.getMessage().getChat().getFirstName()
-									+ ", you don't have any minerals in your collection yet."
+									+ ", you have no minerals in your collection yet."
 									);
 							// @formatter:on
 					try {
@@ -274,12 +274,32 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 							e.printStackTrace();
 						}
 					});
-
 				}
-
 			}
 
 			// /clear your collection || 5
+			if (update.getMessage().getText().equals("/clear") || update.getMessage().getText().equals("5")) {
+				if (chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().isEmpty()) {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("Sorry " + update.getMessage().getChat().getFirstName()
+									+ ", you have no minerals in your collection yet.");
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				} else {
+					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().clear();
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("Your collection has been cleared.");
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				}
+
+			}
 
 			// /List Mineral selection || 6
 
