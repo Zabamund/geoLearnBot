@@ -133,7 +133,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 								// @formatter:off
-								mineralsList.get(random).toString())						
+								mineralsList.get(random).toString("singleMineral"))						
 								.enableHtml(true)
 								.setReplyMarkup(replyMarkup);
 								lastMineralSeen = mineralsList.get(random).getTitle();
@@ -235,18 +235,20 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Show my collection || 4
 			if (update.getMessage().getText().equals("/collection") || update.getMessage().getText().equals("4")) {
-
 				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
 						.getFavoriteMinerals();
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"you want to see your collection?"
+								"Here you go "
+								+ update.getMessage().getChat().getFirstName()
+								+ ", here is your collection of minerals. \ud83d\udc8e \n"
+								+ chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals()
+								
 								);
 						// @formatter:on
 				try {
 					sendMessage(message);
-					System.out.println("favoriteMinerals collection: " + favoriteMinerals);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
