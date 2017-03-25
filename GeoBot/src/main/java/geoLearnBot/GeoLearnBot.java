@@ -231,12 +231,14 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						e.printStackTrace();
 					}
 				}
-				// actions
-
 			}
 
 			// /Show my collection || 4
 			if (update.getMessage().getText().equals("collection")) {
+
+				// get favMinList
+				// display each with short toString
+
 				// System.out.println(chatMap.get(update.getMessage().getChatId()).getFavoriteMineral());
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
@@ -249,7 +251,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-
 			}
 
 			// /List Mineral selection || 5
