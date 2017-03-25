@@ -166,7 +166,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					// @formatter:on
 					try {
 						sendMessage(message);
-						System.out.println("collection after add: " + favoriteMinerals);
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
@@ -209,7 +208,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					// @formatter:on
 					try {
 						sendMessage(message);
-						System.out.println("fav list after remove: " + favoriteMinerals);
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
@@ -237,21 +235,47 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (update.getMessage().getText().equals("/collection") || update.getMessage().getText().equals("4")) {
 				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
 						.getFavoriteMinerals();
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"Here you go "
-								+ update.getMessage().getChat().getFirstName()
-								+ ", here is your collection of minerals. \ud83d\udc8e \n"
-								+ chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals()
-								
-								);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+				if (favoriteMinerals.isEmpty()) {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"Sorry "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", you don't have any minerals in your collection yet."
+									);
+							// @formatter:on
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				} else {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"Here you go "
+											+ update.getMessage().getChat().getFirstName()
+											+ ": your mineral collection. \ud83d\udc8e"
+									);
+					// @formatter:on
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					favoriteMinerals.forEach((k, v) -> {
+						SendMessage messageCollectionMineral = new SendMessage()
+								.setChatId(update.getMessage().getChatId()).setText(v.toString("collectionMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(messageCollectionMineral);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					});
+
 				}
+
 			}
 
 			// /List Mineral selection || 5
