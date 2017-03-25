@@ -386,13 +386,12 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
+			// /record user
 			if (searchTrigger.equals(true)) {
-				searchTrigger = false;
-
-				System.out.println("lastUserInput: " + lastUserInput);
+				String userQuery = update.getMessage().getText().toLowerCase();
+				System.out.println("userQuery= " + userQuery);
 			}
 
-			// on update if last msg sent is what do yuo want, get user input
 			// pass to variable and compre to DB
 
 			// get user response toLowerCase and compare to minerals
