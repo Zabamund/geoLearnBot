@@ -389,15 +389,18 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
-			// Compare user query to list of minerals
+			// Retrieve mineral from list
+			// @formatter:off
+			// can't warn user if no matches found =================================================================================================================
+			// @formatter:on
 			if (searchTrigger.equals(true)) {
 				userQuery = update.getMessage().getText().toLowerCase();
 				int i = 0;
+				Boolean matchFound = false;
 				for (Minerals minerals : mineralsList) {
 					i++;
 					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
 						int matchPosition = i - 1;
-						System.out.println("i: " + i);
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								// @formatter:off
 								.setText(
@@ -409,6 +412,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 									+ mineralsList.get(matchPosition).toString("singleMineral"))
 								.enableHtml(true);
 								searchTrigger = false;
+								matchFound = true;
 								// @formatter:on
 						try {
 							sendMessage(message);
@@ -418,14 +422,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					}
 				}
 			}
-
-			// get user response toLowerCase and compare to minerals
-			// toLowerCase too
-
-			// if (lastUserInput.equals("Search")) {
-			// String userSearchRequest = update.getMessage().getText();
-			// System.out.println("UserSearchRequest= " + userSearchRequest);
-			// }
 
 			// /Play || 7
 			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("7")) {
