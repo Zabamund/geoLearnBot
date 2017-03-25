@@ -44,10 +44,18 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// index of last displayed mineral in mineral list (for collection addition)
 	int indexOfLastMineralSeen;
 
+	// text of last user input
+	String lastUserInput;
+
+	// search trigger
+	Boolean searchTrigger = false;
+
 	@Override
 	public void onUpdateReceived(Update update) {
 		// check if the update has a message and the message has text
 		if (update.hasMessage() && update.getMessage().hasText()) {
+
+			lastUserInput = update.getMessage().getText();
 
 			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
 				Map<String, Minerals> seenMinerals = new HashMap<>();
@@ -308,8 +316,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				KeyboardRow keyboardRow = new KeyboardRow();
 				keyboardRow.add(0, "Browse");
 				keyboardRow.add(1, "Search");
-				keyboardRow.add(2, "Filter");
-				keyboardRow.add(3, "/help");
+				keyboardRow.add(2, "/help");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardRow);
@@ -320,7 +327,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"What kind of list would you like to see ?")						
+								"Ok, what kind of list would you like to see ?")						
 						.setReplyMarkup(replyMarkup);
 						// @formatter:on
 				try {
@@ -332,15 +339,69 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Browse
-			// /List selection: e.g. shows four buttons for four minerals, and
-			// click one to see one
+			if (update.getMessage().getText().equals("Browse")) {
+
+				KeyboardRow keyboardRow = new KeyboardRow();
+				keyboardRow.add(0, "by Mineral Classification");
+				keyboardRow.add(1, "by Crystal System");
+				keyboardRow.add(2, "/list");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRow);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"And how would you like me to filter the results?")						
+						.setReplyMarkup(replyMarkup);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			// /by Mineral Classification
+
+			// /by Crystal System
 
 			// /Search
-			// /Search: e.g. search for a mineral by title or by other property
-			// ??
+			if (update.getMessage().getText().equals("Search")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"Please type the *name* of the mineral you'd like me to search for.")						
+						.enableMarkdown(true);
+						searchTrigger = true;
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
 
-			// /Filter: e.g. show filtered lists by crystal system or some such
-			// /Filter
+			if (searchTrigger.equals(true)) {
+				searchTrigger = false;
+
+				System.out.println("lastUserInput: " + lastUserInput);
+			}
+
+			// on update if last msg sent is what do yuo want, get user input
+			// pass to variable and compre to DB
+
+			// get user response toLowerCase and compare to minerals
+			// toLowerCase too
+
+			// if (lastUserInput.equals("Search")) {
+			// String userSearchRequest = update.getMessage().getText();
+			// System.out.println("UserSearchRequest= " + userSearchRequest);
+			// }
 
 			// /Play || 7
 			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("7")) {

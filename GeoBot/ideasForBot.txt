@@ -5,7 +5,7 @@ show a choice of 4 minerals at once ? keyboard markdown..
 
 maybe give users a list of minerals to choose from rather than a random one ?
 
-filter(sorted) search and compare
+browse (filter(sorted)) search and compare
 
 user location ? do something with it 
 
