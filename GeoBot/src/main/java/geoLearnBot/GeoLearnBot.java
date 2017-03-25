@@ -50,6 +50,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// search trigger
 	Boolean searchTrigger = false;
 
+	// userQuery
+	String userQuery;
+
 	@Override
 	public void onUpdateReceived(Update update) {
 		// check if the update has a message and the message has text
@@ -386,13 +389,32 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
-			// /record user
+			// Compare user query to list of minerals
 			if (searchTrigger.equals(true)) {
-				String userQuery = update.getMessage().getText().toLowerCase();
-				System.out.println("userQuery= " + userQuery);
+				userQuery = update.getMessage().getText().toLowerCase();
+				for (Minerals minerals : mineralsList) {
+					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
+						int matchPosition = 0;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								// @formatter:off
+								.setText(
+									"Here you go "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", this is the information I have about "
+									+ userQuery
+									+ ":"
+									+ mineralsList.get(0).toString("singleMineral"))
+								.enableHtml(true);
+								searchTrigger = false;
+								// @formatter:on
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
 			}
-
-			// pass to variable and compre to DB
 
 			// get user response toLowerCase and compare to minerals
 			// toLowerCase too
