@@ -113,6 +113,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
 				keyboardFavoriteActions.add(0, "Add to my collection! \ud83d\udcb0");
 				keyboardFavoriteActions.add(1, "Remove from my collection! \ud83d\udc4e");
+				keyboardFavoriteActions.add(2, "/help");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
@@ -188,65 +189,51 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
-			// // /Remove from my collection !
-			// if (update.getMessage().getText().equals("Remove from my
-			// collection! \ud83d\udc4e")) {
-			// // get int of mineral last seen
-			// int seenArraySize =
-			// chatMap.get(update.getMessage().getChatId()).getSeenMineral().size();
-			// System.out.println("seenArraySize: " + seenArraySize);
-			// int lastIntInSeenArray =
-			// chatMap.get(update.getMessage().getChatId()).getSeenMineral()
-			// .get(seenArraySize - 1);
-			// System.out.println("lastIntInArray: " + lastIntInSeenArray);
-			// // check if in favorites
-			// if
-			// (chatMap.get(update.getMessage().getChatId()).getFavoriteMineral()
-			// .contains(lastIntInSeenArray) == true) {
-			//
-			// chatMap.get(update.getMessage().getChatId()).getFavoriteMineral().remove(seenArraySize
-			// - 1);
-			//
-			// SendMessage message = new
-			// SendMessage().setChatId(update.getMessage().getChatId())
-//							// @formatter:off
-//							.setText(
-//									"There you go "
-//									+ update.getMessage().getChat().getFirstName()
-//									+ ", "
-//									+ mineralsList.get(lastIntInSeenArray).getTitle()
-//									+ " has been removed from your collection."
-//									)
-//							.enableMarkdown(true);
-//							// @formatter:on
-			// System.out.println("chatMap after removing mineral: " + chatMap);
-			// try {
-			// sendMessage(message);
-			// } catch (TelegramApiException e) {
-			// e.printStackTrace();
-			// }
-			// } else {
-			// SendMessage message = new
-			// SendMessage().setChatId(update.getMessage().getChatId())
-//							// @formatter:off
-//							.setText(
-//									"Sorry "
-//									+ update.getMessage().getChat().getFirstName()
-//									+ ", I can't remove "
-//									+ mineralsList.get(lastIntInSeenArray).getTitle()
-//									+ " because it isn't yet in your collection."
-//									)
-//							.enableMarkdown(true);
-//							// @formatter:on
-			// System.out.println("chatMap after NOT removing mineral: " +
-			// chatMap);
-			// try {
-			// sendMessage(message);
-			// } catch (TelegramApiException e) {
-			// e.printStackTrace();
-			// }
-			// }
-			// }
+			// /Remove from my collection !
+			if (update.getMessage().getText().equals("Remove from my collection! \ud83d\udc4e")) {
+				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
+						.getFavoriteMinerals();
+				System.out.println("favMins before removal: " + favoriteMinerals);
+				if (favoriteMinerals.containsKey(lastMineralSeen)) {
+					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().remove(lastMineralSeen);
+					System.out.println("favMins after removal: " + favoriteMinerals);
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"There you go "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", *"
+									+ lastMineralSeen
+									+ "* has been removed from your collection. \ud83d\udc4d"
+									)
+							.enableMarkdown(true);
+					// @formatter:on
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				} else {
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							// @formatter:off
+							.setText(
+									"Sorry "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", *"
+									+ lastMineralSeen
+									+ "* is not in your collection yet. \ud83d\ude1e"
+									)
+							.enableMarkdown(true);
+						// @formatter:on
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				}
+				// actions
+
+			}
 
 			// /Show my collection || 4
 			if (update.getMessage().getText().equals("collection")) {

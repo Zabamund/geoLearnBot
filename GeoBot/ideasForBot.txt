@@ -19,3 +19,6 @@ search mineral?
 
 profanity...send back LOUD video? no-can-do for now..(youtube link didnt work, and don't want to download and edit video (copyright breach??)
 
+add /  button each time new keyboard?
+
+WRITE TESTS!
