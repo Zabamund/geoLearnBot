@@ -567,6 +567,180 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /by Crystal System
+			if (update.getMessage().getText().equals("by Crystal System")) {
+
+				KeyboardRow keyboardRowUpper = new KeyboardRow();
+				keyboardRowUpper.add(0, "Triclinics");
+				keyboardRowUpper.add(1, "Monoclinics");
+				keyboardRowUpper.add(2, "Orthorhombics");
+				keyboardRowUpper.add(3, "Tetragonals");
+
+				KeyboardRow keyboardRowLower = new KeyboardRow();
+				keyboardRowLower.add(0, "Hexagonals");
+				keyboardRowLower.add(1, "Trigonals");
+				keyboardRowLower.add(2, "Isometrics");
+				keyboardRowLower.add(3, "/list");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRowUpper);
+				keyboard.add(keyboardRowLower);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
+
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"Ok, which crystal system do you want to search for ?")
+						.enableMarkdown(true)
+						.setReplyMarkup(replyMarkup);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Triclinic
+			if (update.getMessage().getText().equals("Triclinics")) {
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getCrystalSystem().equals("Triclinic")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Triclinics</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+
+			// /Monoclinic
+			if (update.getMessage().getText().equals("Monoclinics")) {
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getCrystalSystem().equals("Monoclinic")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Monoclinics</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+
+			// /Orthorhombic
+			if (update.getMessage().getText().equals("Orthorhombics")) {
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getCrystalSystem().equals("Orthorhombic")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Orthorhombics</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+
+			// /Tetragonal
+			if (update.getMessage().getText().equals("Tetragonals")) {
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getCrystalSystem().contains("Tetragonal")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Tetragonals</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+
+			// /Hexagonal
+			if (update.getMessage().getText().equals("Hexagonals")) {
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getCrystalSystem().equals("Hexagonal")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Hexagonals</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+
+			// /Trigonal
+			if (update.getMessage().getText().equals("Trigonals")) {
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getCrystalSystem().equals("Trigonal")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Trigonals</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+
+			// /Isometric
+			if (update.getMessage().getText().equals("Isometrics")) {
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getCrystalSystem().equals("Isometric")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Isometrics</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
 
 			// /Search
 			// set search trigger to force listening in next if block

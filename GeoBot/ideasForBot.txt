@@ -1,17 +1,10 @@
 IDEAS FOR GEOLEARNBOT
 
-
-show a choice of 4 minerals at once ? keyboard markdown..
-
-maybe give users a list of minerals to choose from rather than a random one ?
-
-browse (filter(sorted)) search and compare
-
 user location ? do something with it 
 
 compare minerals ???
 
-search mineral?
+search mineral - done but bug for "not found"
 
 add /  button each time new keyboard?
 
