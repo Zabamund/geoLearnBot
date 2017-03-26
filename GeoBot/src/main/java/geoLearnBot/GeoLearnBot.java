@@ -396,8 +396,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// @formatter:on
 			if (searchTrigger.equals(true)) {
 				int i = 0;
+				Boolean matchFound = false;
 				userQuery = update.getMessage().getText().toLowerCase();
-				// Boolean matchFound = false;
 				for (Minerals minerals : mineralsList) {
 					i++;
 					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
@@ -413,8 +413,18 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 									+ mineralsList.get(matchPosition).toString("singleMineral"))
 								.enableHtml(true);
 								searchTrigger = false;
-//								matchFound = true;
+								matchFound = true;
 								// @formatter:on
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+					if (matchFound.equals(false) && i == mineralsList.size()) {
+						System.out.println("no match found");
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Sorry I could not find that name in my database");
 						try {
 							sendMessage(message);
 						} catch (TelegramApiException e) {
