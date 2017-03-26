@@ -10,3 +10,20 @@ Need to find a way to fix this bug.
 add /  button each time new keyboard?
 
 WRITE TESTS!
+
+ideas for play track:
+1. show instructions
+2. pick random mineral
+3. show 1 hint and keyboard with 4 minerals
+4. if guess right 3 points
+5. new hint
+6. if guess right 2 points
+7. new hint
+8. if guess right 1 points
+9. new hint
+10. if guess right 0 points
+* need to keep score for each Chat instance
+* need to reset each new game
+* keep high score
+* reset high score option(for dev?)
+when success show mineral and message including score
