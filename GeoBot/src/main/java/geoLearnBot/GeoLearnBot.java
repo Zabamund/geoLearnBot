@@ -787,7 +787,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						countNoMatch++;
 					}
 					if (countNoMatch == lengthOfMineralsList) {
-						System.out.println("no match found");
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								.setText("Sorry I couldn't match \"*" + userQuery + "*\" to a mineral in my database."
 										+ "\nYou may search again with *:mineralName* (e.g. :gold)")
