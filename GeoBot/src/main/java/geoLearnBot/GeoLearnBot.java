@@ -374,6 +374,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /by Crystal System
 
 			// /Search
+			// set search trigger to force listening in next if block
 			if (update.getMessage().getText().equals("Search")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
@@ -394,9 +395,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// can't warn user if no matches found =================================================================================================================
 			// @formatter:on
 			if (searchTrigger.equals(true)) {
-				userQuery = update.getMessage().getText().toLowerCase();
 				int i = 0;
-				Boolean matchFound = false;
+				userQuery = update.getMessage().getText().toLowerCase();
+				// Boolean matchFound = false;
 				for (Minerals minerals : mineralsList) {
 					i++;
 					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
@@ -412,7 +413,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 									+ mineralsList.get(matchPosition).toString("singleMineral"))
 								.enableHtml(true);
 								searchTrigger = false;
-								matchFound = true;
+//								matchFound = true;
 								// @formatter:on
 						try {
 							sendMessage(message);
