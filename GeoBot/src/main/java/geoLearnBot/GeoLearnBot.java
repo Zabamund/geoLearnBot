@@ -408,16 +408,14 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Carbonates
 			if (update.getMessage().getText().equals("Carbonates")) {
-
-				System.out.println("mineralsList: " + mineralsList);
-
 				int i = 0;
 				for (Minerals minerals : mineralsList) {
 					i++;
 					if (minerals.getMineralClassification().equals("Carbonate")) {
 						int matchPosition = i - 1;
-						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
-								"Here are your results: " + mineralsList.get(matchPosition).toString("singleMineral"))
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Carbonates</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
 								.enableHtml(true);
 						try {
 							sendMessage(message);
@@ -426,123 +424,145 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						}
 					}
 				}
-
-				// SendMessage message = new
-				// SendMessage().setChatId(update.getMessage().getChatId())
-//						// @formatter:off
-//						.setText(
-//								"IMAGE")						
-//						.enableMarkdown(true);
-//						// @formatter:on
-				// try {
-				// sendMessage(message);
-				// } catch (TelegramApiException e) {
-				// e.printStackTrace();
-				// }
 			}
 
 			// /Halides
 			if (update.getMessage().getText().equals("Halides")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"IMAGE")						
-						.enableMarkdown(true);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getMineralClassification().equals("Halide")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Halides</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 
 			// /Natives
 			if (update.getMessage().getText().equals("Natives")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"IMAGE")						
-						.enableMarkdown(true);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getMineralClassification().equals("Native")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Natives</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 
 			// /Phyllosilicates
 			if (update.getMessage().getText().equals("Phyllosilicates")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"IMAGE")						
-						.enableMarkdown(true);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getMineralClassification().equals("Phyllosilicates")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Phyllosilicates</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 
 			// /Pyroxenes
 			if (update.getMessage().getText().equals("Pyroxenes")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"IMAGE")						
-						.enableMarkdown(true);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getMineralClassification().equals("Pyroxene")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Pyroxenes</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 
 			// /Silicates
 			if (update.getMessage().getText().equals("Silicates")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"IMAGE")						
-						.enableMarkdown(true);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getMineralClassification().equals("Silicate")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Silicates</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 
 			// /Sulfates
 			if (update.getMessage().getText().equals("Sulfates")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"IMAGE")						
-						.enableMarkdown(true);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getMineralClassification().equals("Sulfate")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Sulfates</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 
 			// /Sulfides
 			if (update.getMessage().getText().equals("Sulfides")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"IMAGE")						
-						.enableMarkdown(true);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getMineralClassification().equals("Sulfide")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Here are your results for <strong>Sulfides</strong>: "
+										+ mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 
