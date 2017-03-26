@@ -10,6 +10,7 @@ Need to find a way to fix this bug.
 add /  button each time new keyboard?
 
 WRITE TESTS!
+need to test for main and edge cases
 
 ideas for play track:
 1. show instructions
