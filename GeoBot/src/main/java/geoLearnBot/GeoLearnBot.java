@@ -780,6 +780,25 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						}
 					}
 				}
+				int countNoMatch = 0;
+				for (Minerals minerals : mineralsList) {
+					int lengthOfMineralsList = mineralsList.size();
+					if (minerals.getTitle().toLowerCase().equals(userQuery) == false) {
+						countNoMatch++;
+					}
+					if (countNoMatch == lengthOfMineralsList) {
+						System.out.println("no match found");
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Sorry I couldn't match \"*" + userQuery + "*\" to a mineral in my database."
+										+ "\nYou may search again with *:mineralName* (e.g. :gold)")
+								.enableMarkdown(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
+				}
 			}
 
 			// /Play || 7
