@@ -408,17 +408,37 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Carbonates
 			if (update.getMessage().getText().equals("Carbonates")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						// @formatter:off
-						.setText(
-								"IMAGE")						
-						.enableMarkdown(true);
-						// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
+
+				System.out.println("mineralsList: " + mineralsList);
+
+				int i = 0;
+				for (Minerals minerals : mineralsList) {
+					i++;
+					if (minerals.getMineralClassification().equals("Carbonate")) {
+						int matchPosition = i - 1;
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
+								"Here are your results: " + mineralsList.get(matchPosition).toString("singleMineral"))
+								.enableHtml(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
+					}
 				}
+
+				// SendMessage message = new
+				// SendMessage().setChatId(update.getMessage().getChatId())
+//						// @formatter:off
+//						.setText(
+//								"IMAGE")						
+//						.enableMarkdown(true);
+//						// @formatter:on
+				// try {
+				// sendMessage(message);
+				// } catch (TelegramApiException e) {
+				// e.printStackTrace();
+				// }
 			}
 
 			// /Halides
