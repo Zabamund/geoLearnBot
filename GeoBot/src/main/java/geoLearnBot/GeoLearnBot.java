@@ -759,6 +759,17 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
+			// try to fore syntax for search to replace search trigger which
+			// means no need to turn it off
+			if (update.getMessage().getText().contains("/@")) {
+				int searchQueryLength = update.getMessage().getText().length() - 1;
+				System.out.println(searchQueryLength);
+				char[] searchQuery = null;
+				update.getMessage().getText().getChars(2, searchQueryLength, searchQuery, 0);
+
+				System.out.println("user search term: " + searchQuery.toString());
+			}
+
 			// Retrieve mineral from list
 			// @formatter:off
 			// warning happening once too many: before user input =================================================================================================================
