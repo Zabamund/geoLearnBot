@@ -47,12 +47,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// text of last user input
 	String lastUserInput;
 
-	// search trigger
-	Boolean searchTrigger = false;
-
-	// userQuery
-	String userQuery;
-
 	@Override
 	public void onUpdateReceived(Update update) {
 		// check if the update has a message and the message has text
@@ -743,14 +737,15 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Search
-			// set search trigger to force listening in next if block
 			if (update.getMessage().getText().equals("Search")) {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Please type the *name* of the mineral you'd like me to search for.")						
+								"Please type the *name* of the mineral you'd like me to search for "
+								+ "using the following format:\n"
+								+ "*:mineralName*	\n"
+								+ "remember to include the \":\" !")						
 						.enableMarkdown(true);
-						searchTrigger = true;
 						// @formatter:on
 				try {
 					sendMessage(message);
@@ -760,17 +755,13 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// Retrieve mineral from list
-			// @formatter:off
-			// warning happening once too many: before user input =================================================================================================================
-			// @formatter:on
-			if (searchTrigger.equals(true)) {
-				int i = 0;
-				Boolean matchFound = false;
-				userQuery = update.getMessage().getText().toLowerCase();
+			if (update.getMessage().getText().contains(":")) {
+				String userQuery = update.getMessage().getText().substring(1).toLowerCase();
+				int positionCounter = 0;
 				for (Minerals minerals : mineralsList) {
-					i++;
+					positionCounter++;
 					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
-						int matchPosition = i - 1;
+						int matchPosition = positionCounter - 1;
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								// @formatter:off
 								.setText(
@@ -781,8 +772,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 									+ ":"
 									+ mineralsList.get(matchPosition).toString("singleMineral"))
 								.enableHtml(true);
-								searchTrigger = false;
-								matchFound = true;
 								// @formatter:on
 						try {
 							sendMessage(message);
@@ -790,9 +779,19 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 							e.printStackTrace();
 						}
 					}
-					if (matchFound.equals(false) && i == mineralsList.size()) {
+				}
+				int countNoMatch = 0;
+				for (Minerals minerals : mineralsList) {
+					int lengthOfMineralsList = mineralsList.size();
+					if (minerals.getTitle().toLowerCase().equals(userQuery) == false) {
+						countNoMatch++;
+					}
+					if (countNoMatch == lengthOfMineralsList) {
+						System.out.println("no match found");
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-								.setText("Sorry I could not find that name in my database");
+								.setText("Sorry I couldn't match \"*" + userQuery + "*\" to a mineral in my database."
+										+ "\nYou may search again with *:mineralName* (e.g. :gold)")
+								.enableMarkdown(true);
 						try {
 							sendMessage(message);
 						} catch (TelegramApiException e) {
