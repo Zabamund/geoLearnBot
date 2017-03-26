@@ -370,6 +370,161 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /by Mineral Classification
+			if (update.getMessage().getText().equals("by Mineral Classification")) {
+
+				KeyboardRow keyboardRowUpper = new KeyboardRow();
+				keyboardRowUpper.add(0, "Carbonates");
+				keyboardRowUpper.add(1, "Halides");
+				keyboardRowUpper.add(2, "Natives");
+				keyboardRowUpper.add(3, "Phyllosilicates");
+
+				KeyboardRow keyboardRowLower = new KeyboardRow();
+				keyboardRowLower.add(0, "Pyroxenes");
+				keyboardRowLower.add(1, "Silicates");
+				keyboardRowLower.add(2, "Sulfates");
+				keyboardRowLower.add(3, "Sulfides");
+				keyboardRowLower.add(4, "/list");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRowUpper);
+				keyboard.add(keyboardRowLower);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
+
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"Ok, which mineral group do you want to search for ?")
+						.enableMarkdown(true)
+						.setReplyMarkup(replyMarkup);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Carbonates
+			if (update.getMessage().getText().equals("Carbonates")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"IMAGE")						
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Halides
+			if (update.getMessage().getText().equals("Halides")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"IMAGE")						
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Natives
+			if (update.getMessage().getText().equals("Natives")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"IMAGE")						
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Phyllosilicates
+			if (update.getMessage().getText().equals("Phyllosilicates")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"IMAGE")						
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Pyroxenes
+			if (update.getMessage().getText().equals("Pyroxenes")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"IMAGE")						
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Silicates
+			if (update.getMessage().getText().equals("Silicates")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"IMAGE")						
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Sulfates
+			if (update.getMessage().getText().equals("Sulfates")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"IMAGE")						
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// /Sulfides
+			if (update.getMessage().getText().equals("Sulfides")) {
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"IMAGE")						
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			}
 
 			// /by Crystal System
 
@@ -392,7 +547,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// Retrieve mineral from list
 			// @formatter:off
-			// can't warn user if no matches found =================================================================================================================
+			// warning happening once too many: before user input =================================================================================================================
 			// @formatter:on
 			if (searchTrigger.equals(true)) {
 				int i = 0;
@@ -422,7 +577,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						}
 					}
 					if (matchFound.equals(false) && i == mineralsList.size()) {
-						System.out.println("no match found");
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								.setText("Sorry I could not find that name in my database");
 						try {
