@@ -4,9 +4,6 @@ user location ? do something with it
 
 compare minerals ???
 
-search mineral - done but bug for "not found"
-Need to find a way to fix this bug.
-
 add /  button each time new keyboard?
 
 add to collection for each shown mineral?
