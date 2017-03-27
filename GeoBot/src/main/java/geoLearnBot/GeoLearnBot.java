@@ -1058,10 +1058,28 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			if (update.getMessage().getText().equals("new hint")) {
 				// choose random hint and keep track of hints this round
-				System.out.println("hints seen before asking for more: " + hintsSeenThisRound);
-				randomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
-				hintsSeenThisRound.add(randomHint);
-				System.out.println("hints seen after asking for more: " + hintsSeenThisRound);
+				System.out.println("hints seen BEFORE asking for more: " + hintsSeenThisRound);
+				int newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+				System.out.println("newRand: " + newRandomHint);
+
+				// if (hintsSeenThisRound.contains(newRandomHint) == false) {
+				// randomHint = newRandomHint;
+				// hintsSeenThisRound.add(newRandomHint);
+				// // decrease max score by 1
+				// } else {
+				// // guess again
+				// System.out.println("in the else");
+				// }
+
+				while (hintsSeenThisRound.contains(newRandomHint)) {
+					newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+					System.out.println("new random hint in the while" + newRandomHint);
+				}
+
+				randomHint = newRandomHint;
+				hintsSeenThisRound.add(newRandomHint);
+
+				System.out.println("hints seen AFTER asking for more: " + hintsSeenThisRound);
 
 				switch (randomHint) {
 				case 0:

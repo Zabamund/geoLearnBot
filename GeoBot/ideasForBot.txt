@@ -41,6 +41,8 @@ ideas for play track:
 * reset high score option(for dev?)
 when success show mineral and message including score
 
+! bug random mineral selection for game can select same mineral more than once
+
 
 HINTS
 
