@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -35,6 +34,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 	// Fetch list of minerals
 	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
+
+	// pick a random mineral number from the list to display
+	int random = randomNumberPicker(mineralsList);
 
 	// random number picker
 	public static int randomNumberPicker(List<Minerals> mineralsList) {
@@ -137,7 +139,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
 
 				// pick a random mineral to display
-				int random = randomNumberPicker(mineralsList);
+				random = randomNumberPicker(mineralsList);
 
 				// add random mineral to Chat instance
 				String keyMineralName = mineralsList.get(random).getTitle();
@@ -756,7 +758,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								"Please type the *name* of the mineral you'd like me to search for "
 								+ "using the following format:\n"
 								+ "*:mineralName*	\n"
-								+ "remember to include the \":\" !")						
+								+ "remember to include the *\" : \"* !")						
 						.enableMarkdown(true);
 						// @formatter:on
 				try {
@@ -818,18 +820,78 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Play || 7
 			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("7")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						.setText(
-								// @formatter:off
-								"*Still working on it !*")						
+
+				// create custom keyboard
+				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
+				keyboardFavoriteActions.add(0, "Start quiz");
+				keyboardFavoriteActions.add(1, "/help");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardFavoriteActions);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
+				// send instructions to User
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
+						// @formatter:off
+								"*Mineral Quiz*\n\n"
+								+ "I will now pick a random mineral and give you 1 hint and 4 options"
+								+ ", it's up to you to guess which mineral is the correct one.\n"
+								+ "A correct answer with *1 hint* will earn you *3 points*, \n"
+								+ "each successive *hint* will take *1 point* off the maximum score for that guess.\n\n"
+								+ "Press Start quiz to begin !")														
+								.enableMarkdown(true)
+								.setReplyMarkup(replyMarkup);
 								// @formatter:on
-						.enableMarkdown(true);
-				SendDocument document = new SendDocument().setChatId(update.getMessage().getChatId())
-						.setDocument("http://www.animated-gifs.eu/category_sciences/geology/0012.gif")
-						.setCaption("https://goo.gl/EFhKpG");
 				try {
 					sendMessage(message);
-					sendDocument(document);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			// /Start quiz
+			if (update.getMessage().getText().equals("Start quiz")) {
+
+				// create custom keyboard
+				KeyboardRow keyboardRowUpper = new KeyboardRow();
+				keyboardRowUpper.add(0, "mineral1");
+				keyboardRowUpper.add(1, "mineral2");
+				keyboardRowUpper.add(2, "/new hint");
+				KeyboardRow keyboardRowLower = new KeyboardRow();
+				keyboardRowLower.add(0, "mineral3");
+				keyboardRowLower.add(1, "mineral4");
+				keyboardRowLower.add(2, "/help");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRowUpper);
+				keyboard.add(keyboardRowLower);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
+
+				// initialise score and high score ?
+
+				// pick random correct mineral
+
+				// choose random hint
+
+				// pick 3 other minerals
+
+				// display hint to user
+
+				// send instructions to User
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						.setText(
+						// @formatter:off
+								"*hint #1 placeholder*\n")
+								.enableMarkdown(true)
+								.setReplyMarkup(replyMarkup);
+								// @formatter:on
+				try {
+					sendMessage(message);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
