@@ -111,7 +111,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								//	+ "\n*X*. /search Search for a specific mineral (sorry, nothing here yet...)"
 								//	+ "\n*X*. /compare Compare two minerals (sorry, nothing here yet...)"
 								+ "\n*6*. /list Choose from a selection of minerals"
-								+ "\n*7*. /play Test your knowledge (sorry, nothing here yet...)"
+								+ "\n*7*. /play Test your knowledge (sorry, still work in progress...)"
 								+ "\n*8*. /glossary Glossary"								
 								+ "\n*9*. /acknowledgements Acknowledgements")
 								// @formatter:on
@@ -857,8 +857,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								"*Mineral Quiz*\n\n"
 								+ "I will now pick a random mineral and give you 1 hint and 4 options"
 								+ ", it's up to you to guess which mineral is the correct one.\n"
-								+ "A correct answer with *1 hint* will earn you *3 points*, \n"
-								+ "each successive *hint* will take *1 point* off the maximum score for that guess.\n\n"
+								+ "A correct answer will always earn you 3 points *but !* \n"
+								+ "...each successive *hint* will take *1 point* off your game score.\n\n"
 								+ "Press Start quiz to begin !")														
 								.enableMarkdown(true)
 								.setReplyMarkup(replyMarkup);
@@ -876,7 +876,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				// clear random minerals from Chat instance
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().clear();
 
-				// initialise score and high score
+				// initialise score and high score and reset hint lists
+				hintsSeenThisRound.clear();
 				gameScore = 0;
 				playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
 
