@@ -858,7 +858,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "I will now pick a random mineral and give you 1 hint and 4 options"
 								+ ", it's up to you to guess which mineral is the correct one.\n"
 								+ "A correct answer will always earn you 3 points *but !* \n"
-								+ "...each successive *hint* will take *1 point* off your game score.\n\n"
+								+ "...each successive *hint* will take *1 point* off your game score "
+								+ "and each wrong guess will also take *1 point* off your game score.\n\n"
 								+ "Press Start quiz to begin !")														
 								.enableMarkdown(true)
 								.setReplyMarkup(replyMarkup);
@@ -910,19 +911,21 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
+				System.out.println("correctMineral setting stage: " + chatMap.get(update.getMessage().getChatId())
+						.getMineralQuizList().get(randomNum).toString("collectionMineral"));
 				// @formatter:off
 				// ****************************************************************************REMEMBER TO RESET AFTER GAME********************************
 				// @formatter:on
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
-				keyboardRowUpper.add(0, keyRandomMineralName0);
-				keyboardRowUpper.add(1, keyRandomMineralName1);
+				keyboardRowUpper.add(0, "\\" + keyRandomMineralName0);
+				keyboardRowUpper.add(1, "\\" + keyRandomMineralName1);
 				keyboardRowUpper.add(2, "new hint");
 
 				KeyboardRow keyboardRowLower = new KeyboardRow();
-				keyboardRowLower.add(0, keyRandomMineralName2);
-				keyboardRowLower.add(1, keyRandomMineralName3);
+				keyboardRowLower.add(0, "\\" + keyRandomMineralName2);
+				keyboardRowLower.add(1, "\\" + keyRandomMineralName3);
 				keyboardRowLower.add(2, "/play");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
@@ -1200,6 +1203,26 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 				}
 
+			}
+
+			if (update.getMessage().getText().contains("\\")) {
+
+				// if correct answer, reset guess mineral, count game score and
+				// round(currently only one round possible)
+				String userAnswer = update.getMessage().getText().substring(1).toLowerCase();
+				String correctMineralName = chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+						.get(randomNum).getTitle().toLowerCase();
+				if (userAnswer.equals(correctMineralName)) {
+					chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+							.setIsCorrectGuess(false);
+					gameScore = gameScore + 3;
+					System.out.println("yep you got it!");
+					System.out.println("gameScore: " + gameScore);
+				} else {
+					gameScore = gameScore - 1;
+					System.out.println("no try again");
+					System.out.println("gameScore: " + gameScore);
+				}
 			}
 
 			// @formatter:off
