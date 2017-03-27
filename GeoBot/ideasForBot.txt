@@ -20,8 +20,6 @@ need to test for main and edge cases
 maybe for tests I can set a variable to "update.getM.getC.etc" ?
 
 
-
-
 ideas for play track:
 1. show instructions
 2. pick random mineral
@@ -43,7 +41,7 @@ when success show mineral and message including score
 ! Need to STOP game after correct solution
 
 
-on /play start quiz OR continue game (to get higher score)
+
 
 HINTS
 
