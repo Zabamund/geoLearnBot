@@ -872,12 +872,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
 
-				// initialise score and high score ?
+				// initialise score and high score
 				int gameScore = 0;
 				int playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
-
-				System.out.println("gamescore: " + gameScore);
-				System.out.println("highScore: " + playerHighScore);
 
 				// pick random correct mineral
 
