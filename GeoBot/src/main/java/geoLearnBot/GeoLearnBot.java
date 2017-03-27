@@ -66,6 +66,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	int random2 = -1;
 	int random3 = -1;
 	int randomNum = -1;
+	int gameScore = 0;
 
 	// @formatter:off
 	// =============================== Main Listener ============================================================
@@ -89,7 +90,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// initialise score and high score
-			int gameScore = 0;
 			int playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
 
 			// @formatter:off
@@ -1058,28 +1058,19 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			if (update.getMessage().getText().equals("new hint")) {
 				// choose random hint and keep track of hints this round
-				System.out.println("hints seen BEFORE asking for more: " + hintsSeenThisRound);
-				int newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
-				System.out.println("newRand: " + newRandomHint);
-
-				// if (hintsSeenThisRound.contains(newRandomHint) == false) {
-				// randomHint = newRandomHint;
-				// hintsSeenThisRound.add(newRandomHint);
-				// // decrease max score by 1
-				// } else {
-				// // guess again
-				// System.out.println("in the else");
-				// }
-
-				while (hintsSeenThisRound.contains(newRandomHint)) {
-					newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
-					System.out.println("new random hint in the while" + newRandomHint);
+				if (hintsSeenThisRound.size() < 4) {
+					int newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+					while (hintsSeenThisRound.contains(newRandomHint)) {
+						newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+					}
+					randomHint = newRandomHint;
+					hintsSeenThisRound.add(newRandomHint);
+					gameScore = gameScore - 1;
+					System.out.println("gameScore= " + gameScore);
+					// decrease max score
+				} else {
+					randomHint = 8;
 				}
-
-				randomHint = newRandomHint;
-				hintsSeenThisRound.add(newRandomHint);
-
-				System.out.println("hints seen AFTER asking for more: " + hintsSeenThisRound);
 
 				switch (randomHint) {
 				case 0:
@@ -1193,6 +1184,19 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						e.printStackTrace();
 					}
 					break;
+
+				case 8:
+					SendMessage message8 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("Sorry " + update.getMessage().getChat().getFirstName()
+									+ ", but you have run out of hints. \ud83d\ude1e"
+									+ "\nYou can still be a *geologist* \u2692 and give me your best guess ! \ud83d\ude0e")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message8);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
 				}
 
 			}
