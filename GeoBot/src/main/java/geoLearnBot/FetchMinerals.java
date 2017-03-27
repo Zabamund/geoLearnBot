@@ -157,7 +157,7 @@ public class FetchMinerals {
 			String favoriteMinerals = null;
 
 			Minerals mineral = new Minerals(title, description, type, mineralClassification, chemicalFormula, streak,
-					mohsHardness, crystalSystem, color, luster, fracture, image, seenMinerals, favoriteMinerals);
+					mohsHardness, crystalSystem, color, luster, fracture, image, seenMinerals, favoriteMinerals, null);
 
 			// add each mineral to the list
 			mineralsList.add(mineral);

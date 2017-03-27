@@ -10,14 +10,18 @@ public class Chat {
 
 	private Map<String, Minerals> favoriteMinerals;
 
+	private Map<String, Minerals> mineralQuizList;
+
 	private int highScore;
 
-	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals, int highScore) {
+	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals, int highScore,
+			Map<String, Minerals> mineralQuizList) {
 		super();
 		this.id = id;
 		this.seenMinerals = seenMinerals;
 		this.favoriteMinerals = favoriteMinerals;
 		this.highScore = highScore;
+		this.setMineralQuizList(mineralQuizList);
 	}
 
 	public Long getId() {
@@ -50,6 +54,14 @@ public class Chat {
 
 	public void setHighScore(int highScore) {
 		this.highScore = highScore;
+	}
+
+	public Map<String, Minerals> getMineralQuizList() {
+		return mineralQuizList;
+	}
+
+	public void setMineralQuizList(Map<String, Minerals> mineralQuizList) {
+		this.mineralQuizList = mineralQuizList;
 	}
 
 	@Override

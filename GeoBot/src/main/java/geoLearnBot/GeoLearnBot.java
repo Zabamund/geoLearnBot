@@ -67,8 +67,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
 				Map<String, Minerals> seenMinerals = new HashMap<>();
 				Map<String, Minerals> favoriteMinerals = new HashMap<>();
+				Map<String, Minerals> mineralQuizList = new HashMap<>();
 				int highScore = 0;
-				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals, highScore);
+				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals, highScore,
+						mineralQuizList);
 				chatMap.put(newChat.getId(), newChat);
 			}
 
@@ -876,15 +878,41 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				int gameScore = 0;
 				int playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
 
-				// pick random correct mineral
+				// pick 4 random minerals
+				int random0 = randomNumberPicker(mineralsList);
+				int random1 = randomNumberPicker(mineralsList);
+				int random2 = randomNumberPicker(mineralsList);
+				int random3 = randomNumberPicker(mineralsList);
+
+				// add random minerals to Chat instance
+				String keyRandomMineralName0 = mineralsList.get(random0).getTitle();
+				Minerals valueRandomMineralObject0 = mineralsList.get(random0);
+				String keyRandomMineralName1 = mineralsList.get(random1).getTitle();
+				Minerals valueRandomMineralObject1 = mineralsList.get(random1);
+				String keyRandomMineralName2 = mineralsList.get(random2).getTitle();
+				Minerals valueRandomMineralObject2 = mineralsList.get(random2);
+				String keyRandomMineralName3 = mineralsList.get(random3).getTitle();
+				Minerals valueRandomMineralObject3 = mineralsList.get(random3);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName0,
+						valueRandomMineralObject0);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName1,
+						valueRandomMineralObject1);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName2,
+						valueRandomMineralObject2);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName3,
+						valueRandomMineralObject3);
+
+				System.out.println(
+						"quizList: " + chatMap.get(update.getMessage().getChatId()).getMineralQuizList() + "\n");
+
+				// set one mineral to correctGuess
 
 				// choose random hint
 
-				// pick 3 other minerals
-
 				// display hint to user
 
-				// send instructions to User
+				// send hint to User
+				// remember to clear guessMin after game!!
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 						// @formatter:off
