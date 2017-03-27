@@ -21,6 +21,7 @@ maybe for tests I can set a variable to "update.getM.getC.etc" ?
 
 
 
+
 ideas for play track:
 1. show instructions
 2. pick random mineral
@@ -38,7 +39,7 @@ ideas for play track:
 * reset high score option(for dev?)
 when success show mineral and message including score
 
-! bug random mineral selection for game can select same mineral more than once
+! BUG ALERT  random mineral selection for game can select same mineral more than once
 ! Need to STOP game after correct solution
 
 

@@ -60,13 +60,14 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// randomHint number
 	Integer randomHint = -1;
 
-	// initialise random numbers for game
+	// initialise random numbers and scores for game
 	int random0 = -1;
 	int random1 = -1;
 	int random2 = -1;
 	int random3 = -1;
 	int randomNum = -1;
 	int gameScore = 0;
+	int highScore = 0;
 
 	// @formatter:off
 	// =============================== Main Listener ============================================================
@@ -83,14 +84,14 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				Map<String, Minerals> seenMinerals = new HashMap<>();
 				Map<String, Minerals> favoriteMinerals = new HashMap<>();
 				List<Minerals> mineralQuizList = new ArrayList<>();
-				int highScore = 0;
-				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals, highScore,
+				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals,
 						mineralQuizList);
 				chatMap.put(newChat.getId(), newChat);
 			}
 
-			// initialise score and high score
-			int playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
+			// initialise high score
+			// int playerHighScore =
+			// chatMap.get(update.getMessage().getChatId()).getHighScore();
 
 			// @formatter:off
 			// =============================== Main Options ============================================================
@@ -879,9 +880,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				// clear random minerals from Chat instance
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().clear();
 
-				// initialise score and high score and reset hint lists
+				// reset hint lists and game score
 				hintsSeenThisRound.clear();
-				gameScore = 0;
+				chatMap.get(update.getMessage().getChatId()).setGameScore(0);
 
 				// add random minerals to Chat instance
 				random0 = randomNumberPicker(mineralsList);
@@ -906,17 +907,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject3);
 
 				// set one mineral to correctGuess
-				// @formatter:off
-				// ****************************************************************************REMEMBER TO RESET AFTER GAME********************************
-				// @formatter:on
 				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
 				System.out.println("correctMineral setting stage: " + chatMap.get(update.getMessage().getChatId())
 						.getMineralQuizList().get(randomNum).toString("collectionMineral"));
-				// @formatter:off
-				// ****************************************************************************REMEMBER TO RESET AFTER GAME********************************
-				// @formatter:on
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
@@ -1062,7 +1057,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			if (update.getMessage().getText().equals("new hint")) {
-				// choose random hint and keep track of hints this round
 				if (hintsSeenThisRound.size() < 4) {
 					int newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
 					while (hintsSeenThisRound.contains(newRandomHint)) {
@@ -1070,9 +1064,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					}
 					randomHint = newRandomHint;
 					hintsSeenThisRound.add(newRandomHint);
-					gameScore = gameScore - 1;
-					System.out.println("gameScore= " + gameScore);
-					// decrease max score
+					chatMap.get(update.getMessage().getChatId())
+							.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() - 1);
 				} else {
 					randomHint = 8;
 				}
@@ -1210,42 +1203,57 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (update.getMessage().getText().contains("\\")) {
 
 				String userAnswer = update.getMessage().getText().substring(1).toLowerCase();
-				String correctMineralName = chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
-						.get(randomNum).getTitle().toLowerCase();
+				String correctMineralName = "";
+				if (chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getIsCorrectGuess()
+						.equals(true)) {
+					correctMineralName = chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+							.get(randomNum).getTitle().toLowerCase();
+				}
 
 				if (userAnswer.equals(correctMineralName)) {
-					// reset correct mineral for next guess, increase gameScore
-					// and increase playerHighScore
-					gameScore = gameScore + 3;
-					if (gameScore > playerHighScore) {
-						playerHighScore = gameScore;
+					chatMap.get(update.getMessage().getChatId())
+							.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() + 3);
+					if (chatMap.get(update.getMessage().getChatId()).getGameScore() > chatMap
+							.get(update.getMessage().getChatId()).getHighScore()) {
+						chatMap.get(update.getMessage().getChatId())
+								.setHighScore(chatMap.get(update.getMessage().getChatId()).getGameScore());
 					}
-					// send message to user
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-							.setText("Congratulations " + update.getMessage().getChat().getFirstName()
-									+ ", you guessed correctly, and here is the information card about <strong>"
-									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
-											.getTitle()
+							// @formatter:off
+							.setText(
+									"Congratulations "
+									+ update.getMessage().getChat().getFirstName()
+									+ ", you guessed correctly, and here is the information card about "
+									+ "<strong>"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getTitle()
 									+ "</strong>\n"
-									+ "Well done! \u2692 \ud83d\ude0e" + chatMap.get(update.getMessage().getChatId())
-											.getMineralQuizList().get(randomNum).toString("singleMineral"))
+									+ "Well done! \u2692 \ud83d\ude0e"
+									+ "\nYour current game score is: "
+									+ "<strong>" + chatMap.get(update.getMessage().getChatId()).getGameScore() + "</strong>\n"
+									+ "and your current High score is: "
+									+ "<strong>" + chatMap.get(update.getMessage().getChatId()).getHighScore() + "</strong>\n"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).toString("singleMineral"))
 							.enableHtml(true);
+							// @formatter:on
 					try {
 						sendMessage(message);
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
-
-					System.out.println("yep you got it!");
-					System.out.println("gameScore: " + gameScore);
-					System.out.println("high score: " + playerHighScore);
 					chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 							.setIsCorrectGuess(false);
 				} else {
-					gameScore = gameScore - 1;
-					// send message to user
-					System.out.println("no try again");
-					System.out.println("gameScore: " + gameScore);
+					chatMap.get(update.getMessage().getChatId())
+							.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() - 1);
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("Sorry " + update.getMessage().getChat().getFirstName()
+									+ ", try again, use a hint or start a new game. \n*Starting a new game will reset your current game score !*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 
