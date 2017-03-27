@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
@@ -41,12 +42,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// random number picker
 	public static int randomNumberPicker(List<Minerals> mineralsList) {
 		int random = new Random().nextInt(mineralsList.size());
-		return random;
-	}
-
-	// random mineral picker
-	public static int randomMineralPicker(List<Minerals> mineralQuizList) {
-		int random = new Random().nextInt(mineralQuizList.size());
 		return random;
 	}
 
@@ -834,10 +829,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
 				keyboardFavoriteActions.add(0, "Start quiz");
 				keyboardFavoriteActions.add(1, "/help");
-
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
-
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
 
@@ -870,38 +863,47 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				int gameScore = 0;
 				int playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
 
-				// pick 4 random minerals
+				// pick 4 random minerals and add random minerals to Chat
+				// instance
 				int random0 = randomNumberPicker(mineralsList);
-				int random1 = randomNumberPicker(mineralsList);
-				int random2 = randomNumberPicker(mineralsList);
-				int random3 = randomNumberPicker(mineralsList);
-
-				// add random minerals to Chat instance
 				String keyRandomMineralName0 = mineralsList.get(random0).getTitle();
 				Minerals valueRandomMineralObject0 = mineralsList.get(random0);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName0,
 						valueRandomMineralObject0);
 
+				int random1 = randomNumberPicker(mineralsList);
 				String keyRandomMineralName1 = mineralsList.get(random1).getTitle();
 				Minerals valueRandomMineralObject1 = mineralsList.get(random1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName1,
 						valueRandomMineralObject1);
 
+				int random2 = randomNumberPicker(mineralsList);
 				String keyRandomMineralName2 = mineralsList.get(random2).getTitle();
 				Minerals valueRandomMineralObject2 = mineralsList.get(random2);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName2,
 						valueRandomMineralObject2);
 
+				int random3 = randomNumberPicker(mineralsList);
 				String keyRandomMineralName3 = mineralsList.get(random3).getTitle();
 				Minerals valueRandomMineralObject3 = mineralsList.get(random3);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName3,
 						valueRandomMineralObject3);
 
-				System.out.println(
-						"quizList: " + chatMap.get(update.getMessage().getChatId()).getMineralQuizList() + "\n");
-
 				// get quizList instance
 				Map<String, Minerals> quizList = chatMap.get(update.getMessage().getChatId()).getMineralQuizList();
+
+				System.out.println("mineralsList: " + mineralsList);
+
+				System.out
+						.println("mineralQuizList" + chatMap.get(update.getMessage().getChatId()).getMineralQuizList());
+
+				// set one mineral to correctGuess
+				int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+				System.out.println(keyRandomMineralName3);
+				String correctMineral = keyRandomMineralName3;
+				System.out.println("correctMin test: " + correctMineral);
+				System.out.println("random mineral picked: "
+						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(correctMineral));
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
@@ -912,16 +914,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboardRowLower.add(0, keyRandomMineralName2);
 				keyboardRowLower.add(1, keyRandomMineralName3);
 				keyboardRowLower.add(2, "/play");
-
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardRowUpper);
 				keyboard.add(keyboardRowLower);
-
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
-
-				// set one mineral to correctGuess
-				// int correctGuess = randomMineralPicker(quizList);
 
 				// choose random hint
 
