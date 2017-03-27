@@ -885,25 +885,32 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				Minerals valueRandomMineralObject3 = mineralsList.get(random3);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject3);
 
-				// set one mineral to correctGuess
-				int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
-
 				// get quizList instance
 				List<Minerals> quizList = chatMap.get(update.getMessage().getChatId()).getMineralQuizList();
-				System.out.println("quizList: " + quizList.get(randomNum).getTitle());
+
+				// set one mineral to correctGuess
+				int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+						.setIsCorrectGuess(true);
+				// System.out.println("correct guess= "
+				// +
+				// chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getTitle());
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
 				keyboardRowUpper.add(0, keyRandomMineralName0);
 				keyboardRowUpper.add(1, keyRandomMineralName1);
 				keyboardRowUpper.add(2, "/new hint");
+
 				KeyboardRow keyboardRowLower = new KeyboardRow();
 				keyboardRowLower.add(0, keyRandomMineralName2);
 				keyboardRowLower.add(1, keyRandomMineralName3);
 				keyboardRowLower.add(2, "/play");
+
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardRowUpper);
 				keyboard.add(keyboardRowLower);
+
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
 
