@@ -14,16 +14,15 @@ can do this with single search result .just add and rmove like b4
 
 add better photos
 
-when showing collection, only name and pic so far, add bzuttion to get all info
+when showing collection, only name and pic so far, add button to get all info?
 
-with browse, maybe add all ?
+with browse, maybe add all to collection?
 
 WRITE TESTS!
 need to test for main and edge cases
 maybe for tests I can set a variable to "update.getM.getC.etc" ?
 
 
-create empty array for mineral guesses
 
 ideas for play track:
 1. show instructions
@@ -41,3 +40,15 @@ ideas for play track:
 * keep high score
 * reset high score option(for dev?)
 when success show mineral and message including score
+
+
+HINTS
+
+0 <strong>Mineral Classification :</strong> Halide 
+1 <strong>Chemical Formula :</strong> NaCl 
+2 <strong>Streak :</strong> White 
+3 <strong>Mohs Hardness :</strong> 2-2.5 
+4 <strong>Crystal System :</strong> Isometric 
+5 <strong>Color :</strong> Colorless or white; also blue, purple, red, pink, yellow, orange, or gray 
+6 <strong>Luster :</strong> vitreous 
+7 <strong>Fracture :</strong> conchoidal

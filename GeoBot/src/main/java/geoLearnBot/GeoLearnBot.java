@@ -885,16 +885,16 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				Minerals valueRandomMineralObject3 = mineralsList.get(random3);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject3);
 
-				// get quizList instance
-				List<Minerals> quizList = chatMap.get(update.getMessage().getChatId()).getMineralQuizList();
-
 				// set one mineral to correctGuess
+				// @formatter:off
+				// ****************************************************************************REMEMBER TO RESET AFTER GAME********************************
+				// @formatter:on
 				int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
-				// System.out.println("correct guess= "
-				// +
-				// chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getTitle());
+				// @formatter:off
+				// ****************************************************************************REMEMBER TO RESET AFTER GAME********************************
+				// @formatter:on
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
@@ -914,24 +914,142 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
 
-				// choose random hint
+				// choose random hint and keep track of hints this round
+				List<Integer> hintsSeenThisRound = new ArrayList<>();
+				Integer randomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+				hintsSeenThisRound.add(randomHint);
+
+				System.out.println("first hint number: " + randomHint);
+
+				switch (randomHint) {
+				case 0:
+					SendMessage message0 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Mineral Classification is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getMineralClassification()
+									+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message0);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
+				case 1:
+					SendMessage message1 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Chemical Formula is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getChemicalFormula()
+									+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message1);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
+				case 2:
+					SendMessage message2 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Streak is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getStreak()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message2);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
+				case 3:
+					SendMessage message3 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Hardness is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getMohsHardness()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message3);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
+				case 4:
+					SendMessage message4 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Crystal System is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getCrystalSystem()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message4);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
+				case 5:
+					SendMessage message5 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Color is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getColor()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message5);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
+				case 6:
+					SendMessage message6 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Luster is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getLuster()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message6);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
+				case 7:
+					SendMessage message7 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Fracture is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getFracture()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message7);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+				}
 
 				// display hint to user
 
 				// send hint to User
 				// remember to clear guessMin after game!!
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						.setText(
-						// @formatter:off
-								"*hint #1 placeholder*\n")
-								.enableMarkdown(true)
-								.setReplyMarkup(replyMarkup);
-								// @formatter:on
-				try {
-					sendMessage(message);
-				} catch (TelegramApiException e) {
-					e.printStackTrace();
-				}
+				// SendMessage message = new
+				// SendMessage().setChatId(update.getMessage().getChatId())
+				// .setText(
+//						// @formatter:off
+//								chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).get)
+//								.enableMarkdown(true)
+//								.setReplyMarkup(replyMarkup);
+//								// @formatter:on
+				// try {
+				// sendMessage(message);
+				// } catch (TelegramApiException e) {
+				// e.printStackTrace();
+				// }
 
 			}
 
