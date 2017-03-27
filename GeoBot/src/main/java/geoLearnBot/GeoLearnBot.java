@@ -934,6 +934,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+					break;
 
 				case 1:
 					SendMessage message1 = new SendMessage().setChatId(update.getMessage().getChatId())
@@ -947,6 +948,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+					break;
 
 				case 2:
 					SendMessage message2 = new SendMessage().setChatId(update.getMessage().getChatId())
@@ -961,6 +963,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+					break;
 
 				case 3:
 					SendMessage message3 = new SendMessage().setChatId(update.getMessage().getChatId())
@@ -975,6 +978,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+					break;
 
 				case 4:
 					SendMessage message4 = new SendMessage().setChatId(update.getMessage().getChatId())
@@ -989,6 +993,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+					break;
 
 				case 5:
 					SendMessage message5 = new SendMessage().setChatId(update.getMessage().getChatId())
@@ -1003,6 +1008,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+					break;
 
 				case 6:
 					SendMessage message6 = new SendMessage().setChatId(update.getMessage().getChatId())
@@ -1017,6 +1023,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+					break;
 
 				case 7:
 					SendMessage message7 = new SendMessage().setChatId(update.getMessage().getChatId())
@@ -1031,6 +1038,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+					break;
 				}
 
 				// display hint to user
