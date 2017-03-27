@@ -844,8 +844,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 				// create custom keyboard
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
-				keyboardFavoriteActions.add(0, "Start quiz");
-				keyboardFavoriteActions.add(1, "/help");
+				keyboardFavoriteActions.add(0, "Start new quiz");
+				keyboardFavoriteActions.add(1, "Continue quiz");
+				keyboardFavoriteActions.add(2, "/help");
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
@@ -860,7 +861,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "A correct answer will always earn you 3 points *but !* \n"
 								+ "...each successive *hint* will take *1 point* off your game score "
 								+ "and each wrong guess will also take *1 point* off your game score.\n\n"
-								+ "Press Start quiz to begin !")														
+								+ "\"*Start new quiz*\" resets your current game score (not your high score)\n"
+								+ "\"*Continue quiz*\" allows you to try more questions to increase your high score")														
 								.enableMarkdown(true)
 								.setReplyMarkup(replyMarkup);
 								// @formatter:on
@@ -872,7 +874,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Start quiz
-			if (update.getMessage().getText().equals("Start quiz")) {
+			if (update.getMessage().getText().equals("Start new quiz")) {
 
 				// clear random minerals from Chat instance
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().clear();
@@ -880,7 +882,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				// initialise score and high score and reset hint lists
 				hintsSeenThisRound.clear();
 				gameScore = 0;
-				playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
 
 				// add random minerals to Chat instance
 				random0 = randomNumberPicker(mineralsList);
@@ -1207,19 +1208,22 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			if (update.getMessage().getText().contains("\\")) {
 
-				// if correct answer, reset guess mineral, count game score and
-				// round(currently only one round possible)
 				String userAnswer = update.getMessage().getText().substring(1).toLowerCase();
 				String correctMineralName = chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
 						.get(randomNum).getTitle().toLowerCase();
+
 				if (userAnswer.equals(correctMineralName)) {
 					chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 							.setIsCorrectGuess(false);
 					gameScore = gameScore + 3;
+					playerHighScore = playerHighScore + 3;
+					// send message to user
 					System.out.println("yep you got it!");
 					System.out.println("gameScore: " + gameScore);
+					System.out.println("high score: " + playerHighScore);
 				} else {
 					gameScore = gameScore - 1;
+					// send message to user
 					System.out.println("no try again");
 					System.out.println("gameScore: " + gameScore);
 				}
