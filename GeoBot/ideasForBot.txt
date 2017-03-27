@@ -42,6 +42,8 @@ when success show mineral and message including score
 ! Need to STOP game after correct solution
 
 
+on /play start quiz OR continue game (to get higher score)
+
 HINTS
 
 0 <strong>Mineral Classification :</strong> Halide 
