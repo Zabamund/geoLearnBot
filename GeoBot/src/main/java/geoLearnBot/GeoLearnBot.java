@@ -1056,6 +1056,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
+			// new hint
 			if (update.getMessage().getText().equals("new hint")) {
 				if (hintsSeenThisRound.size() < 4) {
 					int newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
@@ -1194,7 +1195,26 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					} catch (TelegramApiException e) {
 						e.printStackTrace();
 					}
+				}
+			}
 
+			// @formatter:off
+			// ========================================================================= STOPPED HERE ===================================================
+			// @formatter:on
+
+			// Continue quiz
+			if (update.getMessage().getText().equals("Continue quiz")) {
+				System.out.println("in the continue");
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"*Ok let's continue!!*")
+						.enableMarkdown(true);
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
 				}
 
 			}
