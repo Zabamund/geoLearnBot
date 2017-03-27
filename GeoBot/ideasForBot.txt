@@ -10,6 +10,13 @@ Need to find a way to fix this bug.
 add /  button each time new keyboard?
 
 add to collection for each shown mineral?
+can do this with single search result .just add and rmove like b4
+
+add better photos
+
+when showing collection, only name and pic so far, add bzuttion to get all info
+
+with browse, maybe add all ?
 
 WRITE TESTS!
 need to test for main and edge cases
