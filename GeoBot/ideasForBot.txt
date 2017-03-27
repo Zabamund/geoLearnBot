@@ -9,8 +9,12 @@ Need to find a way to fix this bug.
 
 add /  button each time new keyboard?
 
+add to collection for each shown mineral?
+
 WRITE TESTS!
 need to test for main and edge cases
+maybe for tests I can set a variable to "update.getM.getC.etc" ?
+
 
 ideas for play track:
 1. show instructions

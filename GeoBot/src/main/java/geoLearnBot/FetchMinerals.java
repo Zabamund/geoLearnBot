@@ -130,6 +130,7 @@ public class FetchMinerals {
 		// "https://mineralseducationcoalition.org/wp-content/uploads/Autunite_173744783-150x150.jpg"
 		// };
 
+		// shortened url from Google to make it more user-friendly in display
 		String[] imageArray = { "https://goo.gl/ctdEey", "https://goo.gl/WDyKc9", "https://goo.gl/lDHs3A",
 				"https://goo.gl/QE8nTs", "https://goo.gl/eNvoLc", "https://goo.gl/3Pmejy", "https://goo.gl/LvS0uD",
 				"https://goo.gl/QPaOa4", "https://goo.gl/iaZobs", "https://goo.gl/Vjng7h", "https://goo.gl/nnWVTL",
