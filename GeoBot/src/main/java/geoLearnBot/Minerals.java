@@ -30,9 +30,11 @@ public class Minerals {
 
 	private String favoriteMineral;
 
+	private Boolean isCorrectGuess;
+
 	public Minerals(String title, String description, String type, String mineralClassification, String chemicalFormula,
 			String streak, String mohsHardness, String crystalSystem, String color, String luster, String fracture,
-			String image, String seenMineral, String favoriteMineral) {
+			String image, String seenMineral, String favoriteMineral, Boolean isCorrectGuess) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -48,6 +50,7 @@ public class Minerals {
 		this.image = image;
 		this.seenMineral = seenMineral;
 		this.favoriteMineral = favoriteMineral;
+		this.setIsCorrectGuess(isCorrectGuess);
 	}
 
 	public String getTitle() {
@@ -112,6 +115,14 @@ public class Minerals {
 
 	public void setFavoriteMineral(String favoriteMineral) {
 		this.favoriteMineral = favoriteMineral;
+	}
+
+	public Boolean getIsCorrectGuess() {
+		return isCorrectGuess;
+	}
+
+	public void setIsCorrectGuess(Boolean isCorrectGuess) {
+		this.isCorrectGuess = isCorrectGuess;
 	}
 
 	public String toString(String format) {

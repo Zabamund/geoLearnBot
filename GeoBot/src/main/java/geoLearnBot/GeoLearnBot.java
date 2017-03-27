@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
-import org.telegram.telegrambots.api.methods.send.SendDocument;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -36,6 +36,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// Fetch list of minerals
 	List<Minerals> mineralsList = FetchMinerals.fetchMinerals();
 
+	// pick a random mineral number from the list to display
+	int random = randomNumberPicker(mineralsList);
+
 	// random number picker
 	public static int randomNumberPicker(List<Minerals> mineralsList) {
 		int random = new Random().nextInt(mineralsList.size());
@@ -51,6 +54,20 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// text of last user input
 	String lastUserInput;
 
+	// hints seen this round of gaming
+	List<Integer> hintsSeenThisRound = new ArrayList<>();
+
+	// randomHint number
+	Integer randomHint = -1;
+
+	// initialise random numbers for game
+	int random0 = -1;
+	int random1 = -1;
+	int random2 = -1;
+	int random3 = -1;
+	int randomNum = -1;
+	int gameScore = 0;
+
 	// @formatter:off
 	// =============================== Main Listener ============================================================
 	// @formatter:on
@@ -65,9 +82,15 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
 				Map<String, Minerals> seenMinerals = new HashMap<>();
 				Map<String, Minerals> favoriteMinerals = new HashMap<>();
-				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals);
+				List<Minerals> mineralQuizList = new ArrayList<>();
+				int highScore = 0;
+				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals, highScore,
+						mineralQuizList);
 				chatMap.put(newChat.getId(), newChat);
 			}
+
+			// initialise score and high score
+			int playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
 
 			// @formatter:off
 			// =============================== Main Options ============================================================
@@ -137,7 +160,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
 
 				// pick a random mineral to display
-				int random = randomNumberPicker(mineralsList);
+				random = randomNumberPicker(mineralsList);
 
 				// add random mineral to Chat instance
 				String keyMineralName = mineralsList.get(random).getTitle();
@@ -756,7 +779,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								"Please type the *name* of the mineral you'd like me to search for "
 								+ "using the following format:\n"
 								+ "*:mineralName*	\n"
-								+ "remember to include the \":\" !")						
+								+ "remember to include the *\" : \"* !")						
 						.enableMarkdown(true);
 						// @formatter:on
 				try {
@@ -772,7 +795,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				int positionCounter = 0;
 				for (Minerals minerals : mineralsList) {
 					positionCounter++;
-					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
+					if (minerals.getTitle().toLowerCase().contains(userQuery)) {
 						int matchPosition = positionCounter - 1;
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								// @formatter:off
@@ -795,7 +818,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				int countNoMatch = 0;
 				for (Minerals minerals : mineralsList) {
 					int lengthOfMineralsList = mineralsList.size();
-					if (minerals.getTitle().toLowerCase().equals(userQuery) == false) {
+					if (minerals.getTitle().toLowerCase().contains(userQuery) == false) {
 						countNoMatch++;
 					}
 					if (countNoMatch == lengthOfMineralsList) {
@@ -818,20 +841,362 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /Play || 7
 			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("7")) {
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-						.setText(
-								// @formatter:off
-								"*Still working on it !*")						
+
+				// create custom keyboard
+				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
+				keyboardFavoriteActions.add(0, "Start quiz");
+				keyboardFavoriteActions.add(1, "/help");
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardFavoriteActions);
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
+				// send instructions to User
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
+						// @formatter:off
+								"*Mineral Quiz*\n\n"
+								+ "I will now pick a random mineral and give you 1 hint and 4 options"
+								+ ", it's up to you to guess which mineral is the correct one.\n"
+								+ "A correct answer with *1 hint* will earn you *3 points*, \n"
+								+ "each successive *hint* will take *1 point* off the maximum score for that guess.\n\n"
+								+ "Press Start quiz to begin !")														
+								.enableMarkdown(true)
+								.setReplyMarkup(replyMarkup);
 								// @formatter:on
-						.enableMarkdown(true);
-				SendDocument document = new SendDocument().setChatId(update.getMessage().getChatId())
-						.setDocument("http://www.animated-gifs.eu/category_sciences/geology/0012.gif")
-						.setCaption("https://goo.gl/EFhKpG");
 				try {
 					sendMessage(message);
-					sendDocument(document);
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
+				}
+			}
+
+			// /Start quiz
+			if (update.getMessage().getText().equals("Start quiz")) {
+
+				// clear random minerals from Chat instance
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().clear();
+
+				// initialise score and high score
+				gameScore = 0;
+				playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
+
+				// add random minerals to Chat instance
+				random0 = randomNumberPicker(mineralsList);
+				random1 = randomNumberPicker(mineralsList);
+				random2 = randomNumberPicker(mineralsList);
+				random3 = randomNumberPicker(mineralsList);
+
+				String keyRandomMineralName0 = mineralsList.get(random0).getTitle();
+				Minerals valueRandomMineralObject0 = mineralsList.get(random0);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject0);
+
+				String keyRandomMineralName1 = mineralsList.get(random1).getTitle();
+				Minerals valueRandomMineralObject1 = mineralsList.get(random1);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject1);
+
+				String keyRandomMineralName2 = mineralsList.get(random2).getTitle();
+				Minerals valueRandomMineralObject2 = mineralsList.get(random2);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject2);
+
+				String keyRandomMineralName3 = mineralsList.get(random3).getTitle();
+				Minerals valueRandomMineralObject3 = mineralsList.get(random3);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject3);
+
+				// set one mineral to correctGuess
+				// @formatter:off
+				// ****************************************************************************REMEMBER TO RESET AFTER GAME********************************
+				// @formatter:on
+				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+						.setIsCorrectGuess(true);
+				// @formatter:off
+				// ****************************************************************************REMEMBER TO RESET AFTER GAME********************************
+				// @formatter:on
+
+				// create custom keyboard
+				KeyboardRow keyboardRowUpper = new KeyboardRow();
+				keyboardRowUpper.add(0, keyRandomMineralName0);
+				keyboardRowUpper.add(1, keyRandomMineralName1);
+				keyboardRowUpper.add(2, "new hint");
+
+				KeyboardRow keyboardRowLower = new KeyboardRow();
+				keyboardRowLower.add(0, keyRandomMineralName2);
+				keyboardRowLower.add(1, keyRandomMineralName3);
+				keyboardRowLower.add(2, "/play");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRowUpper);
+				keyboard.add(keyboardRowLower);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
+
+				// choose random hint and keep track of hints this round
+				randomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+				hintsSeenThisRound.add(randomHint);
+
+				switch (randomHint) {
+				case 0:
+					SendMessage message0 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Mineral Classification is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getMineralClassification()
+									+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message0);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 1:
+					SendMessage message1 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Chemical Formula is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getChemicalFormula()
+									+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message1);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 2:
+					SendMessage message2 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Streak is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getStreak()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message2);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 3:
+					SendMessage message3 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Hardness is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getMohsHardness()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message3);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 4:
+					SendMessage message4 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Crystal System is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getCrystalSystem()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message4);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 5:
+					SendMessage message5 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Color is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getColor()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message5);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 6:
+					SendMessage message6 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Luster is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getLuster()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message6);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 7:
+					SendMessage message7 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Fracture is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getFracture()
+											+ "*")
+							.enableMarkdown(true).setReplyMarkup(replyMarkup);
+					try {
+						sendMessage(message7);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+				}
+			}
+
+			if (update.getMessage().getText().equals("new hint")) {
+				// choose random hint and keep track of hints this round
+				if (hintsSeenThisRound.size() < 4) {
+					int newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+					while (hintsSeenThisRound.contains(newRandomHint)) {
+						newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
+					}
+					randomHint = newRandomHint;
+					hintsSeenThisRound.add(newRandomHint);
+					gameScore = gameScore - 1;
+					System.out.println("gameScore= " + gameScore);
+					// decrease max score
+				} else {
+					randomHint = 8;
+				}
+
+				switch (randomHint) {
+				case 0:
+					SendMessage message0 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText(
+									"The correct mineral's Mineral Classification is:\n" + "*"
+											+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList()
+													.get(randomNum).getMineralClassification()
+											+ "*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message0);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 1:
+					SendMessage message1 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Chemical Formula is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getChemicalFormula()
+									+ "*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message1);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 2:
+					SendMessage message2 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Streak is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getStreak()
+									+ "*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message2);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 3:
+					SendMessage message3 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Hardness is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getMohsHardness()
+									+ "*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message3);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 4:
+					SendMessage message4 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Crystal System is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getCrystalSystem()
+									+ "*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message4);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 5:
+					SendMessage message5 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Color is:\n" + "*" + chatMap
+									.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getColor()
+									+ "*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message5);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 6:
+					SendMessage message6 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Luster is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getLuster()
+									+ "*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message6);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 7:
+					SendMessage message7 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("The correct mineral's Fracture is:\n" + "*"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getFracture()
+									+ "*")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message7);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+					break;
+
+				case 8:
+					SendMessage message8 = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("Sorry " + update.getMessage().getChat().getFirstName()
+									+ ", but you have run out of hints. \ud83d\ude1e"
+									+ "\nYou can still be a *geologist* \u2692 and give me your best guess ! \ud83d\ude0e")
+							.enableMarkdown(true);
+					try {
+						sendMessage(message8);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
 				}
 
 			}
