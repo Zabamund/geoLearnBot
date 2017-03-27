@@ -68,7 +68,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
 				Map<String, Minerals> seenMinerals = new HashMap<>();
 				Map<String, Minerals> favoriteMinerals = new HashMap<>();
-				Map<String, Minerals> mineralQuizList = new HashMap<>();
+				List<Minerals> mineralQuizList = new ArrayList<>();
 				int highScore = 0;
 				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals, highScore,
 						mineralQuizList);
@@ -778,7 +778,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				int positionCounter = 0;
 				for (Minerals minerals : mineralsList) {
 					positionCounter++;
-					if (minerals.getTitle().toLowerCase().equals(userQuery)) {
+					if (minerals.getTitle().toLowerCase().contains(userQuery)) {
 						int matchPosition = positionCounter - 1;
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								// @formatter:off
@@ -801,7 +801,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				int countNoMatch = 0;
 				for (Minerals minerals : mineralsList) {
 					int lengthOfMineralsList = mineralsList.size();
-					if (minerals.getTitle().toLowerCase().equals(userQuery) == false) {
+					if (minerals.getTitle().toLowerCase().contains(userQuery) == false) {
 						countNoMatch++;
 					}
 					if (countNoMatch == lengthOfMineralsList) {
@@ -868,42 +868,29 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				int random0 = randomNumberPicker(mineralsList);
 				String keyRandomMineralName0 = mineralsList.get(random0).getTitle();
 				Minerals valueRandomMineralObject0 = mineralsList.get(random0);
-				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName0,
-						valueRandomMineralObject0);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject0);
 
 				int random1 = randomNumberPicker(mineralsList);
 				String keyRandomMineralName1 = mineralsList.get(random1).getTitle();
 				Minerals valueRandomMineralObject1 = mineralsList.get(random1);
-				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName1,
-						valueRandomMineralObject1);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject1);
 
 				int random2 = randomNumberPicker(mineralsList);
 				String keyRandomMineralName2 = mineralsList.get(random2).getTitle();
 				Minerals valueRandomMineralObject2 = mineralsList.get(random2);
-				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName2,
-						valueRandomMineralObject2);
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject2);
 
 				int random3 = randomNumberPicker(mineralsList);
 				String keyRandomMineralName3 = mineralsList.get(random3).getTitle();
 				Minerals valueRandomMineralObject3 = mineralsList.get(random3);
-				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().put(keyRandomMineralName3,
-						valueRandomMineralObject3);
-
-				// get quizList instance
-				Map<String, Minerals> quizList = chatMap.get(update.getMessage().getChatId()).getMineralQuizList();
-
-				System.out.println("mineralsList: " + mineralsList);
-
-				System.out
-						.println("mineralQuizList" + chatMap.get(update.getMessage().getChatId()).getMineralQuizList());
+				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().add(valueRandomMineralObject3);
 
 				// set one mineral to correctGuess
 				int randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
-				System.out.println(keyRandomMineralName3);
-				String correctMineral = keyRandomMineralName3;
-				System.out.println("correctMin test: " + correctMineral);
-				System.out.println("random mineral picked: "
-						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(correctMineral));
+
+				// get quizList instance
+				List<Minerals> quizList = chatMap.get(update.getMessage().getChatId()).getMineralQuizList();
+				System.out.println("quizList: " + quizList.get(randomNum).getTitle());
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();

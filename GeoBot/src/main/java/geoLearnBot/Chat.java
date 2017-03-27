@@ -1,5 +1,6 @@
 package geoLearnBot;
 
+import java.util.List;
 import java.util.Map;
 
 public class Chat {
@@ -10,18 +11,18 @@ public class Chat {
 
 	private Map<String, Minerals> favoriteMinerals;
 
-	private Map<String, Minerals> mineralQuizList;
+	private List<Minerals> mineralQuizList;
 
 	private int highScore;
 
 	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals, int highScore,
-			Map<String, Minerals> mineralQuizList) {
+			List<Minerals> mineralQuizList) {
 		super();
 		this.id = id;
 		this.seenMinerals = seenMinerals;
 		this.favoriteMinerals = favoriteMinerals;
 		this.highScore = highScore;
-		this.setMineralQuizList(mineralQuizList);
+		this.mineralQuizList = mineralQuizList;
 	}
 
 	public Long getId() {
@@ -56,11 +57,11 @@ public class Chat {
 		this.highScore = highScore;
 	}
 
-	public Map<String, Minerals> getMineralQuizList() {
+	public List<Minerals> getMineralQuizList() {
 		return mineralQuizList;
 	}
 
-	public void setMineralQuizList(Map<String, Minerals> mineralQuizList) {
+	public void setMineralQuizList(List<Minerals> mineralQuizList) {
 		this.mineralQuizList = mineralQuizList;
 	}
 
