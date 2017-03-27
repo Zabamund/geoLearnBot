@@ -13,15 +13,16 @@ public class Chat {
 
 	private List<Minerals> mineralQuizList;
 
+	private int gameScore;
+
 	private int highScore;
 
-	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals, int highScore,
+	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals,
 			List<Minerals> mineralQuizList) {
 		super();
 		this.id = id;
 		this.seenMinerals = seenMinerals;
 		this.favoriteMinerals = favoriteMinerals;
-		this.highScore = highScore;
 		this.mineralQuizList = mineralQuizList;
 	}
 
@@ -49,6 +50,14 @@ public class Chat {
 		this.favoriteMinerals = favoriteMinerals;
 	}
 
+	public int getGameScore() {
+		return gameScore;
+	}
+
+	public void setGameScore(int gameScore) {
+		this.gameScore = gameScore;
+	}
+
 	public int getHighScore() {
 		return highScore;
 	}
@@ -68,7 +77,7 @@ public class Chat {
 	@Override
 	public String toString() {
 		return "Chat \n*id:* " + this.id + "\n*Seen Minerals:* " + this.seenMinerals + "\n*Favorite Minerals:* "
-				+ this.favoriteMinerals + "\n*High score:" + this.highScore;
+				+ this.favoriteMinerals + "\n*Game score:" + this.gameScore + "\n*High score:" + this.highScore;
 	}
 
 }
