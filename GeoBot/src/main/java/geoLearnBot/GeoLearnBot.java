@@ -1206,6 +1206,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			}
 
+			// quiz answer logic
 			if (update.getMessage().getText().contains("\\")) {
 
 				String userAnswer = update.getMessage().getText().substring(1).toLowerCase();
@@ -1213,14 +1214,33 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						.get(randomNum).getTitle().toLowerCase();
 
 				if (userAnswer.equals(correctMineralName)) {
-					chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
-							.setIsCorrectGuess(false);
+					// reset correct mineral for next guess, increase gameScore
+					// and increase playerHighScore
 					gameScore = gameScore + 3;
-					playerHighScore = playerHighScore + 3;
+					if (gameScore > playerHighScore) {
+						playerHighScore = gameScore;
+					}
 					// send message to user
+					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+							.setText("Congratulations " + update.getMessage().getChat().getFirstName()
+									+ ", you guessed correctly, and here is the information card about <strong>"
+									+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+											.getTitle()
+									+ "</strong>\n"
+									+ "Well done! \u2692 \ud83d\ude0e" + chatMap.get(update.getMessage().getChatId())
+											.getMineralQuizList().get(randomNum).toString("singleMineral"))
+							.enableHtml(true);
+					try {
+						sendMessage(message);
+					} catch (TelegramApiException e) {
+						e.printStackTrace();
+					}
+
 					System.out.println("yep you got it!");
 					System.out.println("gameScore: " + gameScore);
 					System.out.println("high score: " + playerHighScore);
+					chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+							.setIsCorrectGuess(false);
 				} else {
 					gameScore = gameScore - 1;
 					// send message to user
