@@ -26,6 +26,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 		return "342030854:AAHbYQhXVEMNUQ7Pr2RlAT3D0ujWV8D9ztg";
 	}
 
+	// @formatter:off
+	// =============================== Constants ============================================================
+	// @formatter:on
+
 	// Create a chat pseudo-db
 	Map<Long, Chat> chatMap = new HashMap<>();
 
@@ -46,6 +50,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 	// text of last user input
 	String lastUserInput;
+
+	// @formatter:off
+	// =============================== Main Listener ============================================================
+	// @formatter:on
 
 	@Override
 	public void onUpdateReceived(Update update) {
@@ -306,6 +314,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 
 			}
+
+			// @formatter:off
+			// =============================== List, Browse, Search ============================================================
+			// @formatter:on
 
 			// /List Mineral selection || 6
 			if (update.getMessage().getText().equals("/list") || update.getMessage().getText().equals("6")) {
@@ -787,7 +799,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						countNoMatch++;
 					}
 					if (countNoMatch == lengthOfMineralsList) {
-						System.out.println("no match found");
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								.setText("Sorry I couldn't match \"*" + userQuery + "*\" to a mineral in my database."
 										+ "\nYou may search again with *:mineralName* (e.g. :gold)")
@@ -800,6 +811,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					}
 				}
 			}
+
+			// @formatter:off
+			// =============================== Play track ============================================================
+			// @formatter:on
 
 			// /Play || 7
 			if (update.getMessage().getText().equals("/play") || update.getMessage().getText().equals("7")) {
@@ -820,6 +835,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 
 			}
+
+			// @formatter:off
+			// =============================== Glossary track ============================================================
+			// @formatter:on
 
 			// /Glossary || 8
 			if (update.getMessage().getText().equals("/glossary") || update.getMessage().getText().equals("8")) {
