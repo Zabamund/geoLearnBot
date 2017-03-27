@@ -67,7 +67,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (chatMap.containsKey(update.getMessage().getChatId()) == false) {
 				Map<String, Minerals> seenMinerals = new HashMap<>();
 				Map<String, Minerals> favoriteMinerals = new HashMap<>();
-				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals);
+				int highScore = 0;
+				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals, highScore);
 				chatMap.put(newChat.getId(), newChat);
 			}
 
@@ -849,7 +850,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-
 			}
 
 			// /Start quiz
@@ -873,6 +873,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
 
 				// initialise score and high score ?
+				int gameScore = 0;
+				int playerHighScore = chatMap.get(update.getMessage().getChatId()).getHighScore();
+
+				System.out.println("gamescore: " + gameScore);
+				System.out.println("highScore: " + playerHighScore);
 
 				// pick random correct mineral
 

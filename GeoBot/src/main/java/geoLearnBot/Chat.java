@@ -10,11 +10,14 @@ public class Chat {
 
 	private Map<String, Minerals> favoriteMinerals;
 
-	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals) {
+	private int highScore;
+
+	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals, int highScore) {
 		super();
 		this.id = id;
 		this.seenMinerals = seenMinerals;
 		this.favoriteMinerals = favoriteMinerals;
+		this.highScore = highScore;
 	}
 
 	public Long getId() {
@@ -41,10 +44,18 @@ public class Chat {
 		this.favoriteMinerals = favoriteMinerals;
 	}
 
+	public int getHighScore() {
+		return highScore;
+	}
+
+	public void setHighScore(int highScore) {
+		this.highScore = highScore;
+	}
+
 	@Override
 	public String toString() {
 		return "Chat \n*id:* " + this.id + "\n*Seen Minerals:* " + this.seenMinerals + "\n*Favorite Minerals:* "
-				+ this.favoriteMinerals + "\n";
+				+ this.favoriteMinerals + "\n*High score:" + this.highScore;
 	}
 
 }
