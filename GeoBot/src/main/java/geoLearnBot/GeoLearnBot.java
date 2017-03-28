@@ -1065,8 +1065,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					}
 					randomHint = newRandomHint;
 					hintsSeenThisRound.add(newRandomHint);
-					chatMap.get(update.getMessage().getChatId())
-							.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() - 1);
+					if (chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+							.getIsCorrectGuess().equals(true)) {
+						chatMap.get(update.getMessage().getChatId())
+								.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() - 1);
+					}
 				} else {
 					randomHint = 8;
 				}
@@ -1198,10 +1201,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
-			// @formatter:off
-			// ========================================================================= STOPPED HERE ===================================================
-			// @formatter:on
-
 			// Continue quiz
 			if (update.getMessage().getText().equals("Continue quiz")) {
 				System.out.println("in the continue");
@@ -1221,6 +1220,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// quiz answer logic
 			if (update.getMessage().getText().contains("\\")) {
+
+				System.out.println("gameScore: " + chatMap.get(update.getMessage().getChatId()).getGameScore());
+				System.out.println("highScore: " + chatMap.get(update.getMessage().getChatId()).getHighScore());
 
 				String userAnswer = update.getMessage().getText().substring(1).toLowerCase();
 				String correctMineralName = "";
@@ -1263,16 +1265,20 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 							.setIsCorrectGuess(false);
 				} else {
-					chatMap.get(update.getMessage().getChatId())
-							.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() - 1);
-					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
-							.setText("Sorry " + update.getMessage().getChat().getFirstName()
-									+ ", try again, use a hint or start a new game. \n*Starting a new game will reset your current game score !*")
-							.enableMarkdown(true);
-					try {
-						sendMessage(message);
-					} catch (TelegramApiException e) {
-						e.printStackTrace();
+					if (chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+							.getIsCorrectGuess().equals(true)) {
+
+						chatMap.get(update.getMessage().getChatId())
+								.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() - 1);
+						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+								.setText("Sorry " + update.getMessage().getChat().getFirstName()
+										+ ", try again, use a hint or start a new game. \n*Starting a new game will reset your current game score !*")
+								.enableMarkdown(true);
+						try {
+							sendMessage(message);
+						} catch (TelegramApiException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
