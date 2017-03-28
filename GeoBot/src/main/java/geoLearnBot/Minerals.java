@@ -50,7 +50,7 @@ public class Minerals {
 		this.image = image;
 		this.seenMineral = seenMineral;
 		this.favoriteMineral = favoriteMineral;
-		this.setIsCorrectGuess(isCorrectGuess);
+		this.isCorrectGuess = isCorrectGuess;
 	}
 
 	public String getTitle() {
