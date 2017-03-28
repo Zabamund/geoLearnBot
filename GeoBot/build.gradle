@@ -8,7 +8,7 @@ jar {
 	version = '1.0.0-SNAPSHOT'
 }
 
-mainClassName = "daily.news.Main"
+mainClassName = "geoLearnBot.Main"
 
 jar {
     manifest {

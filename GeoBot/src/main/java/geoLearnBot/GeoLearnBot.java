@@ -98,7 +98,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 						// @formatter:off
-								"*You can discover this Bot by picking a number or with the /menu to the right of your text input*"
+								"*Welcome to geoLearnBot !\n*"
+								+ "*You can discover this Bot by picking a number or with the /menu to the right of your text input*"
 								+ "\n\n*1*. /start Show this start menu"
 								+ "\n*2*. /help Need help ?"
 								+ "\n*3*. /random See a random mineral"
