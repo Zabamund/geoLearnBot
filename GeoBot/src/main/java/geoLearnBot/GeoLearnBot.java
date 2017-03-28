@@ -97,9 +97,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
 
 				// log users to console
-				// System.out.println("single user Start: " +
-				// update.getMessage().getChat().getFirstName() + " "
-				// + update.getMessage().getChatId().toString());
+				System.out.println("single user Start: " + update.getMessage().getChat().getFirstName() + " "
+						+ update.getMessage().getChatId().toString());
 
 				KeyboardRow keyboardRow = new KeyboardRow();
 				keyboardRow.add(0, "/start");
@@ -851,7 +850,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
 				keyboardFavoriteActions.add(0, "Collect ! \ud83d\udcb0");
 				keyboardFavoriteActions.add(1, "Drop ! \ud83d\udc4e");
-				keyboardFavoriteActions.add(2, "/Search");
+				keyboardFavoriteActions.add(2, "Search");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
