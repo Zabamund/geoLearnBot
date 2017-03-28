@@ -97,8 +97,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
 
 				// log users to console
-				System.out.println("single user info: " + update.getMessage().getChat().getFirstName() + " "
-						+ update.getMessage().getChat().getLastName());
+				System.out.println("single user Start: " + update.getMessage().getChat().getFirstName() + " "
+						+ update.getMessage().getChat().getLastName() + " "
+						+ update.getMessage().getChatId().toString());
 
 				KeyboardRow keyboardRow = new KeyboardRow();
 				keyboardRow.add(0, "/start");
@@ -894,14 +895,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-				System.out.println("============================================================================");
-				System.out.println("GameScore: " + chatMap.get(update.getMessage().getChatId()).getGameScore());
-				System.out.println("HighScore: " + chatMap.get(update.getMessage().getChatId()).getHighScore());
-				System.out
-						.println("MinsThisRound: " + chatMap.get(update.getMessage().getChatId()).getMineralQuizList());
-				System.out.println(
-						"HintsThisRound: " + chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound());
-				System.out.println("============================================================================");
 			}
 
 			// /Start new quiz
@@ -938,7 +931,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
-				System.out.println("correctMineral setting stage: " + chatMap.get(update.getMessage().getChatId())
+				System.out.println("the correct Mineral is: " + chatMap.get(update.getMessage().getChatId())
 						.getMineralQuizList().get(randomNum).toString("collectionMineral"));
 
 				// create custom keyboard
@@ -1082,16 +1075,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					}
 					break;
 				}
-				System.out.println("============================================================================");
-				System.out.println(
-						"GameScore after Start: " + chatMap.get(update.getMessage().getChatId()).getGameScore());
-				System.out.println(
-						"HighScore after Start: " + chatMap.get(update.getMessage().getChatId()).getHighScore());
-				System.out.println("MinsThisRound after Start: "
-						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList());
-				System.out.println("HintsThisRound after Start: "
-						+ chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound());
-				System.out.println("============================================================================");
 			}
 
 			// new hint
@@ -1239,23 +1222,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						e.printStackTrace();
 					}
 				}
-
-				System.out.println("============================================================================");
-				System.out.println(
-						"GameScore after Hint: " + chatMap.get(update.getMessage().getChatId()).getGameScore());
-				System.out.println(
-						"HighScore after Hint: " + chatMap.get(update.getMessage().getChatId()).getHighScore());
-				System.out.println("MinsThisRound after Hint: "
-						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList());
-				System.out.println("HintsThisRound after Hint: "
-						+ chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound());
-				System.out.println("============================================================================");
 			}
 
 			// Continue quiz
 			if (update.getMessage().getText().equals("Continue quiz")) {
-
-				System.out.println("minQuizList: " + chatMap.get(update.getMessage().getChatId()).getMineralQuizList());
 
 				// clear minerals and hints for new round
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().clear();
@@ -1287,7 +1257,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
-				System.out.println("correctMineral setting stage: " + chatMap.get(update.getMessage().getChatId())
+				System.out.println("the correct Mineral is: " + chatMap.get(update.getMessage().getChatId())
 						.getMineralQuizList().get(randomNum).toString("collectionMineral"));
 
 				// create custom keyboard
@@ -1431,18 +1401,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					}
 					break;
 				}
-
-				System.out.println("============================================================================");
-				System.out.println(
-						"GameScore after Continue: " + chatMap.get(update.getMessage().getChatId()).getGameScore());
-				System.out.println(
-						"HighScore after Continue: " + chatMap.get(update.getMessage().getChatId()).getHighScore());
-				System.out.println("MinsThisRound after Continue: "
-						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList());
-				System.out.println("HintsThisRound after Continue: "
-						+ chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound());
-				System.out.println("============================================================================");
-
 			}
 
 			// quiz answer logic
