@@ -20,40 +20,6 @@ need to test for main and edge cases
 maybe for tests I can set a variable to "update.getM.getC.etc" ?
 
 
-ideas for play track:
-1. show instructions
-2. pick random mineral
-3. show 1 hint and keyboard with 4 minerals
-4. if guess right 3 points
-5. new hint
-6. if guess right 2 points
-7. new hint
-8. if guess right 1 points
-9. new hint
-10. if guess right 0 points
-* need to keep score for each Chat instance
-* need to reset each new game
-* keep high score
-* reset high score option(for dev?)
-when success show mineral and message including score
 
 ! BUG ALERT  random mineral selection for game can select same mineral more than once
-! Need to STOP game after correct solution
 
-
-Need to track hints and minerals seen this round in each chat, not as global variable
-on start, clear both
-on continue, just add questions
-"continue is same as start but without resets"
-
-
-HINTS
-
-0 <strong>Mineral Classification :</strong> Halide 
-1 <strong>Chemical Formula :</strong> NaCl 
-2 <strong>Streak :</strong> White 
-3 <strong>Mohs Hardness :</strong> 2-2.5 
-4 <strong>Crystal System :</strong> Isometric 
-5 <strong>Color :</strong> Colorless or white; also blue, purple, red, pink, yellow, orange, or gray 
-6 <strong>Luster :</strong> vitreous 
-7 <strong>Fracture :</strong> conchoidal
