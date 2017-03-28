@@ -97,9 +97,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
 
 				// log users to console
-				System.out.println("single user Start: " + update.getMessage().getChat().getFirstName() + " "
-						+ update.getMessage().getChat().getLastName() + " "
-						+ update.getMessage().getChatId().toString());
+				// System.out.println("single user Start: " +
+				// update.getMessage().getChat().getFirstName() + " "
+				// + update.getMessage().getChatId().toString());
 
 				KeyboardRow keyboardRow = new KeyboardRow();
 				keyboardRow.add(0, "/start");
@@ -176,9 +176,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 				// create custom keyboard
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
-				keyboardFavoriteActions.add(0, "Add to my collection! \ud83d\udcb0");
-				keyboardFavoriteActions.add(1, "Remove from my collection! \ud83d\udc4e");
-				keyboardFavoriteActions.add(2, "/help");
+				keyboardFavoriteActions.add(0, "Collect ! \ud83d\udcb0");
+				keyboardFavoriteActions.add(1, "Drop ! \ud83d\udc4e");
+				keyboardFavoriteActions.add(2, "/random");
+				keyboardFavoriteActions.add(3, "/start");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
@@ -212,12 +213,26 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Add to my collection!
-			if (update.getMessage().getText().equals("Add to my collection! \ud83d\udcb0")) {
+			if (update.getMessage().getText().equals("Collect ! \ud83d\udcb0")) {
 				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
 						.getFavoriteMinerals();
 				if (favoriteMinerals.containsKey(lastMineralSeen) == false) {
 					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().put(lastMineralSeen,
 							mineralsList.get(indexOfLastMineralSeen));
+
+					// create custom keyboard
+					KeyboardRow keyboardFavoriteActions = new KeyboardRow();
+					keyboardFavoriteActions.add(0, "Collect ! \ud83d\udcb0");
+					keyboardFavoriteActions.add(1, "Drop ! \ud83d\udc4e");
+					keyboardFavoriteActions.add(2, "/random");
+					keyboardFavoriteActions.add(3, "/start");
+
+					List<KeyboardRow> keyboard = new ArrayList<>();
+					keyboard.add(keyboardFavoriteActions);
+
+					ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+					replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 							// @formatter:off
 							.setText(
@@ -227,7 +242,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 											+ lastMineralSeen
 											+ "* has been added to your collection. \ud83d\udc4d"
 									)
-							.enableMarkdown(true);
+							.enableMarkdown(true)
+							.setReplyMarkup(replyMarkup);
 					// @formatter:on
 					try {
 						sendMessage(message);
@@ -255,11 +271,25 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			}
 
 			// /Remove from my collection !
-			if (update.getMessage().getText().equals("Remove from my collection! \ud83d\udc4e")) {
+			if (update.getMessage().getText().equals("Drop ! \ud83d\udc4e")) {
 				Map<String, Minerals> favoriteMinerals = chatMap.get(update.getMessage().getChatId())
 						.getFavoriteMinerals();
 				if (favoriteMinerals.containsKey(lastMineralSeen)) {
 					chatMap.get(update.getMessage().getChatId()).getFavoriteMinerals().remove(lastMineralSeen);
+
+					// create custom keyboard
+					KeyboardRow keyboardFavoriteActions = new KeyboardRow();
+					keyboardFavoriteActions.add(0, "Collect ! \ud83d\udcb0");
+					keyboardFavoriteActions.add(1, "Drop ! \ud83d\udc4e");
+					keyboardFavoriteActions.add(2, "/random");
+					keyboardFavoriteActions.add(3, "/start");
+
+					List<KeyboardRow> keyboard = new ArrayList<>();
+					keyboard.add(keyboardFavoriteActions);
+
+					ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+					replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
 					SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 							// @formatter:off
 							.setText(
@@ -269,7 +299,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 									+ lastMineralSeen
 									+ "* has been removed from your collection. \ud83d\udc4d"
 									)
-							.enableMarkdown(true);
+							.enableMarkdown(true)
+							.setReplyMarkup(replyMarkup);
 					// @formatter:on
 					try {
 						sendMessage(message);
@@ -815,6 +846,19 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// Retrieve mineral from list
 			if (update.getMessage().getText().contains(":")) {
+
+				// create custom keyboard
+				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
+				keyboardFavoriteActions.add(0, "Collect ! \ud83d\udcb0");
+				keyboardFavoriteActions.add(1, "Drop ! \ud83d\udc4e");
+				keyboardFavoriteActions.add(2, "/Search");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardFavoriteActions);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setOneTimeKeyboad(true).setResizeKeyboard(true);
+
 				String userQuery = update.getMessage().getText().substring(1).toLowerCase();
 				int positionCounter = 0;
 				for (Minerals minerals : mineralsList) {
@@ -830,7 +874,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 									+ userQuery
 									+ ":"
 									+ mineralsList.get(matchPosition).toString("singleMineral"))
-								.enableHtml(true);
+								.enableHtml(true)
+								.setReplyMarkup(replyMarkup);
+								lastMineralSeen = mineralsList.get(matchPosition).getTitle();
+								indexOfLastMineralSeen = matchPosition;
 								// @formatter:on
 						try {
 							sendMessage(message);
@@ -931,8 +978,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
-				System.out.println("the correct Mineral is: " + chatMap.get(update.getMessage().getChatId())
-						.getMineralQuizList().get(randomNum).toString("collectionMineral"));
+				System.out.println("the correct Mineral is: "
+						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getTitle());
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
@@ -1257,8 +1304,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
-				System.out.println("the correct Mineral is: " + chatMap.get(update.getMessage().getChatId())
-						.getMineralQuizList().get(randomNum).toString("collectionMineral"));
+				System.out.println("the correct Mineral is: "
+						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getTitle());
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
