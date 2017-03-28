@@ -2062,6 +2062,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 					update.getMessage().getText().toLowerCase().contains(swear1) || //
 					update.getMessage().getText().toLowerCase().contains(swear2) || //
 					update.getMessage().getText().toLowerCase().contains(swear3)) {
+
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
@@ -2077,6 +2078,34 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
+			}
+
+			// @formatter:off
+			// =============================== Easter Egg, a tribute to John Marriott, RIP ============================================================
+			// @formatter:on
+
+			// /easterEgg
+			if (chatMap.get(update.getMessage().getChatId()).getHighScore() > 999) {
+
+				System.out.println(
+						"This dude really played ! his name is: " + update.getMessage().getChat().getFirstName());
+
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
+						// @formatter:off
+						.setText(
+								"Congratulations "
+								+ update.getMessage().getChat().getFirstName()
+								+ ", through luck, hard work or sheer stubborness (...or hacking), "
+								+ "you have reached the venerable level of \n*Mineral Master*\n"
+								+ "You are hereby granted the title of\n*Humble Follower of John Marriott* _RIP_")
+						.enableMarkdown(true); 
+						// @formatter:on
+				try {
+					sendMessage(message);
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+
 			}
 
 			// closing ifUpdateHasText
