@@ -108,7 +108,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								//	+ "\n*X*. /search Search for a specific mineral (sorry, nothing here yet...)"
 								//	+ "\n*X*. /compare Compare two minerals (sorry, nothing here yet...)"
 								+ "\n*6*. /list Choose from a selection of minerals"
-								+ "\n*7*. /play Test your knowledge (sorry, still work in progress... \ud83d\udc1b )"
+								+ "\n*7*. /play Test your knowledge"
 								+ "\n*8*. /glossary Glossary"								
 								+ "\n*9*. /acknowledgements Acknowledgements")
 								// @formatter:on
