@@ -15,20 +15,17 @@ public class Chat {
 
 	private List<Integer> hintsSeenThisRound;
 
-	private List<Minerals> mineralsSeenThisRound;
-
 	private int gameScore;
 
 	private int highScore;
 
 	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals,
-			List<Minerals> mineralQuizList, List<Minerals> mineralsSeenThisRound, List<Integer> hintsSeenThisRound) {
+			List<Minerals> mineralQuizList, List<Integer> hintsSeenThisRound) {
 		super();
 		this.id = id;
 		this.seenMinerals = seenMinerals;
 		this.favoriteMinerals = favoriteMinerals;
 		this.mineralQuizList = mineralQuizList;
-		this.mineralsSeenThisRound = mineralsSeenThisRound;
 		this.hintsSeenThisRound = hintsSeenThisRound;
 	}
 
@@ -70,14 +67,6 @@ public class Chat {
 
 	public void setHintsSeenThisRound(List<Integer> hintsSeenThisRound) {
 		this.hintsSeenThisRound = hintsSeenThisRound;
-	}
-
-	public List<Minerals> getMineralsSeenThisRound() {
-		return this.mineralsSeenThisRound;
-	}
-
-	public void setMineralsSeenThisRound(List<Minerals> mineralsSeenThisRound) {
-		this.mineralsSeenThisRound = mineralsSeenThisRound;
 	}
 
 	public int getGameScore() {
