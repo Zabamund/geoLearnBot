@@ -96,6 +96,10 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
 
+				// log users to console
+				System.out.println("single user info: " + update.getMessage().getChat().getFirstName() + " "
+						+ update.getMessage().getChat().getLastName());
+
 				KeyboardRow keyboardRow = new KeyboardRow();
 				keyboardRow.add(0, "/start");
 				keyboardRow.add(1, "/help");
