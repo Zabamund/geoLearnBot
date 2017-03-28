@@ -13,17 +13,23 @@ public class Chat {
 
 	private List<Minerals> mineralQuizList;
 
+	private List<Integer> hintsSeenThisRound;
+
+	private List<Minerals> mineralsSeenThisRound;
+
 	private int gameScore;
 
 	private int highScore;
 
 	public Chat(Long id, Map<String, Minerals> seenMinerals, Map<String, Minerals> favoriteMinerals,
-			List<Minerals> mineralQuizList) {
+			List<Minerals> mineralQuizList, List<Minerals> mineralsSeenThisRound, List<Integer> hintsSeenThisRound) {
 		super();
 		this.id = id;
 		this.seenMinerals = seenMinerals;
 		this.favoriteMinerals = favoriteMinerals;
 		this.mineralQuizList = mineralQuizList;
+		this.mineralsSeenThisRound = mineralsSeenThisRound;
+		this.hintsSeenThisRound = hintsSeenThisRound;
 	}
 
 	public Long getId() {
@@ -50,8 +56,32 @@ public class Chat {
 		this.favoriteMinerals = favoriteMinerals;
 	}
 
+	public List<Minerals> getMineralQuizList() {
+		return this.mineralQuizList;
+	}
+
+	public void setMineralQuizList(List<Minerals> mineralQuizList) {
+		this.mineralQuizList = mineralQuizList;
+	}
+
+	public List<Integer> getHintsSeenThisRound() {
+		return this.hintsSeenThisRound;
+	}
+
+	public void setHintsSeenThisRound(List<Integer> hintsSeenThisRound) {
+		this.hintsSeenThisRound = hintsSeenThisRound;
+	}
+
+	public List<Minerals> getMineralsSeenThisRound() {
+		return this.mineralsSeenThisRound;
+	}
+
+	public void setMineralsSeenThisRound(List<Minerals> mineralsSeenThisRound) {
+		this.mineralsSeenThisRound = mineralsSeenThisRound;
+	}
+
 	public int getGameScore() {
-		return gameScore;
+		return this.gameScore;
 	}
 
 	public void setGameScore(int gameScore) {
@@ -59,19 +89,11 @@ public class Chat {
 	}
 
 	public int getHighScore() {
-		return highScore;
+		return this.highScore;
 	}
 
 	public void setHighScore(int highScore) {
 		this.highScore = highScore;
-	}
-
-	public List<Minerals> getMineralQuizList() {
-		return mineralQuizList;
-	}
-
-	public void setMineralQuizList(List<Minerals> mineralQuizList) {
-		this.mineralQuizList = mineralQuizList;
 	}
 
 	@Override

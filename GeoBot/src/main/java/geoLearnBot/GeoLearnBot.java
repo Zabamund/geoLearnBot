@@ -54,8 +54,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// text of last user input
 	String lastUserInput;
 
-	// hints seen this round of gaming
+	// hints and minerals seen this round of gaming
 	List<Integer> hintsSeenThisRound = new ArrayList<>();
+	List<Minerals> mineralsSeenThisRound = new ArrayList<>();
 
 	// randomHint number
 	Integer randomHint = -1;
@@ -85,13 +86,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				Map<String, Minerals> favoriteMinerals = new HashMap<>();
 				List<Minerals> mineralQuizList = new ArrayList<>();
 				Chat newChat = new Chat(update.getMessage().getChatId(), seenMinerals, favoriteMinerals,
-						mineralQuizList);
+						mineralQuizList, mineralsSeenThisRound, hintsSeenThisRound);
 				chatMap.put(newChat.getId(), newChat);
 			}
-
-			// initialise high score
-			// int playerHighScore =
-			// chatMap.get(update.getMessage().getChatId()).getHighScore();
 
 			// @formatter:off
 			// =============================== Main Options ============================================================
@@ -336,7 +333,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 						e.printStackTrace();
 					}
 				}
-
 			}
 
 			// @formatter:off
@@ -368,7 +364,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-
 			}
 
 			// /Browse
@@ -396,7 +391,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-
 			}
 
 			// /by Mineral Classification
@@ -874,15 +868,39 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				}
 			}
 
-			// /Start quiz
+			// /Start new quiz
 			if (update.getMessage().getText().equals("Start new quiz")) {
 
 				// clear random minerals from Chat instance
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().clear();
 
-				// reset hint lists and game score
-				hintsSeenThisRound.clear();
+				// reset hint, mineral lists and game score
+				chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound().clear();
+				chatMap.get(update.getMessage().getChatId()).getMineralsSeenThisRound().clear();
 				chatMap.get(update.getMessage().getChatId()).setGameScore(0);
+
+				System.out.println("hints seen this round "
+						+ chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound());
+				System.out.println("minerals seen this round "
+						+ chatMap.get(update.getMessage().getChatId()).getMineralsSeenThisRound());
+				System.out.println("score this round " + chatMap.get(update.getMessage().getChatId()).getGameScore());
+
+				// if
+				// (chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound().isEmpty()
+				// == false) {
+				// chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound().clear();
+				// }
+				// if
+				// (chatMap.get(update.getMessage().getChatId()).getMineralsSeenThisRound().isEmpty()
+				// == false) {
+				// chatMap.get(update.getMessage().getChatId()).getMineralsSeenThisRound().clear();
+				// }
+				// if
+				// (chatMap.get(update.getMessage().getChatId()).getGameScore()
+				// > 0) {
+				// chatMap.get(update.getMessage().getChatId()).setGameScore(0);
+				// }
+				System.out.println("BUG HUNT: ");
 
 				// add random minerals to Chat instance
 				random0 = randomNumberPicker(mineralsList);
@@ -933,7 +951,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 				// choose random hint and keep track of hints this round
 				randomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
-				hintsSeenThisRound.add(randomHint);
+				chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound().add(randomHint);
 
 				switch (randomHint) {
 				case 0:
@@ -1058,13 +1076,15 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// new hint
 			if (update.getMessage().getText().equals("new hint")) {
-				if (hintsSeenThisRound.size() < 4) {
+
+				if (chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound().size() < 4) {
 					int newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
-					while (hintsSeenThisRound.contains(newRandomHint)) {
+					while (chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound()
+							.contains(newRandomHint)) {
 						newRandomHint = ThreadLocalRandom.current().nextInt(0, 7 + 1);
 					}
 					randomHint = newRandomHint;
-					hintsSeenThisRound.add(newRandomHint);
+					chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound().add(newRandomHint);
 					if (chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 							.getIsCorrectGuess().equals(true)) {
 						chatMap.get(update.getMessage().getChatId())
