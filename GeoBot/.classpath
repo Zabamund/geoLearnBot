@@ -2,9 +2,6 @@
 <classpath>
 	<classpathentry path="bin" kind="output"/>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
 	<classpathentry sourcepath="C:/Users/Propulsion/.gradle/caches/modules-2/files-2.1/org.telegram/telegrambots/2.4.4.4/ae5966769c559e3f87518eb5a04f8f571200c8e3/telegrambots-2.4.4.4-sources.jar" kind="lib" path="C:/Users/Propulsion/.gradle/caches/modules-2/files-2.1/org.telegram/telegrambots/2.4.4.4/ee4498cb75f124c03d68d33fead88ad0aaaac191/telegrambots-2.4.4.4.jar"/>
 	<classpathentry sourcepath="C:/Users/Propulsion/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/baf95d8519fc1a11d388f8543cb40cd2bb9d66dc/gson-2.8.0-sources.jar" kind="lib" path="C:/Users/Propulsion/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar"/>
