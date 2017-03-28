@@ -95,6 +95,22 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
+
+				// log users to console
+				System.out.println("single user info: " + update.getMessage().getChat().getFirstName() + " "
+						+ update.getMessage().getChat().getLastName());
+
+				KeyboardRow keyboardRow = new KeyboardRow();
+				keyboardRow.add(0, "/start");
+				keyboardRow.add(1, "/help");
+				keyboardRow.add(2, "/glossary");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRow);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
+
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 						// @formatter:off
@@ -113,7 +129,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "\n*8*. /glossary Glossary"								
 								+ "\n*9*. /acknowledgements Acknowledgements")
 								// @formatter:on
-						.enableMarkdown(true);
+						.enableMarkdown(true).setReplyMarkup(replyMarkup);
 				try {
 					sendMessage(message); // Call method to send message
 				} catch (TelegramApiException e) {
@@ -123,6 +139,18 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 			// /help || 2
 			if (update.getMessage().getText().equals("/help") || update.getMessage().getText().equals("2")) {
+
+				KeyboardRow keyboardRow = new KeyboardRow();
+				keyboardRow.add(0, "/start");
+				keyboardRow.add(1, "/help");
+				keyboardRow.add(2, "/glossary");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRow);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
+
 				String winky = "\ud83d\ude09";
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
@@ -134,7 +162,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "\n\n*Errors:* if you keep asking for more minerals and they're not coming, well... why "
 								+ "don't you read the text and wait a little " + winky + " ?")
 								// @formatter:on
-						.enableMarkdown(true);
+						.enableMarkdown(true).setReplyMarkup(replyMarkup);
 				try {
 					sendMessage(message);
 				} catch (TelegramApiException e) {
@@ -1536,6 +1564,18 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /acknowledgements || 9
 			if (update.getMessage().getText().equals("/acknowledgements")
 					|| update.getMessage().getText().equals("9")) {
+
+				KeyboardRow keyboardRow = new KeyboardRow();
+				keyboardRow.add(0, "/start");
+				keyboardRow.add(1, "/help");
+				keyboardRow.add(2, "/glossary");
+
+				List<KeyboardRow> keyboard = new ArrayList<>();
+				keyboard.add(keyboardRow);
+
+				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
+				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
+
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
 						// @formatter:off
 											"*geoLearnBot Acknowledges, Credits and Thanks*"
@@ -1547,7 +1587,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 											+ "\n\nAdditionally geoLearnBot states that:"
 											+ "\nThis bot is in no way affiliated nor partnered with nor sponsored by the Minerals Education Coalition")
 											// @formatter:on
-						.enableMarkdown(true);
+						.enableMarkdown(true).setReplyMarkup(replyMarkup);
 				try {
 					sendMessage(message); // Call method to send message
 				} catch (TelegramApiException e) {
@@ -1573,7 +1613,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboardRowLower.add(1, "Silicate");
 				keyboardRowLower.add(2, "Sulfate");
 				keyboardRowLower.add(3, "Sulfide");
-				keyboardRowLower.add(4, "/help");
+				keyboardRowLower.add(4, "/glossary");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardRowUpper);
@@ -1799,7 +1839,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				keyboardRowLower.add(0, "Hexagonal");
 				keyboardRowLower.add(1, "Trigonal");
 				keyboardRowLower.add(2, "Isometric");
-				keyboardRowLower.add(3, "/help");
+				keyboardRowLower.add(3, "/glossary");
 
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardRowUpper);

@@ -130,14 +130,31 @@ public class FetchMinerals {
 		// "https://mineralseducationcoalition.org/wp-content/uploads/Autunite_173744783-150x150.jpg"
 		// };
 
-		// shortened url from Google to make it more user-friendly in display
-		String[] imageArray = { "https://goo.gl/ctdEey", "https://goo.gl/WDyKc9", "https://goo.gl/lDHs3A",
-				"https://goo.gl/QE8nTs", "https://goo.gl/eNvoLc", "https://goo.gl/3Pmejy", "https://goo.gl/LvS0uD",
-				"https://goo.gl/QPaOa4", "https://goo.gl/iaZobs", "https://goo.gl/Vjng7h", "https://goo.gl/nnWVTL",
-				"https://goo.gl/aG9DKY", "https://goo.gl/YFDrld", "https://goo.gl/gk5BYF", "https://goo.gl/sLRi8e",
-				"https://goo.gl/mLzJfK", "https://goo.gl/J8gqSV", "https://goo.gl/kTsvLY", "https://goo.gl/D2D2Rf",
-				"https://goo.gl/R5nBOI", "https://goo.gl/tKZyJU", "https://goo.gl/5TWzeP", "https://goo.gl/G3Plv5",
-				"https://goo.gl/cKHJOU", "https://goo.gl/p69t7L", "https://goo.gl/wmHqQw" };
+		// shortened url from Google to make it more user-friendly in display -
+		// small images
+		// String[] imageArray = { "https://goo.gl/ctdEey",
+		// "https://goo.gl/WDyKc9", "https://goo.gl/lDHs3A",
+		// "https://goo.gl/QE8nTs", "https://goo.gl/eNvoLc",
+		// "https://goo.gl/3Pmejy", "https://goo.gl/LvS0uD",
+		// "https://goo.gl/QPaOa4", "https://goo.gl/iaZobs",
+		// "https://goo.gl/Vjng7h", "https://goo.gl/nnWVTL",
+		// "https://goo.gl/aG9DKY", "https://goo.gl/YFDrld",
+		// "https://goo.gl/gk5BYF", "https://goo.gl/sLRi8e",
+		// "https://goo.gl/mLzJfK", "https://goo.gl/J8gqSV",
+		// "https://goo.gl/kTsvLY", "https://goo.gl/D2D2Rf",
+		// "https://goo.gl/R5nBOI", "https://goo.gl/tKZyJU",
+		// "https://goo.gl/5TWzeP", "https://goo.gl/G3Plv5",
+		// "https://goo.gl/cKHJOU", "https://goo.gl/p69t7L",
+		// "https://goo.gl/wmHqQw" };
+
+		// shortened urls from Google with higher res images
+		String[] imageArray = { "https://goo.gl/jsf1Wi", "https://goo.gl/AORz1i", "https://goo.gl/i1spXH",
+				"https://goo.gl/hvVlpb", "https://goo.gl/WToKv4", "https://goo.gl/jc4Qx3", "https://goo.gl/PmxEA7",
+				"https://goo.gl/EeVygZ", "https://goo.gl/3dXfJS", "https://goo.gl/OjjKrq", "https://goo.gl/6rp734",
+				"https://goo.gl/6QdCY6", "https://goo.gl/RKJd4n", "https://goo.gl/JrluK9", "https://goo.gl/WZj1Xl",
+				"https://goo.gl/ZxDGga", "https://goo.gl/qgnfsG", "https://goo.gl/57hY6m", "https://goo.gl/V75Wiu",
+				"https://goo.gl/6RkN7K", "https://goo.gl/tnnk2g", "https://goo.gl/oGSlQT", "https://goo.gl/f0fF7a",
+				"https://goo.gl/aNqEA7", "https://goo.gl/1wJiVX", "https://goo.gl/LIvRoo" };
 
 		// create a List of all minerals
 		for (int i = 0; i < 26; i++) {
