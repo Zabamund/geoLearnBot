@@ -44,6 +44,7 @@ when success show mineral and message including score
 Need to track hints and minerals seen this round in each chat, not as global variable
 on start, clear both
 on continue, just add questions
+"continue is same as start but without resets"
 
 
 HINTS
