@@ -951,11 +951,19 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().clear();
 				chatMap.get(update.getMessage().getChatId()).setGameScore(0);
 
-				// add random minerals to Chat instance
-				random0 = randomNumberPicker(mineralsList);
-				random1 = randomNumberPicker(mineralsList);
-				random2 = randomNumberPicker(mineralsList);
-				random3 = randomNumberPicker(mineralsList);
+				// create array of four different integers
+				List<Integer> arrayToCheck = new ArrayList<>();
+				while (arrayToCheck.size() < 4) {
+					int randomToCheck = randomNumberPicker(mineralsList);
+					if (arrayToCheck.contains(randomToCheck) == false) {
+						arrayToCheck.add(randomToCheck);
+					}
+				}
+				// set random minerals to different int
+				random0 = arrayToCheck.get(0);
+				random1 = arrayToCheck.get(1);
+				random2 = arrayToCheck.get(2);
+				random3 = arrayToCheck.get(3);
 
 				String keyRandomMineralName0 = mineralsList.get(random0).getTitle();
 				Minerals valueRandomMineralObject0 = mineralsList.get(random0);
@@ -1277,11 +1285,19 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().clear();
 				chatMap.get(update.getMessage().getChatId()).getHintsSeenThisRound().clear();
 
-				// add random minerals to Chat instance
-				random0 = randomNumberPicker(mineralsList);
-				random1 = randomNumberPicker(mineralsList);
-				random2 = randomNumberPicker(mineralsList);
-				random3 = randomNumberPicker(mineralsList);
+				// create array of four different integers
+				List<Integer> arrayToCheck = new ArrayList<>();
+				while (arrayToCheck.size() < 4) {
+					int randomToCheck = randomNumberPicker(mineralsList);
+					if (arrayToCheck.contains(randomToCheck) == false) {
+						arrayToCheck.add(randomToCheck);
+					}
+				}
+				// set random minerals to different int
+				random0 = arrayToCheck.get(0);
+				random1 = arrayToCheck.get(1);
+				random2 = arrayToCheck.get(2);
+				random3 = arrayToCheck.get(3);
 
 				String keyRandomMineralName0 = mineralsList.get(random0).getTitle();
 				Minerals valueRandomMineralObject0 = mineralsList.get(random0);
