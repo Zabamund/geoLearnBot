@@ -127,7 +127,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ "\n*6*. /list Choose from a selection of minerals"
 								+ "\n*7*. /play Test your knowledge"
 								+ "\n*8*. /glossary Glossary"								
-								+ "\n*9*. /acknowledgements Acknowledgements")
+								+ "\n*9*. /acknowledgements Acknowledgements and feeback")
 								// @formatter:on
 						.enableMarkdown(true).setReplyMarkup(replyMarkup);
 				try {
@@ -1582,9 +1582,15 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
 						// @formatter:off
-											"*geoLearnBot Acknowledges, Credits and Thanks*"
-											+ "\n*The Minerals Education Coalition*"
-											+ "\n*for all the geological data displayed inside this bot*"
+											"Please send all feedback or suggestions to: <dicebekind gmail com>\n\n"
+											+ "*geoLearnBot Acknowledges, Credits and Thanks:*\n\n"
+											+ "*Wikipedia*\n"
+											+ "[https://en.wikipedia.org/wiki/]\n"
+											+ "*for all the information presented in the Glossary*\n"
+											+ "and;\n"
+											+ "\n*The Minerals Education Coalition*\n"
+											+ "[https://mineralseducationcoalition.org]\n"
+											+ "*for all the geological data displayed inside this bot*"
 											+ "\n\nThe original material is available at [https://mineralseducationcoalition.org]"
 											+ "\nThe Reprint Policy of the Minerals Education Coalition is available at"
 											+ " [https://mineralseducationcoalition.org/reprint-policy/]"
