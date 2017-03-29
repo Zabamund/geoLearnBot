@@ -13,3 +13,4 @@ WRITE TESTS!
 need to test for main and edge cases
 maybe for tests I can set a variable to "update.getM.getC.etc" ?
 
+would be good to have server running 24/7, heroku didn't work first attempt
