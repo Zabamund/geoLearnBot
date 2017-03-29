@@ -103,7 +103,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				if (individualUserMap.containsKey(individualUserKey) == false) {
 					individualUserMap.put(individualUserKey, individualUserValue);
 				}
-				// System.out.println(individualUserMap);
+				System.out.println(individualUserMap);
+				System.out.println("chat " + update.getMessage().getDate());
 
 				KeyboardRow keyboardRow = new KeyboardRow();
 				keyboardRow.add(0, "/start");
