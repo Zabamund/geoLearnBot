@@ -96,9 +96,14 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 			// /start || 1
 			if (update.getMessage().getText().equals("/start") || update.getMessage().getText().equals("1")) {
 
-				// log users to console
-				System.out.println("single user Start: " + update.getMessage().getChat().getFirstName() + " "
-						+ update.getMessage().getChatId().toString());
+				// log users to variable for retrieval if needed
+				Map<String, String> individualUserMap = new HashMap<>();
+				String individualUserKey = update.getMessage().getChatId().toString();
+				String individualUserValue = update.getMessage().getChat().getFirstName();
+				if (individualUserMap.containsKey(individualUserKey) == false) {
+					individualUserMap.put(individualUserKey, individualUserValue);
+				}
+				// System.out.println(individualUserMap);
 
 				KeyboardRow keyboardRow = new KeyboardRow();
 				keyboardRow.add(0, "/start");
@@ -916,7 +921,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
 				keyboardFavoriteActions.add(0, "Start new quiz");
 				keyboardFavoriteActions.add(1, "Continue quiz");
-				keyboardFavoriteActions.add(2, "/help");
+				keyboardFavoriteActions.add(2, "/glossary");
+				keyboardFavoriteActions.add(3, "/help");
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
