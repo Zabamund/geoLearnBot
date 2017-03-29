@@ -4,12 +4,6 @@ user location ? do something with it
 
 compare minerals ???
 
-add /  button each time new keyboard?
-
-add to collection for each shown mineral?
-can do this with single search result .just add and rmove like b4
-
-add better photos
 
 when showing collection, only name and pic so far, add button to get all info?
 
@@ -18,8 +12,6 @@ with browse, maybe add all to collection?
 WRITE TESTS!
 need to test for main and edge cases
 maybe for tests I can set a variable to "update.getM.getC.etc" ?
-
-feedback field
 
 
 
