@@ -916,7 +916,8 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				KeyboardRow keyboardFavoriteActions = new KeyboardRow();
 				keyboardFavoriteActions.add(0, "Start new quiz");
 				keyboardFavoriteActions.add(1, "Continue quiz");
-				keyboardFavoriteActions.add(2, "/help");
+				keyboardFavoriteActions.add(2, "/glossary");
+				keyboardFavoriteActions.add(3, "/help");
 				List<KeyboardRow> keyboard = new ArrayList<>();
 				keyboard.add(keyboardFavoriteActions);
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
