@@ -1596,24 +1596,25 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				ReplyKeyboardMarkup replyMarkup = new ReplyKeyboardMarkup();
 				replyMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
 
-				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId()).setText(
+				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
-											"Please send all feedback or suggestions to: <dicebekind gmail com>\n\n"
-											+ "*geoLearnBot Acknowledges, Credits and Thanks:*\n\n"
-											+ "*Wikipedia*\n"
-											+ "[https://en.wikipedia.org/wiki/]\n"
-											+ "*for all the information presented in the Glossary*\n"
-											+ "and;\n"
-											+ "\n*The Minerals Education Coalition*\n"
-											+ "[https://mineralseducationcoalition.org]\n"
-											+ "*for all the geological data displayed inside this bot*"
-											+ "\n\nThe original material is available at [https://mineralseducationcoalition.org]"
-											+ "\nThe Reprint Policy of the Minerals Education Coalition is available at"
-											+ " [https://mineralseducationcoalition.org/reprint-policy/]"
-											+ "\n\nAdditionally geoLearnBot states that:"
-											+ "\nThis bot is in no way affiliated nor partnered with nor sponsored by the Minerals Education Coalition")
-											// @formatter:on
+						.setText(
+								"Please send all feedback or suggestions to: <dicebekind gmail com>\n\n"
+								+ "*geoLearnBot Acknowledges, Credits and Thanks:*\n\n"
+								+ "*The Minerals Education Coalition (MEC)*\n"
+								+ "[https://mineralseducationcoalition.org]\n"
+								+ "*for all the geological data displayed inside this bot*\n\n"
+								+ "The original material is available at [https://mineralseducationcoalition.org]\n"
+								+ "The Reprint Policy of the MEC is available at\n"
+								+ "[https://mineralseducationcoalition.org/reprint-policy/]\n\n"
+								+ "Additionally geoLearnBot states that:\n"
+								+ "This bot is in no way affiliated nor partnered with nor sponsored by the MEC.\n\n"
+								+ "*geoLearnBot also Acknowledges, Credits and Thanks:*\n\n"
+								+ "*Wikipedia*\n"
+								+ "[https://en.wikipedia.org/wiki/]\n"
+								+ "*for all the information presented in the Glossary*")
 						.enableMarkdown(true).setReplyMarkup(replyMarkup);
+						// @formatter:on
 				try {
 					sendMessage(message); // Call method to send message
 				} catch (TelegramApiException e) {
