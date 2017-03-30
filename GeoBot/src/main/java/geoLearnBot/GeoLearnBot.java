@@ -27,6 +27,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	 * MIT License Copyright (c) 2017 Robert Leckenby : geoLearnBot
 	 * https://github.com/Zabamund/geoLearnBot
 	 * 
+	 * * MIT License Copyright (c) 2017 Manel Pavon : geoLearnBot
+	 * https://github.com/Zabamund/geoLearnBot
+	 * 
 	 */
 
 	@Override
@@ -968,7 +971,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 								+ ", it's up to you to guess which mineral is the correct one.\n"
 								+ "A correct answer will always earn you 3 points *but !* \n"
 								+ "...each successive *hint* will take *1 point* off your game score "
-								+ "and each wrong guess will also take *1 point* off your game score.\n\n"
+								+ "and each wrong guess will also take *2 point* off your game score.\n\n"
 								+ "\"*Start new quiz*\" resets your current game score (not your high score)\n"
 								+ "\"*Continue quiz*\" allows you to try more questions to increase your high score")														
 								.enableMarkdown(true)
@@ -1570,7 +1573,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 							.getIsCorrectGuess().equals(true)) {
 
 						chatMap.get(update.getMessage().getChatId())
-								.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() - 1);
+								.setGameScore(chatMap.get(update.getMessage().getChatId()).getGameScore() - 2);
 						SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 								.setText("Sorry " + update.getMessage().getChat().getFirstName()
 										+ ", try again, use a hint or start a new game. \n*Starting a new game will reset your current game score !*")
