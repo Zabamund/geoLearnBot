@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: geoLearnBot
-Implementation-Version: 1.0.0-SNAPSHOT
-Main-Class: geoLearnBot.Main
-

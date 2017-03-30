@@ -9,7 +9,7 @@ when showing collection, only name and pic so far, add button to get all info?
 
 with browse, maybe add all to collection?
 
-WRITE TESTS!
+WRITE TESTS! aint' gonna happen. don't know how to.
 need to test for main and edge cases
 maybe for tests I can set a variable to "update.getM.getC.etc" ?
 
