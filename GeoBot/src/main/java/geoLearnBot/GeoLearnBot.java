@@ -1,10 +1,13 @@
 package geoLearnBot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -15,6 +18,16 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class GeoLearnBot extends TelegramLongPollingBot {
+
+	/*
+	 * 
+	 * MIT License Copyright (c) 2016 Ruben Bermudez : Telegram Bot Java Library
+	 * https://github.com/rubenlagus/TelegramBots
+	 * 
+	 * MIT License Copyright (c) 2017 Robert Leckenby : geoLearnBot
+	 * https://github.com/Zabamund/geoLearnBot
+	 * 
+	 */
 
 	@Override
 	public String getBotUsername() {
@@ -69,6 +82,9 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	int gameScore = 0;
 	int highScore = 0;
 
+	// manual logging
+	Boolean loggingOn = true;
+
 	// @formatter:off
 	// =============================== Main Listener ============================================================
 	// @formatter:on
@@ -103,8 +119,24 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				if (individualUserMap.containsKey(individualUserKey) == false) {
 					individualUserMap.put(individualUserKey, individualUserValue);
 				}
-				// System.out.println(individualUserMap);
+				if (loggingOn) {
+					System.out.println(individualUserMap);
+				}
 
+				// convert unix time to readable time/date
+				long unixSeconds = update.getMessage().getDate();
+				// *1000 is to convert seconds to milliseconds
+				Date date = new Date(unixSeconds * 1000L);
+				// the format of your date
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+				// give a timezone reference for formating
+				sdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+				String formattedDate = sdf.format(date);
+				if (loggingOn) {
+					System.out.println(formattedDate);
+				}
+
+				// add custom keyboard
 				KeyboardRow keyboardRow = new KeyboardRow();
 				keyboardRow.add(0, "/start");
 				keyboardRow.add(1, "/help");
@@ -119,7 +151,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						.setText(
 						// @formatter:off
-								"*Welcome to geoLearnBot !\n*"
+								"*Welcome to geoLearnBot\n\n*"
 								+ "*You can discover this Bot by picking a number or with the /menu to the right of your text input*"
 								+ "\n\n*1*. /start Show this start menu"
 								+ "\n*2*. /help Need help ?"
@@ -991,8 +1023,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
-				System.out.println("the correct Mineral is: "
-						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getTitle());
+				if (loggingOn) {
+					System.out.println("the correct Mineral for " + update.getMessage().getChat().getFirstName()
+							+ " is: " + chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+									.getTitle());
+				}
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
@@ -1325,8 +1360,11 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				randomNum = ThreadLocalRandom.current().nextInt(0, 3 + 1);
 				chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
 						.setIsCorrectGuess(true);
-				System.out.println("the correct Mineral is: "
-						+ chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum).getTitle());
+				if (loggingOn) {
+					System.out.println("the correct Mineral for " + update.getMessage().getChat().getFirstName()
+							+ " is: " + chatMap.get(update.getMessage().getChatId()).getMineralQuizList().get(randomNum)
+									.getTitle());
+				}
 
 				// create custom keyboard
 				KeyboardRow keyboardRowUpper = new KeyboardRow();
@@ -1605,7 +1643,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 				SendMessage message = new SendMessage().setChatId(update.getMessage().getChatId())
 						// @formatter:off
 						.setText(
-								"Please send all feedback or suggestions to: <dicebekind gmail com>\n\n"
+								"Please send all feedback or suggestions to: <fracgeol gmail com>\n\n"
 								+ "*geoLearnBot Acknowledges, Credits and Thanks:*\n\n"
 								+ "*The Minerals Education Coalition (MEC)*\n"
 								+ "[https://mineralseducationcoalition.org]\n"
