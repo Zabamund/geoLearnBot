@@ -92,8 +92,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// =============================== Main Listener ============================================================
 	// @formatter:on
 
-	// added deleteAfter use
-
 	@Override
 	public void onUpdateReceived(Update update) {
 		// check if the update has a message and the message has text
