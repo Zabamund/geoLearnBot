@@ -19,6 +19,16 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 public class GeoLearnBot extends TelegramLongPollingBot {
 
+	/*
+	 * 
+	 * MIT License Copyright (c) 2016 Ruben Bermudez : Telegram Bot Java Library
+	 * https://github.com/rubenlagus/TelegramBots
+	 * 
+	 * MIT License Copyright (c) 2017 Robert Leckenby : geoLearnBot
+	 * https://github.com/Zabamund/geoLearnBot
+	 * 
+	 */
+
 	@Override
 	public String getBotUsername() {
 		return "geoLearnBot";
