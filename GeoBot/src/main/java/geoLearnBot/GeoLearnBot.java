@@ -39,7 +39,7 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 
 	@Override
 	public String getBotToken() {
-		return "342030854:AAFX9kQHz0fqc2Nivvr6bNPBDypIW9w0vWg";
+		return "342030854:AAHHeK8IA2OhKzrPoAfhlZZxGVo9IKmnoJM";
 	}
 
 	// @formatter:off
@@ -91,8 +91,6 @@ public class GeoLearnBot extends TelegramLongPollingBot {
 	// @formatter:off
 	// =============================== Main Listener ============================================================
 	// @formatter:on
-
-	// added deleteAfter use
 
 	@Override
 	public void onUpdateReceived(Update update) {
