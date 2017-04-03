@@ -1,0 +1,43 @@
+2017-03-31T07:14:17.981754+00:00 app[api]: Scaled to web@1:Free by user fracgeol@gmail.com
+2017-03-31T07:14:21.361431+00:00 heroku[web.1]: Starting process with command `java -Dserver.port=12874 $JAVA_OPTS -jar build/libs/geoLearnBot-1.0.0-SNAPSHOT.jar`
+2017-03-31T07:14:23.361602+00:00 app[web.1]: Setting JAVA_TOOL_OPTIONS defaults based on dyno size. Custom settings will override them.
+2017-03-31T07:14:23.366468+00:00 app[web.1]: Picked up JAVA_TOOL_OPTIONS: -Xmx350m -Xss512k -Dfile.encoding=UTF-8
+2017-03-31T07:14:23.499826+00:00 app[web.1]: Error: A JNI error has occurred, please check your installation and try again
+2017-03-31T07:14:23.501011+00:00 app[web.1]: Exception in thread "main" java.lang.NoClassDefFoundError: org/telegram/telegrambots/exceptions/TelegramApiException
+2017-03-31T07:14:23.501233+00:00 app[web.1]:    at java.lang.Class.getDeclaredMethods0(Native Method)
+2017-03-31T07:14:23.501346+00:00 app[web.1]:    at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
+2017-03-31T07:14:23.501423+00:00 app[web.1]:    at java.lang.Class.privateGetMethodRecursive(Class.java:3048)
+2017-03-31T07:14:23.501495+00:00 app[web.1]:    at java.lang.Class.getMethod0(Class.java:3018)
+2017-03-31T07:14:23.501573+00:00 app[web.1]:    at java.lang.Class.getMethod(Class.java:1784)
+2017-03-31T07:14:23.501641+00:00 app[web.1]:    at sun.launcher.LauncherHelper.validateMainClass(LauncherHelper.java:544)
+2017-03-31T07:14:23.501719+00:00 app[web.1]:    at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:526)
+2017-03-31T07:14:23.501894+00:00 app[web.1]: Caused by: java.lang.ClassNotFoundException: org.telegram.telegrambots.exceptions.TelegramApiException
+2017-03-31T07:14:23.501950+00:00 app[web.1]:    at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+2017-03-31T07:14:23.502021+00:00 app[web.1]:    at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+2017-03-31T07:14:23.502113+00:00 app[web.1]:    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+2017-03-31T07:14:23.502288+00:00 app[web.1]:    at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+2017-03-31T07:14:23.502342+00:00 app[web.1]:    ... 7 more
+2017-03-31T07:14:23.561862+00:00 heroku[web.1]: Process exited with status 1
+2017-03-31T07:14:23.576037+00:00 heroku[web.1]: State changed from starting to crashed
+2017-03-31T07:14:23.577023+00:00 heroku[web.1]: State changed from crashed to starting
+2017-03-31T07:14:27.029554+00:00 heroku[web.1]: Starting process with command `java -Dserver.port=10229 $JAVA_OPTS -jar build/libs/geoLearnBot-1.0.0-SNAPSHOT.jar`
+2017-03-31T07:14:29.019662+00:00 heroku[web.1]: Process exited with status 1
+2017-03-31T07:14:29.051374+00:00 heroku[web.1]: State changed from starting to crashed
+2017-03-31T07:14:28.840463+00:00 app[web.1]: Setting JAVA_TOOL_OPTIONS defaults based on dyno size. Custom settings will override them.
+2017-03-31T07:14:28.949907+00:00 app[web.1]:    at java.lang.Class.getDeclaredMethods0(Native Method)
+2017-03-31T07:14:28.845272+00:00 app[web.1]: Picked up JAVA_TOOL_OPTIONS: -Xmx350m -Xss512k -Dfile.encoding=UTF-8
+2017-03-31T07:14:28.948516+00:00 app[web.1]: Error: A JNI error has occurred, please check your installation and try again
+2017-03-31T07:14:28.949680+00:00 app[web.1]: Exception in thread "main" java.lang.NoClassDefFoundError: org/telegram/telegrambots/exceptions/TelegramApiException
+2017-03-31T07:14:28.950030+00:00 app[web.1]:    at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
+2017-03-31T07:14:28.950105+00:00 app[web.1]:    at java.lang.Class.privateGetMethodRecursive(Class.java:3048)
+2017-03-31T07:14:28.950212+00:00 app[web.1]:    at java.lang.Class.getMethod0(Class.java:3018)
+2017-03-31T07:14:28.950282+00:00 app[web.1]:    at java.lang.Class.getMethod(Class.java:1784)
+2017-03-31T07:14:28.950360+00:00 app[web.1]:    at sun.launcher.LauncherHelper.validateMainClass(LauncherHelper.java:544)
+2017-03-31T07:14:28.950438+00:00 app[web.1]:    at sun.launcher.LauncherHelper.checkAndLoadMain(LauncherHelper.java:526)
+2017-03-31T07:14:28.950612+00:00 app[web.1]: Caused by: java.lang.ClassNotFoundException: org.telegram.telegrambots.exceptions.TelegramApiException
+2017-03-31T07:14:28.950878+00:00 app[web.1]:    at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+2017-03-31T07:14:28.950719+00:00 app[web.1]:    at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+2017-03-31T07:14:28.950793+00:00 app[web.1]:    at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+2017-03-31T07:14:28.951078+00:00 app[web.1]:    at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+2017-03-31T07:14:28.951160+00:00 app[web.1]:    ... 7 more
+2017-03-31T07:14:30.326523+00:00 heroku[router]: at=error code=H10 desc="App crashed" method=GET path="/" host=fathomless-castle-64856.herokuapp.com request_id=8ba5b60a-6c11-4688-b0d8-e74f2385fe45 fwd="212.51.155.223" dyno= connect= service= status=503 bytes= protocol=https
