@@ -1,0 +1,12 @@
+If *restart required* indicated in CLI after logon, follow this procedure:
+
+To reboot a server from the command line, run:
+1. sudo shutdown -r now
+
+then to restart the program
+2. ls // list directory
+3. cd jar // in my case, this is the name of the folder containing my jar file
+4. ls // check jar file is there
+5. java -jar myAwesomeJar.jar
+
+voilà, the program is running on Linux again

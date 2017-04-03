@@ -2,3 +2,5 @@ $ git add -A // add changes to stage
 $ git commit -m "msg" // commit for push
 $ git subtree push --prefix GeoBot heroku master // pushing a subdirectory
 $ heroku open // start the app
+$ heroku logs --tail // get app logs
+$ heroku ps:scale web=1 // scale dynos
